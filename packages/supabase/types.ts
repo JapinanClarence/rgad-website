@@ -30,6 +30,15 @@ export interface Database {
         }
         Insert: Omit<Database['public']['Tables']['articles']['Row'], 'id' | 'created_at' | 'updated_at' | 'view_count'>
         Update: Partial<Database['public']['Tables']['articles']['Insert']>
+        Relationships: [
+          {
+            foreignKeyName: 'articles_author_id_fkey'
+            columns: ['author_id']
+            isOneToOne: false
+            referencedRelation: 'authors'
+            referencedColumns: ['id']
+          },
+        ]
       }
       authors: {
         Row: {
@@ -43,6 +52,7 @@ export interface Database {
         }
         Insert: Omit<Database['public']['Tables']['authors']['Row'], 'id' | 'created_at'>
         Update: Partial<Database['public']['Tables']['authors']['Insert']>
+        Relationships: []
       }
       categories: {
         Row: {
@@ -55,6 +65,7 @@ export interface Database {
         }
         Insert: Omit<Database['public']['Tables']['categories']['Row'], 'id' | 'created_at'>
         Update: Partial<Database['public']['Tables']['categories']['Insert']>
+        Relationships: []
       }
       organization: {
         Row: {
@@ -74,6 +85,7 @@ export interface Database {
         }
         Insert: Omit<Database['public']['Tables']['organization']['Row'], 'id' | 'updated_at'>
         Update: Partial<Database['public']['Tables']['organization']['Insert']>
+        Relationships: []
       }
       team_members: {
         Row: {
@@ -90,6 +102,7 @@ export interface Database {
         }
         Insert: Omit<Database['public']['Tables']['team_members']['Row'], 'id' | 'created_at'>
         Update: Partial<Database['public']['Tables']['team_members']['Insert']>
+        Relationships: []
       }
       research_areas: {
         Row: {
@@ -102,6 +115,7 @@ export interface Database {
         }
         Insert: Omit<Database['public']['Tables']['research_areas']['Row'], 'id' | 'created_at'>
         Update: Partial<Database['public']['Tables']['research_areas']['Insert']>
+        Relationships: []
       }
     }
     Views: {}

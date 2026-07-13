@@ -7,9 +7,14 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, User, Tag, Share2 } from 'lucide-react'
 import type { Metadata } from 'next'
+import type { Database } from '@gad/supabase/types'
 
 interface Props {
   params: { slug: string }
+}
+
+type ArticleWithAuthor = Database['public']['Tables']['articles']['Row'] & {
+  authors: Pick<Database['public']['Tables']['authors']['Row'], 'name' | 'bio' | 'avatar'> | null
 }
 
 // Sample article content for fallback
@@ -56,13 +61,14 @@ export default async function ArticlePage({ params }: Props) {
   let article: any = SAMPLE[params.slug] ?? null
 
   try {
-    const { data } = await supabase
+    const { data: articleData } = await supabase
       .from('articles')
       .select('*, authors(name, bio, avatar)')
       .eq('slug', params.slug)
       .eq('published', true)
       .single()
 
+    const data = articleData as ArticleWithAuthor | null
     if (data) {
       article = { ...data, author: data.authors?.name ?? 'GAD Research Center' }
     }
