@@ -6,7 +6,7 @@ import { ArrowRight, BookOpen, Users, Award } from 'lucide-react'
 const stats = [
   { icon: BookOpen, value: '200+', label: 'Research Articles' },
   { icon: Users, value: '50+', label: 'Researchers' },
-  { icon: Award, value: '15+', label: 'Years of Advocacy' },
+  { icon: Award, value: '3+', label: 'Years of Advocacy' },
 ]
 
 export function HeroSection() {
@@ -39,29 +39,29 @@ export function HeroSection() {
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium mb-6 animate-slide-in">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              Advancing Gender Equity in the Philippines
+               Est. 2023 · Region XI's GAD Advocates Network
             </div>
 
-            <h1 className="font-display text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
-              Research that{' '}
-              <span className="text-gradient">transforms</span>{' '}
-              gender{' '}
-              <em className="not-italic text-secondary">equality</em>
+            <h1 className="font-display text-5xl lg:text-6xl xl:text-6xl font-bold leading-[1.05] tracking-tight mb-6">
+              Advocating{' '}
+              <span className="text-gradient">gender equality</span>{' '}
+              beyond{' '}
+              <em className="not-italic text-secondary"> mainstreaming</em>
             </h1>
 
             <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
-              The GAD Research Center produces rigorous, community-driven research on gender and development — empowering policymakers, practitioners, and advocates across Southeast Asia.
+              The Region XI Gender and Development Advocates Network builds evidence-based research and cross-sector partnerships that turn gender advocacy into lasting policy and institutional change.
             </p>
 
             <div className="flex flex-wrap gap-4 mb-12">
               <Button variant="gad" size="lg" asChild className="group">
                 <Link href="/articles">
-                  Explore Research
+                  Explore RGAN XI
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="/about">About Our Center</Link>
+                <Link href="/about">Our Research Journal</Link>
               </Button>
             </div>
 
