@@ -1,0 +1,14 @@
+{
+  "name": "@gad/supabase",
+  "version": "0.0.1",
+  "main": "./client.ts",
+  "types": "./client.ts",
+  "exports": {
+    ".": "./client.ts",
+    "./types": "./types.ts"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.4.0",
+    "@supabase/supabase-js": "^2.43.0"
+  }
+}
