@@ -1,10 +1,12 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import logo from '@gad/assets/images/RGAN XI logo landscape.png'
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -57,15 +59,16 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg gad-gradient flex items-center justify-center text-white font-display font-bold text-sm shadow-md group-hover:shadow-lg transition-shadow">
-              GAD
+          {/* <div className=' rounded-lg gad-gradient flex items-center justify-center text-white font-display font-bold text-sm shadow-md group-hover:shadow-lg transition-shadow'></div> */}
+            <div className="w-10 h-10">
+              <Image src={logo} className='w-full h-full object-contain' alt="RGAN XI Logo" />
             </div>
             <div className="hidden sm:block">
               <p className="font-display font-bold text-sm leading-tight text-foreground">
-                GAD Research Center
+                RGAN XI
               </p>
               <p className="text-[10px] text-muted-foreground leading-tight">
-                Gender & Development
+                Region XI Gender and Development Advocates Network
               </p>
             </div>
           </Link>

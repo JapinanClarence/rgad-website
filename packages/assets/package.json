@@ -1,0 +1,11 @@
+{
+  "name": "@gad/assets",
+  "version": "0.0.1",
+  "private": true,
+  "files": [
+    "images"
+  ],
+  "exports": {
+    "./images/*": "./images/*"
+  }
+}
