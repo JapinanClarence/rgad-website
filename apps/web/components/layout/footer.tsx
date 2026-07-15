@@ -80,7 +80,7 @@ export function Footer() {
         <Separator className="bg-background/10" />
 
         <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-background/50">
-          <p>© {new Date().getFullYear()} GAD Research Center. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} GAD Research Center. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-background/80 transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-background/80 transition-colors">Terms</Link>
