@@ -4,16 +4,24 @@ import { Target, Eye, BookOpen, Users, Award, Globe } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Learn about the GAD Research Center — our mission, vision, team, and research focus areas.',
+  description: 'Learn about RGAN XI — the Region XI Gender and Development Advocates Network — our mission, vision, founding officers, and advocacy.',
 }
 
 const team = [
-  { name: 'Dr. Maria Santos', role: 'Executive Director', dept: 'Leadership', initials: 'MS' },
-  { name: 'Atty. Rosa Dela Cruz', role: 'Legal & Policy Lead', dept: 'Research', initials: 'RD' },
-  { name: 'Dr. Elena Matubang', role: 'Senior Researcher', dept: 'Research', initials: 'EM' },
-  { name: 'Prof. Jose Reyes', role: 'Community Engagement', dept: 'Outreach', initials: 'JR' },
-  { name: 'Dr. Ana Flores', role: 'Data & Methodology', dept: 'Research', initials: 'AF' },
-  { name: 'Mr. Carlo Domingo', role: 'Communications', dept: 'Outreach', initials: 'CD' },
+  { name: 'Mary Fil M. Bauyot, PhD', role: 'President', dept: 'Founding Officer', initials: 'MB' },
+  { name: 'Genesesly Tahoy', role: 'Vice-President for Operations', dept: 'Founding Officer', initials: 'GT' },
+  { name: 'Orencita Aireen V. Lozada, PhD', role: 'Vice-President for Partnerships', dept: 'Founding Officer', initials: 'OL' },
+  { name: 'Sadie D. Law-ay, MA', role: 'Secretary', dept: 'Founding Officer', initials: 'SL' },
+  { name: 'Cecile C. Lofranco, MBA', role: 'Treasurer', dept: 'Founding Officer', initials: 'CL' },
+  { name: 'Vaneza C. Paquiao, MAEm', role: 'Auditor', dept: 'Founding Officer', initials: 'VP' },
+  { name: 'Sarah C. Aranges, MBA', role: 'Business Manager', dept: 'Founding Officer', initials: 'SA' },
+  { name: 'Corazon Mamon-Umblero', role: 'Board of Directors', dept: 'Board', initials: 'CM' },
+  { name: 'Jeralyn N. Hemillan, PhD', role: 'Board of Directors', dept: 'Board', initials: 'JH' },
+  { name: 'Helina Jean P. Dupa, PhD', role: 'Board of Directors', dept: 'Board', initials: 'HD' },
+  { name: 'Joyce C. Jasa', role: 'Board of Directors', dept: 'Board', initials: 'JJ' },
+  { name: 'Imelda T. Lauron', role: 'Board of Directors', dept: 'Board', initials: 'IL' },
+  { name: 'Jhonnel P. Villegas, MSc', role: 'Board of Directors', dept: 'Board', initials: 'JV' },
+  { name: 'Evelyn S. Ecle', role: 'Adviser', dept: 'Adviser', initials: 'EE' },
 ]
 
 const milestones = [
@@ -43,11 +51,11 @@ export default function AboutPage() {
           <div className="max-w-3xl">
             <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">Who We Are</p>
             <h1 className="font-display text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              About the{' '}
-              <span className="text-gradient">GAD Research Center</span>
+              About{' '}
+              <span className="text-gradient">RGAN XI</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              We are a Philippine-based research institution dedicated to advancing gender and development knowledge through rigorous, community-grounded scholarship.
+              The Region XI Gender and Development Advocates Network (RGAN XI Inc.) is a non-stock, non-profit, non-sectarian, and apolitical organization dedicated to advancing gender equality, diversity, equity, and social inclusion through research, education, policy engagement, and community partnerships.
             </p>
           </div>
         </div>
@@ -61,9 +69,9 @@ export default function AboutPage() {
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
                 <Target className="h-6 w-6 text-primary" />
               </div>
-              <h2 className="font-display text-2xl font-bold mb-4">Our Mission</h2>
+              <h2 className="font-display text-2xl font-bold mb-4">Our Organization</h2>
               <p className="text-muted-foreground leading-relaxed">
-                To produce rigorous, intersectional research on gender and development that informs policy, strengthens advocacy, and empowers communities — with a particular focus on the Philippine context and the broader Southeast Asian region.
+                Bringing together academics, researchers, government agencies, civil society organizations, development practitioners, and private sector partners, RGAN XI serves as a regional platform for collaboration and innovation in gender and development (GAD). Guided by the principles of integrity, collaboration, inclusivity, and innovation, we strive to strengthen networks of gender advocates, foster cross-sector partnerships, and empower individuals and institutions to advocate for gender equality and inclusive development.
               </p>
             </div>
 
@@ -73,7 +81,7 @@ export default function AboutPage() {
               </div>
               <h2 className="font-display text-2xl font-bold mb-4">Our Vision</h2>
               <p className="text-muted-foreground leading-relaxed">
-                A Philippines where gender equality is not merely a legislative mandate but a lived, embodied reality — where every person, regardless of gender, can fully participate in and benefit from society's institutions and opportunities.
+                Through collective action and shared expertise, RGAN XI envisions a society where research and advocacy drive transformative policies, institutions champion equality and inclusion, and every individual has the opportunity to participate fully in sustainable development — contributing to the United Nations Sustainable Development Goals, particularly SDG 5: Gender Equality.
               </p>
             </div>
           </div>
@@ -133,6 +141,7 @@ export default function AboutPage() {
           <div className="text-center max-w-2xl mx-auto mb-12">
             <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">People</p>
             <h2 className="font-display text-4xl font-bold">Our Team</h2>
+            <p className="mt-3 text-muted-foreground">Meet the founding officers, Board of Directors, and adviser of RGAN XI.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {team.map((member, i) => (
