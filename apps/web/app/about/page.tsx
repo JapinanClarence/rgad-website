@@ -1,6 +1,9 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Target, Eye, BookOpen, Users, Award, Globe } from "lucide-react";
+import { images } from "@/app/constants/images";
+import Image from "next/image";
+import { profile } from "console";
 
 export const metadata: Metadata = {
   title: "About",
@@ -10,104 +13,123 @@ export const metadata: Metadata = {
 
 const team = [
   {
+    profile: images.bauyot,
     name: "Mary Fil M. Bauyot, PhD",
     role: "President",
     dept: "Founding Officer",
     initials: "MB",
   },
   {
+    profile: images.tahoy,
     name: "Genesesly Tahoy",
     role: "Vice-President for Operations",
     dept: "Founding Officer",
     initials: "GT",
   },
   {
+    profile: images.orencita,
     name: "Orencita Aireen V. Lozada, PhD",
     role: "Vice-President for Partnerships",
     dept: "Founding Officer",
     initials: "OL",
   },
   {
+    profile: images.sadie,
     name: "Sadie D. Law-ay, MA",
     role: "Secretary",
     dept: "Founding Officer",
     initials: "SL",
   },
   {
+    profile: images.cecile,
     name: "Cecile C. Lofranco, MBA",
     role: "Treasurer",
     dept: "Founding Officer",
     initials: "CL",
   },
   {
+    profile: images.vaneza,
     name: "Vaneza C. Paquiao, MAEm",
     role: "Auditor",
     dept: "Founding Officer",
     initials: "VP",
   },
   {
+    profile: images.sarah,
     name: "Sarah C. Aranges, MBA",
     role: "Business Manager",
     dept: "Founding Officer",
     initials: "SA",
   },
   {
+    profile: images.corazon,
     name: "Corazon Mamon-Umblero",
     role: "Board of Directors",
     dept: "Board",
     initials: "CM",
   },
   {
+    profile: images.jeralyn,
     name: "Jeralyn N. Hemillan, PhD",
     role: "Board of Directors",
     dept: "Board",
     initials: "JH",
   },
   {
+    profile: images.helina,
     name: "Helina Jean P. Dupa, PhD",
     role: "Board of Directors",
     dept: "Board",
     initials: "HD",
   },
   {
+    profile: images.joyce,
     name: "Joyce C. Jasa",
     role: "Board of Directors",
     dept: "Board",
     initials: "JJ",
   },
   {
+    profile: images.imelda,
     name: "Imelda T. Lauron",
     role: "Board of Directors",
     dept: "Board",
     initials: "IL",
   },
   {
+    profile: images.villegas,
     name: "Jhonnel P. Villegas, MSc",
     role: "Board of Directors",
     dept: "Board",
     initials: "JV",
   },
-  { name: "Evelyn S. Ecle", role: "Adviser", dept: "Adviser", initials: "EE" },
+  {
+    profile: images.evelyn,
+    name: "Evelyn S. Ecle",
+    role: "Adviser",
+    dept: "Adviser",
+    initials: "EE",
+  },
 ];
 
-const milestones = [
-  { year: "2009", event: "GAD Research Center established in Davao City" },
-  {
-    year: "2012",
-    event: "Launch of first national GAD budget compliance study",
-  },
-  {
-    year: "2015",
-    event:
-      "Partnership with PCW and NCRFW on Magna Carta implementation monitoring",
-  },
-  {
-    year: "2018",
-    event: "Regional office opened in Cebu; digital research library launched",
-  },
-  { year: "2021", event: "100th research publication milestone reached" },
-  { year: "2024", event: "Launch of this open-access research platform" },
-];
+// const milestones = [
+//   { year: "2009", event: "GAD Research Center established in Davao City" },
+//   {
+//     year: "2012",
+//     event: "Launch of first national GAD budget compliance study",
+//   },
+//   {
+//     year: "2015",
+//     event:
+//       "Partnership with PCW and NCRFW on Magna Carta implementation monitoring",
+//   },
+//   {
+//     year: "2018",
+//     event: "Regional office opened in Cebu; digital research library launched",
+//   },
+//   { year: "2021", event: "100th research publication milestone reached" },
+//   { year: "2024", event: "Launch of this open-access research platform" },
+// ];
 
 const gradients = [
   "from-purple-500 to-pink-500",
@@ -318,6 +340,13 @@ export default function AboutPage() {
                   className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold text-lg mb-4 group-hover:scale-105 transition-transform`}
                 >
                   {member.initials}
+                  {member.profile && (
+                    <Image
+                      src={member.profile}
+                      alt={member.name}
+                      className="w-14 h-14 rounded-2xl object-cover absolute "
+                    />
+                  )}
                 </div>
                 <h3 className="font-display font-bold text-lg">
                   {member.name}
