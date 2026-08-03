@@ -21,6 +21,14 @@ const navLinks = [
     ],
   },
   {
+    label: 'Journal',
+    href: '/journal',
+    children: [
+      { label: 'About GRPJ', href: '/journal' },
+      { label: 'Journal Information', href: '/journal#journal-info' },
+    ],
+  },
+  {
     label: 'Research',
     href: '/articles',
     children: [

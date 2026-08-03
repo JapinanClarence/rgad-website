@@ -42,6 +42,7 @@ export function Footer() {
               {[
                 { label: 'Home', href: '/' },
                 { label: 'About Us', href: '/about' },
+                { label: 'Gender Research & Policy Journal', href: '/journal' },
                 { label: 'Research Articles', href: '/articles' },
                 { label: 'Our Team', href: '/about#team' },
                 { label: 'Contact', href: '/contact' },
