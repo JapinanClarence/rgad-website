@@ -1,7 +1,7 @@
-import React from 'react'
-import Link from 'next/link'
-import { Separator } from '@/components/ui/separator'
-import { Facebook, Twitter, Mail, MapPin, Phone } from 'lucide-react'
+import React from "react";
+import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
+import { Facebook, Twitter, Mail, MapPin, Phone } from "lucide-react";
 
 export function Footer() {
   return (
@@ -15,21 +15,36 @@ export function Footer() {
                 GAD
               </div>
               <div>
-                <p className="font-display font-bold text-background">GAD Research Center</p>
-                <p className="text-xs text-background/60">Gender & Development</p>
+                <p className="font-display font-bold text-background">
+                  GAD Research Center
+                </p>
+                <p className="text-xs text-background/60">
+                  Gender & Development
+                </p>
               </div>
             </div>
             <p className="text-background/70 text-sm leading-relaxed max-w-sm mb-6">
-              Advancing gender equity through rigorous research, evidence-based advocacy, and community-centered engagement across the Philippines and Southeast Asia.
+              Advancing gender equity through rigorous research, evidence-based
+              advocacy, and community-centered engagement across the Philippines
+              and Southeast Asia.
             </p>
             <div className="flex gap-3">
-              <a href="#" className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors">
+              <a
+                href="#"
+                className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
                 <Facebook className="h-4 w-4" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors">
+              <a
+                href="#"
+                className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
                 <Twitter className="h-4 w-4" />
               </a>
-              <a href="mailto:info@gadresearch.org" className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors">
+              <a
+                href="mailto:info@gadresearch.org"
+                className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
                 <Mail className="h-4 w-4" />
               </a>
             </div>
@@ -37,18 +52,23 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-display font-semibold text-background mb-4">Quick Links</h4>
+            <h4 className="font-display font-semibold text-background mb-4">
+              Quick Links
+            </h4>
             <ul className="space-y-2.5 text-sm text-background/70">
               {[
-                { label: 'Home', href: '/' },
-                { label: 'About Us', href: '/about' },
-                { label: 'Gender Research & Policy Journal', href: '/journal' },
-                { label: 'Research Articles', href: '/articles' },
-                { label: 'Our Team', href: '/about#team' },
-                { label: 'Contact', href: '/contact' },
+                { label: "Home", href: "/" },
+                { label: "About Us", href: "/about" },
+                { label: "Gender Research & Policy Journal", href: "/journal" },
+                { label: "Research Articles", href: "/articles" },
+                { label: "Our Team", href: "/about#team" },
+                { label: "Contact", href: "/contact" },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="hover:text-background transition-colors">
+                  <Link
+                    href={link.href}
+                    className="hover:text-background transition-colors"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -58,11 +78,17 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-display font-semibold text-background mb-4">Contact</h4>
+            <h4 className="font-display font-semibold text-background mb-4">
+              Contact
+            </h4>
             <ul className="space-y-3 text-sm text-background/70">
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-background/40" />
-                <span>Davao City, Philippines</span>
+                <span>
+                  Center for Gender and Development Davao Oriental State
+                  University Guang-guang, Dahican, 8200 Mati, Davao Oriental,
+                  Philippines
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 shrink-0 text-background/40" />
@@ -70,8 +96,11 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 shrink-0 text-background/40" />
-                <a href="mailto:rganxi2023@gmail.com" className="hover:text-background transition-colors">
-                 rganxi2023@gmail.com
+                <a
+                  href="mailto:rganxi2023@gmail.com"
+                  className="hover:text-background transition-colors"
+                >
+                  rganxi2023@gmail.com
                 </a>
               </li>
             </ul>
@@ -81,13 +110,26 @@ export function Footer() {
         <Separator className="bg-background/10" />
 
         <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-background/50">
-          <p>&copy; {new Date().getFullYear()} GAD Research Center. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} GAD Research Center. All rights
+            reserved.
+          </p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-background/80 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-background/80 transition-colors">Terms</Link>
+            <Link
+              href="/privacy"
+              className="hover:text-background/80 transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/terms"
+              className="hover:text-background/80 transition-colors"
+            >
+              Terms
+            </Link>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

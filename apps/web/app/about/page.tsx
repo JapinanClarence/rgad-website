@@ -173,18 +173,14 @@ export default function AboutPage() {
                 <Target className="h-6 w-6 text-primary" />
               </div>
               <h2 className="font-display text-2xl font-bold mb-4">
-                Our Organization
+                Our Mission
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Bringing together academics, researchers, government agencies,
-                civil society organizations, development practitioners, and
-                private sector partners, RGAN XI serves as a regional platform
-                for collaboration and innovation in gender and development
-                (GAD). Guided by the principles of integrity, collaboration,
-                inclusivity, and innovation, we strive to strengthen networks of
-                gender advocates, foster cross-sector partnerships, and empower
-                individuals and institutions to advocate for gender equality and
-                inclusive development.
+                To strengthen collaboration among higher education institutions,
+                government agencies, civil society organizations, and
+                development partners through research, capacity development,
+                policy advocacy, scholarly publication, technical assistance,
+                and community engagement in advancing Gender and Development.
               </p>
             </div>
 
@@ -196,13 +192,9 @@ export default function AboutPage() {
                 Our Vision
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Through collective action and shared expertise, RGAN XI
-                envisions a society where research and advocacy drive
-                transformative policies, institutions champion equality and
-                inclusion, and every individual has the opportunity to
-                participate fully in sustainable development — contributing to
-                the United Nations Sustainable Development Goals, particularly
-                SDG 5: Gender Equality.
+                A dynamic regional community of Gender and Development advocates
+                leading transformative, inclusive, evidence-informed, and
+                sustainable development in Region XI.
               </p>
             </div>
           </div>
