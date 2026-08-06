@@ -27,24 +27,25 @@ export function MissionSection() {
               Who We Are
             </p>
             <h2 className="font-display text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-              Dedicated to the science of{" "}
-              <span className="text-gradient">gender justice</span>
+              A regional network for{" "}
+              <span className="text-gradient">gender and development</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              The GAD Research Center was established to bridge the gap between
-              gender theory and practice in the Philippine context. We believe
-              that robust, rigorous research is the foundation of lasting social
-              change.
+              RGAN XI is a non-stock, non-profit, non-sectarian, and apolitical
+              organization dedicated to advancing gender equality, diversity,
+              equity, and social inclusion through research, education, policy
+              engagement, and community partnerships.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
-              Our multidisciplinary team collaborates with communities,
-              government agencies, and international organizations to produce
-              insights that matter — and that reach the people who need them
-              most.
+              We bring together academics, researchers, government agencies,
+              civil society organizations, and private sector partners as a
+              regional platform for collaboration and innovation in gender and
+              development — guided by integrity, collaboration, inclusivity, and
+              innovation.
             </p>
             <Button variant="gad" asChild>
-              <Link href="/about">
-                Our Full Story <ArrowRight className="ml-2 h-4 w-4" />
+              <Link href="/about#herstory">
+                Our Herstory <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
           </div>

@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { Facebook, Twitter, Mail, MapPin, Phone } from "lucide-react";
+import logo from "@gad/assets/images/RGAN XI white.png";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -11,8 +13,15 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg gad-gradient flex items-center justify-center text-white font-display font-bold text-sm">
+              {/* <div className="w-10 h-10 rounded-lg gad-gradient flex items-center justify-center text-white font-display font-bold text-sm">
                 GAD
+              </div> */}
+              <div className="w-10 h-10">
+                <Image
+                  src={logo}
+                  className="w-full h-full object-contain"
+                  alt="RGAN XI Logo"
+                />
               </div>
               <div>
                 <p className="font-display font-bold text-background">
@@ -24,9 +33,9 @@ export function Footer() {
               </div>
             </div>
             <p className="text-background/70 text-sm leading-relaxed max-w-sm mb-6">
-              Advancing gender equity through rigorous research, evidence-based
-              advocacy, and community-centered engagement across the Philippines
-              and Southeast Asia.
+              Advancing gender equality, diversity, equity, and social inclusion
+              through research, policy engagement, and community partnerships
+              across Region XI.
             </p>
             <div className="flex gap-3">
               <a

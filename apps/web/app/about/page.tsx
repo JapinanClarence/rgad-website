@@ -313,7 +313,7 @@ export default function AboutPage() {
       </section>
 
       {/* Herstory */}
-      <section className="py-20 bg-muted/20">
+      <section id="herstory" className="py-20 bg-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
