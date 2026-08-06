@@ -16,10 +16,10 @@ export function Footer() {
               </div>
               <div>
                 <p className="font-display font-bold text-background">
-                  GAD Research Center
+                  RGAN XI
                 </p>
                 <p className="text-xs text-background/60">
-                  Gender & Development
+                  Region XI Gender and Development Advocates Network
                 </p>
               </div>
             </div>
@@ -110,10 +110,7 @@ export function Footer() {
         <Separator className="bg-background/10" />
 
         <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-background/50">
-          <p>
-            &copy; {new Date().getFullYear()} GAD Research Center. All rights
-            reserved.
-          </p>
+          <p>&copy; {new Date().getFullYear()} RGAN XI. All rights reserved.</p>
           <div className="flex gap-6">
             <Link
               href="/privacy"
