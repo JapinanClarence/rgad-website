@@ -202,7 +202,7 @@ export default function AboutPage() {
       </section>
 
       {/* Research Areas */}
-      <section id="research" className="py-20">
+      {/* <section id="research" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
@@ -241,6 +241,62 @@ export default function AboutPage() {
                 icon: Eye,
                 title: "VAWC & Protection",
                 desc: "Violence against women and children, survivor support systems, and legal remedies.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="p-6 bg-white rounded-2xl border border-border hover:shadow-md transition-shadow"
+              >
+                <item.icon className="h-7 w-7 text-primary mb-3" />
+                <h3 className="font-display font-bold mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section> */}
+      {/* Strategic Programs */}
+      <section id="strategic-programs" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
+              Focus Areas
+            </p>
+            <h2 className="font-display text-4xl font-bold">
+              Our Strategic Programs
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Target,
+                title: "Capacity Development",
+                desc: "Regional GAD Summit, specialized trainings, certificate programs, faculty development, and leadership programs.",
+              },
+              {
+                icon: Eye,
+                title: "Research and Innovation",
+                desc: "Collaborative gender research, policy studies, research mentoring, research grants, and gender statistics.",
+              },
+              {
+                icon: BookOpen,
+                title: "Publication and Knowledge Management",
+                desc: "The Gender Research and Policy Journal, policy briefs, books and manuals, conference proceedings, and a digital knowledge repository.",
+              },
+              {
+                icon: Award,
+                title: "Technical Assistance",
+                desc: "Gender mainstreaming assessment, GAD planning, gender audit, institutional mentoring, and consultancy services.",
+              },
+              {
+                icon: Users,
+                title: "Community Engagement",
+                desc: "Extension programs, women\u2019s empowerment initiatives, LGBTQIA+ inclusion, disability-inclusive development, and youth engagement.",
+              },
+              {
+                icon: Globe,
+                title: "Partnerships and Resource Mobilization",
+                desc: "National collaborations, international partnerships, industry engagement, development cooperation, and resource generation.",
               },
             ].map((item) => (
               <div

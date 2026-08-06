@@ -1,75 +1,85 @@
-'use client'
-import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import { Menu, X, ChevronDown } from 'lucide-react'
-import logo from '@gad/assets/images/RGAN XI logo landscape.png'
+"use client";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Menu, X, ChevronDown } from "lucide-react";
+import logo from "@gad/assets/images/RGAN XI logo landscape.png";
 
 const navLinks = [
-  { label: 'Home', href: '/' },
+  { label: "Home", href: "/" },
   {
-    label: 'About',
-    href: '/about',
+    label: "About",
+    href: "/about",
     children: [
-      { label: 'Our Organization', href: '/about' },
-      { label: 'Mission & Vision', href: '/about#mission' },
-      { label: 'Research Areas', href: '/about#research' },
-      { label: 'Our Team', href: '/about#team' },
+      { label: "Our Organization", href: "/about" },
+      { label: "Mission & Vision", href: "/about#mission" },
+      { label: "Strategic Programs", href: "/about#strategic-programs" },
+      { label: "Our Team", href: "/about#team" },
     ],
   },
   {
-    label: 'Journal',
-    href: '/journal',
+    label: "Journal",
+    href: "/journal",
     children: [
-      { label: 'About GRPJ', href: '/journal' },
-      { label: 'Journal Information', href: '/journal#journal-info' },
+      { label: "About GRPJ", href: "/journal" },
+      { label: "Journal Information", href: "/journal#journal-info" },
     ],
   },
   {
-    label: 'Research',
-    href: '/articles',
+    label: "Research",
+    href: "/articles",
     children: [
-      { label: 'All Articles', href: '/articles' },
-      { label: 'Gender Policy', href: '/articles?category=gender-policy' },
-      { label: 'Women Empowerment', href: '/articles?category=women-empowerment' },
-      { label: 'Social Inclusion', href: '/articles?category=social-inclusion' },
-      { label: 'Legal Framework', href: '/articles?category=legal-framework' },
+      { label: "All Articles", href: "/articles" },
+      { label: "Gender Policy", href: "/articles?category=gender-policy" },
+      {
+        label: "Women Empowerment",
+        href: "/articles?category=women-empowerment",
+      },
+      {
+        label: "Social Inclusion",
+        href: "/articles?category=social-inclusion",
+      },
+      { label: "Legal Framework", href: "/articles?category=legal-framework" },
     ],
   },
-  { label: 'Contact', href: '/contact' },
-]
+  { label: "Contact", href: "/contact" },
+];
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
-  const pathname = usePathname()
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-border'
-          : 'bg-transparent'
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border"
+          : "bg-transparent",
       )}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-          {/* <div className=' rounded-lg gad-gradient flex items-center justify-center text-white font-display font-bold text-sm shadow-md group-hover:shadow-lg transition-shadow'></div> */}
+            {/* <div className=' rounded-lg gad-gradient flex items-center justify-center text-white font-display font-bold text-sm shadow-md group-hover:shadow-lg transition-shadow'></div> */}
             <div className="w-10 h-10">
-              <Image src={logo} className='w-full h-full object-contain' alt="RGAN XI Logo" />
+              <Image
+                src={logo}
+                className="w-full h-full object-contain"
+                alt="RGAN XI Logo"
+              />
             </div>
             <div className="hidden sm:block">
               <p className="font-display font-bold text-sm leading-tight text-foreground">
@@ -93,14 +103,19 @@ export function Navbar() {
                 >
                   <button
                     className={cn(
-                      'flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium transition-colors',
+                      "flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium transition-colors",
                       pathname.startsWith(link.href)
-                        ? 'text-primary'
-                        : 'text-foreground/70 hover:text-foreground hover:bg-muted'
+                        ? "text-primary"
+                        : "text-foreground/70 hover:text-foreground hover:bg-muted",
                     )}
                   >
                     {link.label}
-                    <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', openDropdown === link.label && 'rotate-180')} />
+                    <ChevronDown
+                      className={cn(
+                        "h-3.5 w-3.5 transition-transform",
+                        openDropdown === link.label && "rotate-180",
+                      )}
+                    />
                   </button>
 
                   {openDropdown === link.label && (
@@ -124,15 +139,15 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'px-4 py-2 rounded-md text-sm font-medium transition-colors',
+                    "px-4 py-2 rounded-md text-sm font-medium transition-colors",
                     pathname === link.href
-                      ? 'text-primary'
-                      : 'text-foreground/70 hover:text-foreground hover:bg-muted'
+                      ? "text-primary"
+                      : "text-foreground/70 hover:text-foreground hover:bg-muted",
                   )}
                 >
                   {link.label}
                 </Link>
-              )
+              ),
             )}
           </div>
 
@@ -148,7 +163,11 @@ export function Navbar() {
             className="lg:hidden p-2 rounded-md hover:bg-muted transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </button>
         </div>
 
@@ -189,5 +208,5 @@ export function Navbar() {
         )}
       </nav>
     </header>
-  )
+  );
 }
