@@ -93,7 +93,7 @@ export default function SummitPage() {
         <div className="grid gap-10 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-20">
           <aside aria-label="Summit archive">
             <p className=" text-xs uppercase tracking-[0.16em] text-muted-foreground mb-6">
-              Summit archive
+              GAD Summit archive
             </p>
             <div className="relative ml-2 border-l-2 border-primary/15 space-y-7">
               {summits.map((item) => {
