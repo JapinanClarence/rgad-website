@@ -45,6 +45,7 @@ const navLinks = [
       { label: "Legal Framework", href: "/articles?category=legal-framework" },
     ],
   },
+  { label: "GAD Summit", href: "/summit" },
   { label: "Contact", href: "/contact" },
 ];
 
