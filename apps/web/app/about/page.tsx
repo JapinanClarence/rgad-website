@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Target, Eye, BookOpen, Users, Award, Globe } from "lucide-react";
-import { images } from "@/app/constants/images";
+import { images } from "@/constants/images";
 import Image from "next/image";
 import { profile } from "console";
 

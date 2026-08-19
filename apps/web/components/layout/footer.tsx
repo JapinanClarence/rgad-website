@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Facebook, Twitter, Mail, MapPin, Phone } from "lucide-react";
 import logo from "@gad/assets/images/RGAN XI white.png";
 import Image from "next/image";
+import { images } from "@/constants/images";
 
 export function Footer() {
   return (
@@ -55,6 +56,68 @@ export function Footer() {
                 className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
               >
                 <Mail className="h-4 w-4" />
+              </a>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <a
+                href="#"
+                className="w-12 h-12 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
+                <Image
+                  className="h-full w-full object-contain"
+                  src={images.ched_logo}
+                  alt="CHED Logo"
+                />
+              </a>
+              <a
+                href="#"
+                className="w-12 h-12 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
+                <Image
+                  className="h-full w-full object-contain"
+                  src={images.ddosc_logo}
+                  alt="DDOSC Logo"
+                />
+              </a>
+              <a
+                href="#"
+                className="w-12 h-12 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
+                <Image
+                  className="h-full w-full object-contain"
+                  src={images.dorsu_logo}
+                  alt="DOrSU Logo"
+                />
+              </a>
+              <a
+                href="#"
+                className="w-12 h-12 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
+                <Image
+                  className="h-full w-full object-contain"
+                  src={images.dssc_logo}
+                  alt="DSSC Logo"
+                />
+              </a>
+              <a
+                href="#"
+                className="w-12 h-12 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
+                <Image
+                  className="h-full w-full object-contain"
+                  src={images.spamast_logo}
+                  alt="SPAMAST Logo"
+                />
+              </a>
+              <a
+                href="#"
+                className="w-12 h-12 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
+                <Image
+                  className="h-full w-full object-contain"
+                  src={images.usep_logo}
+                  alt="USeP Logo"
+                />
               </a>
             </div>
           </div>
