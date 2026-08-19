@@ -78,7 +78,8 @@ export default function SummitPage() {
           </p>
           <div className="max-w-3xl">
             <h1 className="font-display text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              One summit, every year, a region moving forward together.
+              One summit, every year, a region{" "}
+              <span className="text-gradient">moving forward together.</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
               Each Regional GAD Summit is hosted by a different member
