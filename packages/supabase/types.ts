@@ -40,6 +40,25 @@ export interface Database {
           },
         ]
       }
+      summit: {
+        Row: {
+          id: string
+          created_at: string
+          theme: string | null
+          location: string | null
+          summary: string | null
+          details: string[] | null
+          note: string | null
+          outcomes: string[] | null
+          host: string | null
+          start_date: string | null
+          images: string[] | null
+          end_date: string | null
+        }
+        Insert: Omit<Database['public']['Tables']['summit']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['summit']['Insert']>
+        Relationships: []
+      }
       authors: {
         Row: {
           id: string
