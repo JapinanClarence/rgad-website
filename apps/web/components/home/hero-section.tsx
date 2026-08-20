@@ -1,7 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Users, Award } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Users,
+  Award,
+  Calendar,
+  Hash,
+} from "lucide-react";
+import { formatDate } from "@/lib/utils";
 
 const stats = [
   { icon: BookOpen, value: "200+", label: "Research Articles" },
@@ -9,7 +17,47 @@ const stats = [
   { icon: Award, value: "3+", label: "Years of Advocacy" },
 ];
 
+// Fallback current issue if Supabase returns empty — mirrors the structure
+// used on /issue and /issue/[id] for local/dev preview.
+const CURRENT_ISSUE = {
+  id: "v2i1",
+  volume: 2,
+  issue_no: 1,
+  title: "Volume 2, Issue 1",
+  theme: "Beyond Gender Mainstreaming: New Frontiers in Policy and Practice",
+  doi: "10.63346/RGANXI.2025.0201",
+  cover_image: null,
+  editorial: `
+<p>This issue arrives at a moment when Gender and Development practice across Region XI is being asked to move past compliance and toward genuine institutional transformation. The five studies gathered here take up that challenge from different vantage points — budget governance, indigenous land rights, education, legal implementation, and community-based reporting systems.</p>
+  `,
+  editorial_author: "Dr. Mary Fil M. Bauyot",
+  pdf_url: null,
+  is_current: true,
+  published_at: "2025-06-15",
+  created_at: "2025-06-15",
+};
+
+const CURRENT_ISSUE_ARTICLE_COUNT = 4;
+
+function stripHtml(html: string) {
+  return html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function HeroSection() {
+  const issue = CURRENT_ISSUE;
+  const articleCount = CURRENT_ISSUE_ARTICLE_COUNT;
+  const editorialExcerpt = issue.editorial
+    ? stripHtml(issue.editorial).slice(0, 150).trim() + "…"
+    : "Peer-reviewed studies, policy analyses, and field research from across Region XI.";
+  const [editorialName, editorialRole] = (
+    issue.editorial_author ?? "RGAN XI Editorial Board"
+  )
+    .split(",")
+    .map((part) => part.trim());
+
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden hero-pattern">
       {/* Background decorative elements */}
@@ -96,76 +144,80 @@ export function HeroSection() {
           {/* Visual */}
           <div className="relative hidden lg:block">
             {/* Main card */}
-            <div className="relative bg-white rounded-3xl shadow-2xl border border-border/50 p-8 overflow-hidden">
+            <Link
+              href={`/issue/${issue.id}`}
+              className="relative block bg-white rounded-3xl shadow-2xl border border-border/50 p-8 overflow-hidden hover:shadow-primary/10 transition-shadow"
+            >
               <div className="absolute top-0 left-0 right-0 h-1 gad-gradient" />
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
-                    Featured Research
+                    Current Issue
                   </span>
                   <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                 </div>
 
                 <h3 className="font-display text-xl font-bold leading-snug">
-                  Intersectionality in Philippine Gender Policy: A Systematic
-                  Review
+                  {issue.theme ??
+                    `Vol. ${issue.volume}, Issue ${issue.issue_no}`}
                 </h3>
 
                 <div className="flex flex-wrap gap-2">
-                  {["Policy", "Women", "Philippines"].map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                    Vol. {issue.volume}
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                    Issue {issue.issue_no}
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                    Peer-Reviewed
+                  </span>
                 </div>
 
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  This study examines how intersecting identities of gender,
-                  class, ethnicity, and disability shape access to social
-                  protection programs...
+                  {editorialExcerpt}
                 </p>
 
                 <div className="flex items-center justify-between pt-2 border-t border-border">
                   <div className="flex items-center gap-2">
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary" />
                     <div>
-                      <p className="text-xs font-medium">Dr. Maria Santos</p>
+                      <p className="text-xs font-medium">{editorialName}</p>
                       <p className="text-[10px] text-muted-foreground">
-                        Lead Researcher
+                        {editorialRole ?? "Editor"}
                       </p>
                     </div>
                   </div>
                   <span className="text-xs text-muted-foreground">
-                    May 2024
+                    {formatDate(issue.published_at ?? issue.created_at)}
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
 
             {/* Floating accent cards */}
-            <div
+            {/* <div
               className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-border/50 p-4 w-44 animate-fade-up"
               style={{ animationDelay: "0.3s" }}
             >
-              <p className="text-xs text-muted-foreground mb-1">
-                Latest Insight
+              <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1.5">
+                <Hash className="h-3 w-3" />
+                DOI
               </p>
-              <p className="text-sm font-display font-semibold leading-snug">
-                GAD Budget Utilization Trends 2024
+              <p className="text-sm font-display font-semibold leading-snug break-all">
+                {issue.doi ?? "Pending assignment"}
               </p>
-            </div>
+            </div> */}
 
             <div
               className="absolute -top-4 -right-4 bg-primary rounded-2xl shadow-xl p-4 w-36 text-white animate-fade-up"
               style={{ animationDelay: "0.6s" }}
             >
-              <p className="text-3xl font-display font-bold">78%</p>
-              <p className="text-xs text-white/80">
-                of policies show gender gaps
+              <p className="text-3xl font-display font-bold">{articleCount}</p>
+              <p className="text-xs text-white/80 flex items-center gap-1">
+                {/* <Calendar className="h-3 w-3" /> */}
+                articles in this issue
               </p>
             </div>
           </div>
