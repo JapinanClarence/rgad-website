@@ -199,13 +199,7 @@ export default function ContactPage() {
                   >
                     <Facebook className="h-4 w-4" />
                   </a>
-                  <a
-                    href="#"
-                    className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-foreground/70 hover:bg-primary hover:text-white transition-colors"
-                    aria-label="Twitter"
-                  >
-                    <Twitter className="h-4 w-4" />
-                  </a>
+
                   <a
                     href={`mailto:${CONTACT_EMAIL}`}
                     className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-foreground/70 hover:bg-primary hover:text-white transition-colors"

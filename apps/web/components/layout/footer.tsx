@@ -46,12 +46,6 @@ export function Footer() {
                 <Facebook className="h-4 w-4" />
               </a>
               <a
-                href="#"
-                className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
-              >
-                <Twitter className="h-4 w-4" />
-              </a>
-              <a
                 href="mailto:info@gadresearch.org"
                 className="w-9 h-9 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
               >

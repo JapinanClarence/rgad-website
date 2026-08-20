@@ -18,55 +18,6 @@ type Summit = {
   images?: string[];
 };
 
-/* Static archive content retired in favor of the Supabase summit table.
-  {
-    year: "2025",
-    host: "University of Southeastern Philippines (USeP)",
-    location: "Obrero Campus, Davao City",
-    date: "November 25–26, 2025",
-    theme: "Gender Justice and the Digital Age",
-    summary:
-      "The third Regional GAD Summit convened GAD directors, focal persons, researchers, and faculty members from higher education institutions across Region XI to examine gender justice in an increasingly digital society.",
-    details: [
-      "Four plenary conversations considered campus justice and CODI institutionalization, legal protections against gender-based violence online and offline, bias and ethics in AI, and the role of research in advocacy.",
-      "The gathering also served as the regional kick-off for the 18-Day Campaign to End Violence Against Women, bringing institutional commitments into public conversation.",
-    ],
-    outcomes: [
-      "Launch of the Gender Research and Policy Journal (GRPJ)",
-      "Four plenary sessions on justice, safety, and technology",
-      "Regional launch of the 18-Day Campaign to End VAW",
-      "GAD extension poster exhibit",
-    ],
-    note: "RGAN XI launched the Gender Research and Policy Journal (GRPJ) during this summit—its first standing scholarly publication.",
-  },
-  {
-    year: "2024",
-    host: "Davao del Norte State College (DNSC)",
-    location: "Panabo City",
-    date: "2024 archive",
-    theme: "Regional GAD Summit 2024",
-    summary:
-      "The 2024 summit brought Region XI partners together in Panabo City for another year of shared learning, institutional collaboration, and gender-responsive action.",
-    details: [
-      "Programme details, speakers, and summit outputs will be added to this archive as they are digitized.",
-    ],
-    outcomes: ["Summit programme and proceedings to be added"],
-  },
-  {
-    year: "2023",
-    host: "Davao Oriental State University (DOrSU)",
-    location: "City of Mati",
-    date: "2023 archive",
-    theme: "Regional GAD Summit 2023",
-    summary:
-      "Hosted in the City of Mati, the inaugural archive entry reflects the network’s continuing commitment to regional cooperation on gender and development.",
-    details: [
-      "Photos, programme materials, and summit highlights will be added as the archive is completed.",
-    ],
-    outcomes: ["Summit programme and proceedings to be added"],
-  },
-*/
-
 function SummitSkeleton() {
   return (
     <div
@@ -140,7 +91,7 @@ export default function SummitPage() {
 
   const summit =
     remoteSummits.find(({ year }) => year === selectedYear) ?? remoteSummits[0];
-  console.log("Summit data:", summit);
+
   return (
     <div className="pt-20">
       <section className="hero-pattern  py-20">
