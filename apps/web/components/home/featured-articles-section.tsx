@@ -71,7 +71,7 @@ export function FeaturedArticlesSection() {
         <div className="grid lg:grid-cols-5 gap-6">
           {/* Main featured article */}
           <Link
-            href={`/articles/${main.slug}`}
+            href="/issue"
             className="lg:col-span-3 group bg-white rounded-3xl border border-border hover:shadow-xl transition-all duration-300 overflow-hidden"
           >
             {/* Placeholder cover */}
@@ -102,7 +102,7 @@ export function FeaturedArticlesSection() {
             {rest.map((article) => (
               <Link
                 key={article.id}
-                href={`/articles/${article.slug}`}
+                href="/issue"
                 className="group flex flex-col bg-white rounded-2xl border border-border hover:shadow-lg transition-all duration-300 p-5 overflow-hidden"
               >
                 <div className="flex items-center justify-between mb-3">
