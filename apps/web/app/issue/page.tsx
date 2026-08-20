@@ -173,6 +173,10 @@ export default async function IssuesPage({
                         DOI: {currentIssue.doi}
                       </span>
                     )}
+                    <span className="flex items-center gap-1.5">
+                      <Hash className="h-4 w-4" />
+                      ISSN: 3082-5431
+                    </span>
                   </div>
                   <span className="inline-flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all w-fit">
                     Read this issue
@@ -224,6 +228,10 @@ export default async function IssuesPage({
                       DOI: {issue.doi}
                     </p>
                   )}
+                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <Hash className="h-3.5 w-3.5" />
+                    ISSN: 3082-5431
+                  </p>
                 </Link>
               ))}
             </div>
