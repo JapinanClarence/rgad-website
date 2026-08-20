@@ -30,19 +30,10 @@ const navLinks = [
   },
   {
     label: "Research",
-    href: "/articles",
+    href: "/issue",
     children: [
-      { label: "All Articles", href: "/articles" },
-      { label: "Gender Policy", href: "/articles?category=gender-policy" },
-      {
-        label: "Women Empowerment",
-        href: "/articles?category=women-empowerment",
-      },
-      {
-        label: "Social Inclusion",
-        href: "/articles?category=social-inclusion",
-      },
-      { label: "Legal Framework", href: "/articles?category=legal-framework" },
+      { label: "Current Issue", href: "/issue" },
+      { label: "All Articles/Issues", href: "/issue?tab=all" },
     ],
   },
   { label: "GAD Summit", href: "/summit" },
@@ -155,7 +146,7 @@ export function Navbar() {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <Button variant="gad" size="sm" asChild>
-              <Link href="/articles">Explore Research</Link>
+              <Link href="/issue">Explore Research</Link>
             </Button>
           </div>
 
@@ -202,7 +193,7 @@ export function Navbar() {
             ))}
             <div className="px-4 pt-2">
               <Button variant="gad" className="w-full" asChild>
-                <Link href="/articles">Explore Research</Link>
+                <Link href="/issue">Explore Research</Link>
               </Button>
             </div>
           </div>

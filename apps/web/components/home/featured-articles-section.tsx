@@ -62,7 +62,7 @@ export function FeaturedArticlesSection() {
             <h2 className="font-display text-4xl lg:text-5xl font-bold">Featured Research</h2>
           </div>
           <Button variant="outline" asChild className="hidden sm:flex">
-            <Link href="/articles">
+            <Link href="/issue">
               View All Articles <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
@@ -123,7 +123,7 @@ export function FeaturedArticlesSection() {
             ))}
 
             <Button variant="outline" asChild className="w-full">
-              <Link href="/articles">
+              <Link href="/issue">
                 All Research Articles <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>

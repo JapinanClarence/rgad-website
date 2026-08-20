@@ -27,6 +27,9 @@ export interface Database {
           created_at: string
           updated_at: string
           published_at: string | null
+          issue_id: string | null
+          page_number: string | null
+          pdf_url: string | null
         }
         Insert: Omit<Database['public']['Tables']['articles']['Row'], 'id' | 'created_at' | 'updated_at' | 'view_count'>
         Update: Partial<Database['public']['Tables']['articles']['Insert']>
@@ -38,7 +41,34 @@ export interface Database {
             referencedRelation: 'authors'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'articles_issue_id_fkey'
+            columns: ['issue_id']
+            isOneToOne: false
+            referencedRelation: 'issues'
+            referencedColumns: ['id']
+          },
         ]
+      }
+      issues: {
+        Row: {
+          id: string
+          volume: number
+          issue_no: number
+          title: string | null
+          theme: string | null
+          doi: string | null
+          cover_image: string | null
+          editorial: string | null
+          editorial_author: string | null
+          pdf_url: string | null
+          is_current: boolean
+          published_at: string | null
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['issues']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['issues']['Insert']>
+        Relationships: []
       }
       summit: {
         Row: {

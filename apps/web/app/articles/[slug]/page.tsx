@@ -91,11 +91,11 @@ export default async function ArticlePage({ params }: Props) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back */}
         <Link
-          href="/articles"
+          href="/issue"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Articles
+          Back to Issues
         </Link>
 
         {/* Article header */}
@@ -152,7 +152,7 @@ export default async function ArticlePage({ params }: Props) {
           </p>
           <div className="flex gap-3">
             <Button variant="outline" size="sm" asChild>
-              <Link href="/articles">← More Articles</Link>
+              <Link href="/issue">← More Articles</Link>
             </Button>
           </div>
         </div>
