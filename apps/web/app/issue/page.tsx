@@ -17,7 +17,7 @@ type Issue = Database["public"]["Tables"]["issues"]["Row"];
 
 const TABS = [
   { key: "current", label: "Current Issue" },
-  { key: "all", label: "All Articles/Issues" },
+  { key: "all", label: "All Articles" },
 ] as const;
 
 // Fallback sample issues if Supabase returns empty — mirrors the structure

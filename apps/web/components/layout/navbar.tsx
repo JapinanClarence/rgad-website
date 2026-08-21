@@ -28,14 +28,7 @@ const navLinks = [
       { label: "Journal Information", href: "/journal#journal-info" },
     ],
   },
-  {
-    label: "Research",
-    href: "/issue",
-    children: [
-      { label: "Current Issue", href: "/issue" },
-      { label: "All Articles/Issues", href: "/issue?tab=all" },
-    ],
-  },
+  { label: "Archive", href: "/issue" },
   { label: "GAD Summit", href: "/summit" },
   { label: "Contact", href: "/contact" },
 ];
