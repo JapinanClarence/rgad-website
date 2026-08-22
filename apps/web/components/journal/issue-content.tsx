@@ -4,7 +4,7 @@ import { Button } from "@gad/ui/button";
 import { IssueCover } from "@/components/journal/issue-cover";
 import { formatDate, formatYear } from "@/lib/utils";
 import { Calendar, Hash, FileText, Users } from "lucide-react";
-import type { Issue, IssueArticle } from "@/services/issue";
+import type { Issue, IssueArticle } from "@gad/types/issue";
 
 function plainText(html?: string) {
   return html

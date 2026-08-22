@@ -9,7 +9,8 @@ import {
   Calendar,
   Hash,
 } from "lucide-react";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatDateShort, formatYear } from "@/lib/utils";
+import type { Issue, IssueArticle } from "@gad/types/issue";
 
 const stats = [
   { icon: BookOpen, value: "200+", label: "Research Articles" },
@@ -46,14 +47,17 @@ function stripHtml(html: string) {
     .trim();
 }
 
-export function HeroSection() {
-  const issue = CURRENT_ISSUE;
+interface HeroSectionProps {
+  issue: Issue;
+}
+
+export function HeroSection({ issue }: HeroSectionProps) {
   const articleCount = CURRENT_ISSUE_ARTICLE_COUNT;
   const editorialExcerpt = issue.editorial
     ? stripHtml(issue.editorial).slice(0, 150).trim() + "…"
     : "Peer-reviewed studies, policy analyses, and field research from across Region XI.";
   const [editorialName, editorialRole] = (
-    issue.editorial_author ?? "RGAN XI Editorial Board"
+    issue.editorialAuthor ?? "RGAN XI Editorial Board"
   )
     .split(",")
     .map((part) => part.trim());
@@ -159,8 +163,7 @@ export function HeroSection() {
                 </div>
 
                 <h3 className="font-display text-xl font-bold leading-snug">
-                  {issue.theme ??
-                    `Vol. ${issue.volume}, Issue ${issue.issue_no}`}
+                  {`Vol. ${issue.volume} No. ${issue.issueNo} (${formatYear(issue.publishedAt)}) Gender Research and Policy Journal`}
                 </h3>
 
                 <div className="flex flex-wrap gap-2">
@@ -168,7 +171,7 @@ export function HeroSection() {
                     Vol. {issue.volume}
                   </span>
                   <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                    Issue {issue.issue_no}
+                    Issue {issue.issueNo}
                   </span>
                   <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
                     Peer-Reviewed
@@ -190,7 +193,7 @@ export function HeroSection() {
                     </div>
                   </div>
                   <span className="text-xs text-muted-foreground">
-                    {formatDate(issue.published_at ?? issue.created_at)}
+                    {formatDateShort(issue.publishedAt)}
                   </span>
                 </div>
               </div>
