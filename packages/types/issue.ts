@@ -21,4 +21,5 @@ export type IssueArticle = {
   pdfUrl: string;
   authors: string[];
   keywords: string[];
+  doi?: string;
 };

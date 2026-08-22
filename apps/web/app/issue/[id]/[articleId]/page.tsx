@@ -10,7 +10,7 @@ import { CiteButton } from "@/components/journal/cite-button";
 import { Button } from "@gad/ui/button";
 import { Badge } from "@gad/ui/badge";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft, Calendar, Users, FileText } from "lucide-react";
+import { ArrowLeft, Calendar, Users, FileText, Hash } from "lucide-react";
 
 interface Props {
   params: { id: string; articleId: string };
@@ -127,6 +127,18 @@ export default async function ArticleDetailPage({ params }: Props) {
                   <span className="flex items-center gap-1.5">
                     <Calendar className="h-4 w-4" />
                     Published {formatDate(issue.publishedAt)}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Hash className="h-4 w-4" />
+                    DOI:{" "}
+                    <a
+                      href={`https://doi.org/${article.doi}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline hover:text-primary transition-colors"
+                    >
+                      https://doi.org/{article.doi}
+                    </a>
                   </span>
                 </div>
               </div>

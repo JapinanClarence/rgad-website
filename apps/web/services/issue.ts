@@ -68,6 +68,7 @@ export async function getIssueById(
       pages: string;
       pdf_url: string;
       keywords: string[] | null;
+      doi: string | null;
       authors?: Array<{
         firstname?: string | null;
         middlename?: string | null;
@@ -91,8 +92,6 @@ export async function getIssueById(
     date: formatIssueDate(archive.published_at),
   };
 
-  console.log(archive.articles);
-
   const articles: IssueArticle[] = (archive.articles ?? []).map((article) => {
     const authors = (article.authors ?? [])
       .map((author) => toAuthorName(author))
@@ -105,6 +104,7 @@ export async function getIssueById(
       pages: article.pages,
       pdfUrl: article.pdf_url,
       authors,
+      doi: article.doi,
       keywords: article.keywords ?? [],
     };
   });
