@@ -38,8 +38,6 @@ const stats = [
 //   created_at: "2025-06-15",
 // };
 
-const CURRENT_ISSUE_ARTICLE_COUNT = 4;
-
 function stripHtml(html: string) {
   return html
     .replace(/<[^>]+>/g, " ")
@@ -49,13 +47,14 @@ function stripHtml(html: string) {
 
 interface HeroSectionProps {
   issue: Issue;
+  articles?: IssueArticle[];
 }
 
-export function HeroSection({ issue }: HeroSectionProps) {
-  const articleCount = CURRENT_ISSUE_ARTICLE_COUNT;
+export function HeroSection({ issue, articles }: HeroSectionProps) {
+  const articleCount = articles?.length;
   const editorialExcerpt = issue.editorial
     ? stripHtml(issue.editorial).slice(0, 150).trim() + "…"
-    : "Peer-reviewed studies, policy analyses, and field research from across Region XI.";
+    : "Published Biannually by the Region XI Gender and Development Network (RGAN XI)";
   const [editorialName, editorialRole] = (
     issue.editorialAuthor ?? "RGAN XI Editorial Board"
   )
@@ -174,7 +173,7 @@ export function HeroSection({ issue }: HeroSectionProps) {
                     Issue {issue.issueNo}
                   </span>
                   <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                    Peer-Reviewed
+                    ISSN {issue.issn}
                   </span>
                 </div>
 
@@ -220,7 +219,8 @@ export function HeroSection({ issue }: HeroSectionProps) {
               <p className="text-3xl font-display font-bold">{articleCount}</p>
               <p className="text-xs text-white/80 flex items-center gap-1">
                 {/* <Calendar className="h-3 w-3" /> */}
-                articles in this issue
+                {articleCount > 1 ? `${articleCount} articles` : "article"} in
+                this issue
               </p>
             </div>
           </div>

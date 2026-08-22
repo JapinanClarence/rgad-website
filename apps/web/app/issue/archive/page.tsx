@@ -60,9 +60,9 @@ export default async function ArchivePage({
             Archive
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl">
-            Search the full archive of the Gender Research and Policy Journal
-            — peer-reviewed studies, policy analyses, and field research
-            published by RGAN XI.
+            Search the full archive of the Gender Research and Policy Journal —
+            peer-reviewed studies, policy analyses, and field research published
+            by RGAN XI.
           </p>
         </div>
       </section>
@@ -129,7 +129,7 @@ export default async function ArchivePage({
                         </span>
                       </div>
                       <h2 className="font-display font-bold text-base leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-3">
-                        Vol. {issue.volume}, No. {issue.issueNo} (
+                        Vol. {issue.volume} No. {issue.issueNo} (
                         {formatYear(issue.publishedAt)}) Gender Research and
                         Policy Journal
                       </h2>

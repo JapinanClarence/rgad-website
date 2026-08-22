@@ -40,7 +40,7 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
             </span>
           )}
           <h1 className="font-display text-3xl lg:text-4xl font-bold mb-2">
-            Vol. {issue.volume}, No. {issue.issueNo} (
+            Vol. {issue.volume} No. {issue.issueNo} (
             {formatYear(issue.publishedAt)}) Gender Research and Policy Journal
           </h1>
           {issue.editorial && (

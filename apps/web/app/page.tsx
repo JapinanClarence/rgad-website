@@ -5,15 +5,16 @@ import { MissionSection } from "@/components/home/mission-section";
 import Link from "next/link";
 import { Button } from "@gad/ui/button";
 import { ArrowRight } from "lucide-react";
-import { getIssues } from "@/services/issue";
+import { getIssueById, getIssues } from "@/services/issue";
 
 export default async function HomePage() {
   const issues = await getIssues();
   const currentIssue = issues.find((i) => i.isCurrent) ?? issues[0];
+  const result = await getIssueById(currentIssue.id);
 
   return (
     <>
-      <HeroSection issue={currentIssue} />
+      <HeroSection issue={result.issue} articles={result.articles} />
       <ResearchAreasSection />
       <FeaturedArticlesSection />
       <MissionSection />
