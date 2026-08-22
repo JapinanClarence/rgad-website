@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { CalendarDays, ImagePlus, MapPin, Users } from "lucide-react";
 import { Skeleton } from "@gad/ui";
 import { getSummits } from "@/services/summit";
-import type { Summit } from "@/types/summit";
+import type { Summit } from "@gad/types/summit";
 
 function SummitSkeleton() {
   return (
