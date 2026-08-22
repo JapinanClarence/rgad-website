@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@gad/ui/separator";
 import { Facebook, Twitter, Mail, MapPin, Phone } from "lucide-react";
 import logo from "@gad/assets/images/RGAN XI white.png";
 import Image from "next/image";

@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@gad/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { Calendar, User, Search } from "lucide-react";
 

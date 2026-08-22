@@ -7,7 +7,7 @@ import { IssueCover } from "@/components/journal/issue-cover";
 import { IssueQuickLinks } from "@/components/journal/issue-quick-links";
 import { CiteButton } from "@/components/journal/cite-button";
 import { Button } from "@gad/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@gad/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { ArrowLeft, Calendar, Users, FileText } from "lucide-react";
 
