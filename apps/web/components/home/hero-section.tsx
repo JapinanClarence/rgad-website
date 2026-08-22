@@ -20,23 +20,23 @@ const stats = [
 
 // Fallback current issue if Supabase returns empty — mirrors the structure
 // used on /issue and /issue/[id] for local/dev preview.
-const CURRENT_ISSUE = {
-  id: "v2i1",
-  volume: 2,
-  issue_no: 1,
-  title: "Volume 2, Issue 1",
-  theme: "Beyond Gender Mainstreaming: New Frontiers in Policy and Practice",
-  doi: "10.63346/RGANXI.2025.0201",
-  cover_image: null,
-  editorial: `
-<p>This issue arrives at a moment when Gender and Development practice across Region XI is being asked to move past compliance and toward genuine institutional transformation. The five studies gathered here take up that challenge from different vantage points — budget governance, indigenous land rights, education, legal implementation, and community-based reporting systems.</p>
-  `,
-  editorial_author: "Dr. Mary Fil M. Bauyot",
-  pdf_url: null,
-  is_current: true,
-  published_at: "2025-06-15",
-  created_at: "2025-06-15",
-};
+// const CURRENT_ISSUE = {
+//   id: "v2i1",
+//   volume: 2,
+//   issue_no: 1,
+//   title: "Volume 2, Issue 1",
+//   theme: "Beyond Gender Mainstreaming: New Frontiers in Policy and Practice",
+//   doi: "10.63346/RGANXI.2025.0201",
+//   cover_image: null,
+//   editorial: `
+// <p>This issue arrives at a moment when Gender and Development practice across Region XI is being asked to move past compliance and toward genuine institutional transformation. The five studies gathered here take up that challenge from different vantage points — budget governance, indigenous land rights, education, legal implementation, and community-based reporting systems.</p>
+//   `,
+//   editorial_author: "Dr. Mary Fil M. Bauyot",
+//   pdf_url: null,
+//   is_current: true,
+//   published_at: "2025-06-15",
+//   created_at: "2025-06-15",
+// };
 
 const CURRENT_ISSUE_ARTICLE_COUNT = 4;
 
