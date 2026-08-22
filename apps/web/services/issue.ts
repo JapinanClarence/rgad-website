@@ -55,6 +55,7 @@ export async function getIssueById(
     .from("archive")
     .select("*, articles(*, authors(*))")
     .eq("id", id)
+    .order("created_at", { foreignTable: "articles", ascending: true })
     .maybeSingle();
 
   if (error) throw error;
