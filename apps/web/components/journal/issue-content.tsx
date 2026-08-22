@@ -1,7 +1,8 @@
 import React from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { IssueCover } from "@/components/journal/issue-cover";
-import { formatDate, formatYear } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { Calendar, Hash, FileText, Users } from "lucide-react";
 import type { Issue, IssueArticle } from "@/services/issue";
 
@@ -39,8 +40,7 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
             </span>
           )}
           <h1 className="font-display text-3xl lg:text-4xl font-bold mb-2">
-            Vol. {issue.volume}, No. {issue.issueNo} (
-            {formatYear(issue.publishedAt)}) Gender Research and Policy Journal
+            Vol. {issue.volume}, Issue {issue.issueNo}
           </h1>
           {issue.editorial && (
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
@@ -94,7 +94,12 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
               >
                 <div className="min-w-0">
                   <h3 className="font-display font-bold text-lg leading-snug mb-1.5">
-                    {article.title}
+                    <Link
+                      href={`/issue/${issue.id}/${article.id}`}
+                      className="hover:text-primary transition-colors"
+                    >
+                      {article.title}
+                    </Link>
                   </h3>
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1.5">
@@ -104,23 +109,35 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
                     {article.pages && <span>pp. {article.pages}</span>}
                   </div>
                 </div>
-                {article.pdfUrl && (
+                <div className="flex items-center gap-2 shrink-0">
                   <Button
                     variant="outline"
                     size="sm"
                     asChild
-                    className="w-fit shrink-0"
+                    className="w-fit"
                   >
-                    <a
-                      href={article.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FileText className="h-4 w-4 mr-2" />
-                      View PDF
-                    </a>
+                    <Link href={`/issue/${issue.id}/${article.id}`}>
+                      View Article
+                    </Link>
                   </Button>
-                )}
+                  {article.pdfUrl && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      asChild
+                      className="w-fit"
+                    >
+                      <a
+                        href={article.pdfUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FileText className="h-4 w-4 mr-2" />
+                        View PDF
+                      </a>
+                    </Button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
