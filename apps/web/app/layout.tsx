@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
+import { ProgressProvider } from '@gad/ui/context/progress-context'
+import { SlimBar } from '@gad/ui/slim-bar'
 
 export const metadata: Metadata = {
   title: {
@@ -27,9 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <ProgressProvider>
+          <SlimBar />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </ProgressProvider>
       </body>
     </html>
   )

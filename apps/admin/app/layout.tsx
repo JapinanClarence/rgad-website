@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { ProgressProvider } from '@gad/ui/context/progress-context'
+import { SlimBar } from '@gad/ui/slim-bar'
 
 export const metadata: Metadata = {
   title: { default: 'GAD Admin', template: '%s | GAD Admin' },
@@ -10,7 +12,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <ProgressProvider>
+          <SlimBar />
+          {children}
+        </ProgressProvider>
+      </body>
     </html>
   )
 }
