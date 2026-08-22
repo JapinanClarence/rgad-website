@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { IssueCover } from "@/components/journal/issue-cover";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatYear } from "@/lib/utils";
 import { Calendar, Hash, FileText, Users } from "lucide-react";
 import type { Issue, IssueArticle } from "@/services/issue";
 
@@ -40,7 +40,8 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
             </span>
           )}
           <h1 className="font-display text-3xl lg:text-4xl font-bold mb-2">
-            Vol. {issue.volume}, Issue {issue.issueNo}
+            Vol. {issue.volume}, No. {issue.issueNo} (
+            {formatYear(issue.publishedAt)}) Gender Research and Policy Journal
           </h1>
           {issue.editorial && (
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
@@ -110,16 +111,11 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    asChild
-                    className="w-fit"
-                  >
+                  {/* <Button variant="outline" size="sm" asChild className="w-fit">
                     <Link href={`/issue/${issue.id}/${article.id}`}>
                       View Article
                     </Link>
-                  </Button>
+                  </Button> */}
                   {article.pdfUrl && (
                     <Button
                       variant="outline"
