@@ -131,7 +131,7 @@ export default function JournalPage() {
             </div>
             <div className="flex flex-wrap gap-3 mt-8">
               <Link
-                href="/issue"
+                href="/issue/archive"
                 className="inline-flex items-center gap-2 gad-gradient text-white px-6 py-3 rounded-md text-sm font-medium shadow-md hover:opacity-90 transition-opacity"
               >
                 View Published Articles
@@ -326,7 +326,7 @@ export default function JournalPage() {
                 accessible without restriction.
               </p>
               <Link
-                href="/issue"
+                href="/issue/archive"
                 className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
               >
                 Browse published articles

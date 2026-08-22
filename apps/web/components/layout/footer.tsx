@@ -126,7 +126,7 @@ export function Footer() {
                 { label: "Home", href: "/" },
                 { label: "About Us", href: "/about" },
                 { label: "Gender Research & Policy Journal", href: "/journal" },
-                { label: "Journal Issues", href: "/issue" },
+                { label: "Journal Issues", href: "/issue/archive" },
                 { label: "Regional GAD Summit", href: "/summit" },
                 { label: "Our Team", href: "/about#team" },
                 { label: "Contact", href: "/contact" },

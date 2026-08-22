@@ -67,7 +67,7 @@ export function FeaturedArticlesSection() {
             </h2>
           </div>
           <Button variant="outline" asChild className="hidden sm:flex">
-            <Link href="/issue?tab=all">
+            <Link href="/issue/archive">
               View All Issues <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
@@ -164,7 +164,7 @@ export function FeaturedArticlesSection() {
             ))}
 
             <Button variant="outline" asChild className="w-full">
-              <Link href="/issue?tab=all">
+              <Link href="/issue/archive">
                 All Journal Issues <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>

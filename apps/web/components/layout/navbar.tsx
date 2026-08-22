@@ -33,7 +33,7 @@ const navLinks = [
     href: "/issue",
     children: [
       { label: "Current Issue", href: "/issue" },
-      { label: "Archives", href: "/issue?tab=all" },
+      { label: "Archives", href: "/issue/archive" },
     ],
   },
   { label: "GAD Summit", href: "/summit" },
@@ -146,7 +146,7 @@ export function Navbar() {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <Button variant="gad" size="sm" asChild>
-              <Link href="/issue">Explore Research</Link>
+              <Link href="/issue/archive">Explore Research</Link>
             </Button>
           </div>
 
@@ -193,7 +193,7 @@ export function Navbar() {
             ))}
             <div className="px-4 pt-2">
               <Button variant="gad" className="w-full" asChild>
-                <Link href="/issue">Explore Research</Link>
+                <Link href="/issue/archive">Explore Research</Link>
               </Button>
             </div>
           </div>

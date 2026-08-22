@@ -40,7 +40,7 @@ export default function HomePage() {
                 className="bg-white text-primary hover:bg-white/90 border-white"
                 asChild
               >
-                <Link href="/issue">
+                <Link href="/issue/archive">
                   Browse All Research <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
