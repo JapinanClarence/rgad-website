@@ -139,8 +139,7 @@ export default async function ArchivePage({
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <User className="h-3.5 w-3.5" />
                         <span>
-                          {issue.editorialAuthor ?? "RGAN XI Editorial Team"} -
-                          Editor-in-Chief
+                          {issue.editorialAuthor ?? "RGAN XI Editorial Team"}
                         </span>
                       </div>
                     </div>

@@ -73,7 +73,7 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
           />
           {issue.editorialAuthor && (
             <p className="mt-6 text-sm font-medium text-foreground/70">
-              — {issue.editorialAuthor} - Editor-in-Chief
+              — {issue.editorialAuthor}
             </p>
           )}
         </div>
