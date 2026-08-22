@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@gad/assets', '@gad/supabase', '@gad/ui'],
+  transpilePackages: ['@gad/assets', '@gad/supabase', '@gad/ui', '@gad/types'],
   images: {
     remotePatterns: [
       {

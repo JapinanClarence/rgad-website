@@ -12,6 +12,7 @@
     "@gad/assets": "*",
     "@gad/supabase": "*",
     "@gad/ui": "*",
+    "@gad/types": "*",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-dialog": "^1.1.0",
     "@radix-ui/react-dropdown-menu": "^2.1.0",

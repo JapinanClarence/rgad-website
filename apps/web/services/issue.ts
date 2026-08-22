@@ -1,30 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@gad/supabase/types";
-
-export type Issue = {
-  id: string;
-  volume: number;
-  issueNo: number;
-  title: string;
-  doi?: string;
-  issn: string;
-  coverImage?: string | null;
-  editorial?: string;
-  editorialAuthor?: string;
-  publishedAt: string;
-  isCurrent: boolean;
-  date: string;
-};
-
-export type IssueArticle = {
-  id: string;
-  title: string;
-  abstract: string;
-  pages: string;
-  pdfUrl: string;
-  authors: string[];
-  keywords: string[];
-};
+import type { Issue, IssueArticle } from "@gad/types/issue";
 
 function formatIssueDate(value: string): string {
   return new Intl.DateTimeFormat("en-PH", {

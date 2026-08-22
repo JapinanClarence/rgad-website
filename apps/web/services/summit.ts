@@ -1,19 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import type { Database } from "@gad/supabase/types";
-
-export type Summit = {
-  id: string;
-  year: string;
-  host: string;
-  location: string;
-  date: string;
-  theme: string;
-  summary: string;
-  details: string[];
-  outcomes: string[];
-  note?: string;
-  images: string[];
-};
+import type { Summit } from "@gad/types/";
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
