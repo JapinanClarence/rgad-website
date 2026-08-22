@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button } from "@gad/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
 import logo from "@gad/assets/images/RGAN XI logo landscape.png";
 

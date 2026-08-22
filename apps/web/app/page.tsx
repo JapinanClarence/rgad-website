@@ -3,7 +3,7 @@ import { ResearchAreasSection } from "@/components/home/research-areas-section";
 import { FeaturedArticlesSection } from "@/components/home/featured-articles-section";
 import { MissionSection } from "@/components/home/mission-section";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@gad/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export default function HomePage() {

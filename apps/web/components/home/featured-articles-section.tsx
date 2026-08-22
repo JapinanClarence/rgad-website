@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@gad/ui/button";
 import { ArrowRight, Calendar, Hash } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { IssueCover } from "@/components/journal/issue-cover";
