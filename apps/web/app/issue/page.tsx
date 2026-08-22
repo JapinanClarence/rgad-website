@@ -1,11 +1,10 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/server";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatDateShort, formatYear } from "@/lib/utils";
 import { IssueCover } from "@/components/journal/issue-cover";
-import { Calendar, Hash, ArrowRight } from "lucide-react";
-import type { Database } from "@gad/supabase/types";
+import { Calendar, Hash, ArrowRight, User } from "lucide-react";
+import { getIssues } from "@/services/issue";
 
 export const metadata: Metadata = {
   title: "Issues",
@@ -13,76 +12,10 @@ export const metadata: Metadata = {
     "Browse the current issue and full archive of the Gender Research and Policy Journal (GRPJ), published by RGAN XI.",
 };
 
-type Issue = Database["public"]["Tables"]["issues"]["Row"];
-
 const TABS = [
   { key: "current", label: "Current Issue" },
-  { key: "all", label: "All Articles" },
+  { key: "all", label: "Archives" },
 ] as const;
-
-// Fallback sample issues if Supabase returns empty — mirrors the structure
-// used elsewhere on the site (see /articles, /summit) for local/dev preview.
-const SAMPLE_ISSUES: Issue[] = [
-  {
-    id: "v2i1",
-    volume: 2,
-    issue_no: 1,
-    title: "Volume 2, Issue 1",
-    theme: "Beyond Gender Mainstreaming: New Frontiers in Policy and Practice",
-    doi: "10.63346/RGANXI.2025.0201",
-    cover_image: null,
-    editorial: null,
-    editorial_author: null,
-    pdf_url: null,
-    is_current: true,
-    published_at: "2025-06-15",
-    created_at: "2025-06-15",
-  },
-  {
-    id: "v1i2",
-    volume: 1,
-    issue_no: 2,
-    title: "Volume 1, Issue 2",
-    theme: "Institutionalizing GAD: Governance, Research, and Practice",
-    doi: "10.63346/RGANXI.2024.0102",
-    cover_image: null,
-    editorial: null,
-    editorial_author: null,
-    pdf_url: null,
-    is_current: false,
-    published_at: "2024-12-10",
-    created_at: "2024-12-10",
-  },
-  {
-    id: "v1i1",
-    volume: 1,
-    issue_no: 1,
-    title: "Volume 1, Issue 1",
-    theme: "Foundations of Gender and Development Scholarship in Region XI",
-    doi: "10.63346/RGANXI.2024.0101",
-    cover_image: null,
-    editorial: null,
-    editorial_author: null,
-    pdf_url: null,
-    is_current: false,
-    published_at: "2024-06-05",
-    created_at: "2024-06-05",
-  },
-];
-
-async function getIssues(): Promise<Issue[]> {
-  const supabase = createClient();
-  try {
-    const { data } = await supabase
-      .from("issues")
-      .select("*")
-      .order("volume", { ascending: false })
-      .order("issue_no", { ascending: false });
-
-    if (data && data.length > 0) return data as Issue[];
-  } catch {}
-  return SAMPLE_ISSUES;
-}
 
 export default async function IssuesPage({
   searchParams,
@@ -90,7 +23,7 @@ export default async function IssuesPage({
   searchParams: { tab?: string };
 }) {
   const issues = await getIssues();
-  const currentIssue = issues.find((i) => i.is_current) ?? issues[0];
+  const currentIssue = issues.find((i) => i.isCurrent) ?? issues[0];
   const activeTab = searchParams.tab === "all" ? "all" : "current";
 
   return (
@@ -137,45 +70,55 @@ export default async function IssuesPage({
             {currentIssue ? (
               <Link
                 href={`/issue/${currentIssue.id}`}
-                className="group grid md:grid-cols-[280px_1fr] gap-10 bg-white rounded-3xl border border-border p-6 sm:p-10 shadow-sm hover:shadow-lg transition-shadow duration-300"
+                className="group grid md:grid-cols-[280px_1fr] gap-10 bg-white rounded-3xl border border-border  shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden"
               >
                 <IssueCover
                   volume={currentIssue.volume}
-                  issueNo={currentIssue.issue_no}
-                  theme={currentIssue.theme}
-                  coverImage={currentIssue.cover_image}
-                  className="max-w-xs mx-auto md:mx-0"
+                  issueNo={currentIssue.issueNo}
+                  theme={
+                    currentIssue.editorial
+                      ? currentIssue.editorial
+                          .replace(/<[^>]+>/g, " ")
+                          .replace(/\s+/g, " ")
+                          .trim()
+                      : null
+                  }
+                  coverImage={currentIssue.coverImage}
+                  className="max-w-xs mx-auto md:mx-0 rounded-none"
                   priority
                 />
-                <div className="flex flex-col justify-center">
+                <div className="flex flex-col justify-center px-6 pb-6 md:px-0 md:pb-0 md:pr-6">
                   <span className="inline-flex w-fit items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary mb-4">
                     Current Issue
                   </span>
-                  <h2 className="font-display text-3xl lg:text-4xl font-bold mb-2">
-                    Vol. {currentIssue.volume}, Issue {currentIssue.issue_no}
+                  <h2 className="font-display text-3xl lg:text-4xl font-bold mb-2 leading-snug">
+                    Vol. {currentIssue.volume}, No. {currentIssue.issueNo} (
+                    {formatYear(currentIssue.date)}) Gender Research and Policy
+                    Journal
                   </h2>
-                  {currentIssue.theme && (
+                  {currentIssue.editorial && (
                     <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                      {currentIssue.theme}
+                      {currentIssue.editorial
+                        .replace(/<[^>]+>/g, " ")
+                        .replace(/\s+/g, " ")
+                        .trim()
+                        .slice(0, 180)}
                     </p>
                   )}
                   <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground mb-8">
                     <span className="flex items-center gap-1.5">
                       <Calendar className="h-4 w-4" />
-                      Published{" "}
-                      {formatDate(
-                        currentIssue.published_at ?? currentIssue.created_at,
-                      )}
+                      Published {formatDate(currentIssue.publishedAt)}
                     </span>
-                    {currentIssue.doi && (
+                    {/* {currentIssue.doi && (
                       <span className="flex items-center gap-1.5">
                         <Hash className="h-4 w-4" />
                         DOI: {currentIssue.doi}
                       </span>
-                    )}
+                    )} */}
                     <span className="flex items-center gap-1.5">
                       <Hash className="h-4 w-4" />
-                      ISSN: 3082-5431
+                      ISSN: {currentIssue.issn}
                     </span>
                   </div>
                   <span className="inline-flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all w-fit">
@@ -199,39 +142,49 @@ export default async function IssuesPage({
                 <Link
                   key={issue.id}
                   href={`/issue/${issue.id}`}
-                  className="group bg-white rounded-2xl border border-border hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden p-5"
+                  className="group bg-white rounded-2xl border border-border hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden"
                 >
-                  <IssueCover
-                    volume={issue.volume}
-                    issueNo={issue.issue_no}
-                    theme={issue.theme}
-                    coverImage={issue.cover_image}
-                    className="mb-5"
+                  <div
+                    className="h-3 w-full"
+                    style={{
+                      background:
+                        "linear-gradient(90deg, hsl(270,72%,40%), hsl(338,85%,50%))",
+                      opacity: 0.7,
+                    }}
                   />
-                  <div className="flex items-center justify-between mb-1.5">
-                    <h3 className="font-display font-bold text-base group-hover:text-primary transition-colors">
-                      Vol. {issue.volume}, Issue {issue.issue_no}
-                    </h3>
-                    {issue.is_current && (
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-primary/10 text-primary">
-                        Current
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      {issue.isCurrent && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-primary/10 text-primary">
+                          Current
+                        </span>
+                      )}
+
+                      <span className="text-xs text-muted-foreground">
+                        {formatDateShort(issue.publishedAt)}
                       </span>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1.5 mb-1">
-                    <Calendar className="h-3.5 w-3.5" />
-                    {formatDate(issue.published_at ?? issue.created_at)}
-                  </p>
-                  {issue.doi && (
-                    <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                      <Hash className="h-3.5 w-3.5" />
-                      DOI: {issue.doi}
+                    </div>
+                    <h2 className="font-display font-bold text-base leading-snug mb-2 group-hover:text-primary transition-colors line-clamp-3">
+                      Vol. {issue.volume}, No. {issue.issueNo} (
+                      {formatYear(issue.publishedAt)}) Gender Research and
+                      Policy Journal
+                    </h2>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                      {issue.editorial
+                        ? issue.editorial
+                            .replace(/<[^>]+>/g, " ")
+                            .replace(/\s+/g, " ")
+                            .trim()
+                        : "Journal archive issue"}
                     </p>
-                  )}
-                  <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                    <Hash className="h-3.5 w-3.5" />
-                    ISSN: 3082-5431
-                  </p>
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <User className="h-3.5 w-3.5" />
+                      <span>
+                        {issue.editorialAuthor ?? "RGAN XI Editorial Team"} -
+                        Editor-in-Chief
+                      </span>
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>

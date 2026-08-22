@@ -6,54 +6,48 @@ import { formatDate } from "@/lib/utils";
 import { IssueCover } from "@/components/journal/issue-cover";
 import type { Database } from "@gad/supabase/types";
 
-type Issue = Database["public"]["Tables"]["issues"]["Row"];
+type Issue = Database["public"]["Tables"]["archive"]["Row"];
 
 // Static placeholder issues for display; replace with real published issues.
 const FEATURED_ISSUES: Issue[] = [
   {
     id: "v2i1",
-    volume: 2,
+    created_at: "2025-06-15T00:00:00.000Z",
+    volume_no: 2,
     issue_no: 1,
-    title: "Volume 2, Issue 1",
-    theme: "Beyond Gender Mainstreaming: New Frontiers in Policy and Practice",
     doi: "10.63346/RGANXI.2025.0201",
+    issn: "3082-5431",
     cover_image: null,
     editorial: null,
     editorial_author: null,
-    pdf_url: null,
-    is_current: true,
     published_at: "2025-06-15",
-    created_at: "2025-06-15",
+    is_current: true,
   },
   {
     id: "v1i2",
-    volume: 1,
+    created_at: "2024-12-10T00:00:00.000Z",
+    volume_no: 1,
     issue_no: 2,
-    title: "Volume 1, Issue 2",
-    theme: "Institutionalizing GAD: Governance, Research, and Practice",
     doi: "10.63346/RGANXI.2024.0102",
+    issn: "3082-5431",
     cover_image: null,
     editorial: null,
     editorial_author: null,
-    pdf_url: null,
-    is_current: false,
     published_at: "2024-12-10",
-    created_at: "2024-12-10",
+    is_current: false,
   },
   {
     id: "v1i1",
-    volume: 1,
+    created_at: "2024-06-05T00:00:00.000Z",
+    volume_no: 1,
     issue_no: 1,
-    title: "Volume 1, Issue 1",
-    theme: "Foundations of Gender and Development Scholarship in Region XI",
     doi: "10.63346/RGANXI.2024.0101",
+    issn: "3082-5431",
     cover_image: null,
     editorial: null,
     editorial_author: null,
-    pdf_url: null,
-    is_current: false,
     published_at: "2024-06-05",
-    created_at: "2024-06-05",
+    is_current: false,
   },
 ];
 
@@ -86,9 +80,16 @@ export function FeaturedArticlesSection() {
             className="lg:col-span-3 group grid sm:grid-cols-[minmax(180px,220px)_minmax(0,1fr)] bg-white rounded-3xl border border-border hover:shadow-xl transition-all duration-300 overflow-hidden"
           >
             <IssueCover
-              volume={main.volume}
+              volume={main.volume_no}
               issueNo={main.issue_no}
-              theme={main.theme}
+              theme={
+                main.editorial
+                  ? main.editorial
+                      .replace(/<[^>]+>/g, " ")
+                      .replace(/\s+/g, " ")
+                      .trim()
+                  : null
+              }
               coverImage={main.cover_image}
               priority
               className="rounded-none shadow-none ring-0 sm:aspect-auto sm:min-h-[300px] sm:h-full"
@@ -100,17 +101,21 @@ export function FeaturedArticlesSection() {
                 </span>
               )}
               <h3 className="font-display text-2xl font-bold mb-3 group-hover:text-primary transition-colors leading-snug">
-                Vol. {main.volume}, Issue {main.issue_no}
+                Vol. {main.volume_no}, No. {main.issue_no}
               </h3>
-              {main.theme && (
+              {main.editorial && (
                 <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  {main.theme}
+                  {main.editorial
+                    .replace(/<[^>]+>/g, " ")
+                    .replace(/\s+/g, " ")
+                    .trim()
+                    .slice(0, 180)}
                 </p>
               )}
               <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-3.5 w-3.5" />
-                  {formatDate(main.published_at ?? main.created_at)}
+                  {formatDate(main.published_at)}
                 </span>
                 {main.doi && (
                   <span className="flex items-center gap-1.5 truncate">
@@ -139,14 +144,19 @@ export function FeaturedArticlesSection() {
                 /> */}
                 <div className="flex min-w-0 flex-col justify-center p-5">
                   <span className="text-xs text-muted-foreground mb-1">
-                    {formatDate(issue.published_at ?? issue.created_at)}
+                    {formatDate(issue.published_at)}
                   </span>
                   <h3 className="font-display font-bold text-base leading-snug mb-2 group-hover:text-primary transition-colors">
-                    Vol. {issue.volume}, Issue {issue.issue_no}
+                    Vol. {issue.volume_no}, No. {issue.issue_no} Gender Research
+                    and Policy Journal
                   </h3>
-                  {issue.theme && (
+                  {issue.editorial && (
                     <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                      {issue.theme}
+                      {issue.editorial
+                        .replace(/<[^>]+>/g, " ")
+                        .replace(/\s+/g, " ")
+                        .trim()
+                        .slice(0, 120)}
                     </p>
                   )}
                 </div>

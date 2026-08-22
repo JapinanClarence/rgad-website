@@ -37,7 +37,7 @@ export function IssueCover({
           alt={`Cover — Volume ${volume}, Issue ${issueNo}`}
           fill
           priority={priority}
-          className="object-contain"
+          className="object-cover"
           sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
         />
       ) : (
