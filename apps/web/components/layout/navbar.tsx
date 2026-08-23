@@ -25,17 +25,17 @@ const navLinks = [
     href: "/journal",
     children: [
       { label: "Journal Information", href: "/journal" },
-      {
-        label: "Publication Ethics & Integrity",
-        href: "/journal/publication-ethics",
-      },
       { label: "Peer Review Policy", href: "/journal/peer-review-policy" },
       {
         label: "Submission Guidelines",
         href: "/journal/submission-guidelines",
       },
       { label: "Editorial Workflow", href: "/journal/workflow" },
-      { label: "Editorial Board & Contact", href: "/journal/editorial-board" },
+      {
+        label: "Publication Ethics & Integrity",
+        href: "/journal/publication-ethics",
+      },
+      { label: "Editorial Board", href: "/journal/editorial-board" },
     ],
   },
   {

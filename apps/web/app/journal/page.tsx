@@ -134,12 +134,6 @@ export default function JournalPage() {
                 View Published Articles
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <a
-                href="#journal-info"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium border border-border bg-white hover:bg-muted transition-colors"
-              >
-                Journal Information
-              </a>
             </div>
           </div>
         </div>
@@ -334,38 +328,6 @@ export default function JournalPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Publication Ethics & Integrity — see dedicated page */}
-      <section className="py-20 bg-muted/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-3xl border border-border p-10 lg:p-14 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-            <div className="max-w-2xl">
-              <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
-                Integrity
-              </p>
-              <h2 className="font-display text-3xl font-bold mb-3">
-                Publication Ethics &amp; Integrity
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                GRPJ is committed to maintaining the highest standards of
-                publication ethics, research integrity, transparency, and
-                academic excellence, in line with COPE, ICMJE, DOAJ, OASPA,
-                and WAME guidance — covering author responsibilities,
-                research integrity, originality and plagiarism, data
-                availability, AI use, authorship, and how allegations of
-                misconduct are handled.
-              </p>
-            </div>
-            <Link
-              href="/journal/publication-ethics"
-              className="inline-flex items-center gap-2 gad-gradient text-white px-6 py-3 rounded-md text-sm font-medium shadow-md hover:opacity-90 transition-opacity shrink-0"
-            >
-              Read the full policy
-              <ArrowRight className="h-4 w-4" />
-            </Link>
           </div>
         </div>
       </section>
