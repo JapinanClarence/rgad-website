@@ -16,6 +16,8 @@ import {
   Library,
   ArrowRight,
 } from "lucide-react";
+import { JournalTabs } from "@/components/journal/journal-tabs";
+import { PolicySection } from "@/components/journal/policy-section";
 
 export const metadata: Metadata = {
   title: "Gender Research & Policy Journal",
@@ -43,6 +45,8 @@ const journalFacts = [
   { label: "Copyright", value: "Retained by the authors" },
   { label: "License", value: "Creative Commons Attribution 4.0 International (CC BY 4.0)" },
   { label: "DOI Registration", value: "Crossref (10.63346/RGANXI)" },
+  { label: "ORCID Integration", value: "Required for corresponding authors" },
+  { label: "Digital Preservation", value: "To be implemented" },
 ];
 
 const scope = [
@@ -50,18 +54,39 @@ const scope = [
   "Gender Equality and Social Inclusion (GESI)",
   "Women's Empowerment and Leadership",
   "Feminist Theory and Gender Studies",
+  "Masculinity and Positive Masculinity",
   "LGBTQIA+ Studies",
   "Gender and Public Policy",
   "Gender and Governance",
   "Gender and Human Rights",
   "Gender and Education",
   "Gender and Health",
-  "Gender-Based Violence",
-  "Gender and Climate Justice",
-  "Migration and Gender",
+  "Gender and Labor and Employment",
+  "Gender and Entrepreneurship",
+  "Gender and Economics",
+  "Gender and Agriculture and Rural Development",
+  "Gender and Environmental Sustainability",
+  "Gender, Climate Change, and Climate Justice",
+  "Gender and Disaster Risk Reduction",
   "Indigenous Peoples, Gender, and Traditional Knowledge",
+  "Gender and Peacebuilding",
+  "Gender and Conflict Studies",
+  "Migration and Gender",
+  "Gender-Based Violence",
+  "Sexual and Reproductive Health and Rights",
   "Gender and Digital Technologies",
+  "Artificial Intelligence and Gender",
+  "Media, Communication, and Gender",
+  "Gender and Culture",
+  "Gender and Religion",
+  "Gender and Disability",
+  "Gender and Social Protection",
+  "Gender and Urban Development",
+  "Community Development and Inclusive Governance",
+  "Intersectionality and Social Justice",
   "Comparative and International Gender Studies",
+  "Monitoring and Evaluation of Gender Programs",
+  "Innovations in Gender Research Methodology",
 ];
 
 const indexing = [
@@ -148,6 +173,8 @@ export default function JournalPage() {
         </div>
       </section>
 
+      <JournalTabs />
+
       {/* Journal Information — bibliographic record */}
       <section id="journal-info" className="py-20 bg-muted/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -199,18 +226,35 @@ export default function JournalPage() {
                 The Gender Research and Policy Journal (GRPJ) is a
                 peer-reviewed, open-access scholarly journal published by the
                 Region XI Gender and Development Advocates Network (RGAN XI).
-                It provides an interdisciplinary platform for research that
-                advances scholarly understanding of gender and its
-                implications for policy, governance, education, health,
-                development, culture, and society.
+                The journal provides an interdisciplinary platform for
+                disseminating high-quality research that advances scholarly
+                understanding of gender and its implications for policy,
+                governance, education, health, development, culture, and
+                society.
+              </p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                GRPJ is committed to publishing original and rigorous
+                research that contributes to evidence-based policymaking and
+                promotes gender equality, diversity, equity, and social
+                inclusion across local, national, regional, and global
+                contexts. The journal welcomes empirical, theoretical,
+                methodological, and policy-oriented contributions from
+                diverse academic disciplines and encourages dialogue among
+                researchers, educators, practitioners, policymakers, civil
+                society organizations, and development partners.
               </p>
               <p className="text-muted-foreground leading-relaxed">
                 Published in English, GRPJ accepts manuscripts from authors
-                worldwide while maintaining a strong focus on gender issues
-                and policy innovations relevant to the Philippines, Southeast
-                Asia, and the Global South — contributing to the United
-                Nations Sustainable Development Goals, particularly SDG 5:
-                Gender Equality.
+                worldwide while maintaining a strong commitment to
+                highlighting gender issues and policy innovations relevant to
+                the Philippines and the broader Southeast Asia and the Global
+                South. Through international collaboration and scholarly
+                exchange, the journal aims to foster inclusive knowledge
+                production and contribute to the achievement of the United
+                Nations Sustainable Development Goals (SDGs), particularly
+                SDG 5: Gender Equality, while recognizing the
+                interconnectedness of gender with other development
+                priorities.
               </p>
             </div>
 
@@ -221,13 +265,20 @@ export default function JournalPage() {
               <h3 className="font-display text-xl font-bold mb-3">
                 Open Access Policy
               </h3>
+              <p className="text-muted-foreground leading-relaxed text-sm mb-4">
+                GRPJ is a fully open-access journal. All published articles
+                are made freely and permanently available online immediately
+                upon publication without subscription fees, registration
+                requirements, or access restrictions.
+              </p>
               <p className="text-muted-foreground leading-relaxed text-sm">
-                All published articles are made freely and permanently
-                available online immediately upon publication — no
-                subscription fees, registration requirements, or access
-                restrictions. Authors are not charged for submission, review,
-                or publication, and retain copyright under a CC BY 4.0
-                license.
+                Authors are not charged any fees for manuscript submission,
+                peer review, editorial processing, or publication. Published
+                articles are distributed under the Creative Commons
+                Attribution 4.0 International (CC BY 4.0) License. Authors
+                retain copyright of their published work while granting GRPJ
+                the right to publish and identify itself as the original
+                publisher.
               </p>
             </div>
           </div>
@@ -244,9 +295,12 @@ export default function JournalPage() {
             <h2 className="font-display text-4xl font-bold">
               Aims &amp; Scope
             </h2>
-            <p className="mt-3 text-muted-foreground">
-              GRPJ welcomes empirical, theoretical, methodological, and
-              policy-oriented contributions across these areas, among others.
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+              GRPJ publishes original research articles, review papers,
+              methodological papers, policy analyses, short communications,
+              and policy briefs that advance interdisciplinary knowledge on
+              gender and related fields, welcoming contributions from —
+              though not limited to — the following areas.
             </p>
           </div>
           <div className="flex flex-wrap justify-center gap-2.5 max-w-4xl mx-auto">
@@ -262,34 +316,8 @@ export default function JournalPage() {
         </div>
       </section>
 
-      {/* Publication Ethics & Peer Review */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
-              Integrity
-            </p>
-            <h2 className="font-display text-4xl font-bold">
-              Publication Ethics &amp; Peer Review
-            </h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {ethicsPillars.map((item) => (
-              <div
-                key={item.title}
-                className="p-6 bg-white rounded-2xl border border-border hover:shadow-md transition-shadow"
-              >
-                <item.icon className="h-7 w-7 text-primary mb-3" />
-                <h3 className="font-display font-bold mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Indexing & Current Issue */}
-      <section className="py-20 bg-muted/20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white rounded-3xl border border-border p-8 shadow-sm">
@@ -320,10 +348,11 @@ export default function JournalPage() {
                 Published Research
               </h3>
               <p className="text-muted-foreground leading-relaxed text-sm mb-6">
-                GRPJ is published biannually, every June and December.
-                Articles are posted to the RGAN XI research library as they
-                clear peer review and production, and remain freely
-                accessible without restriction.
+                GRPJ is published biannually, every June and December, under
+                a continuous publication model — accepted articles are
+                copyedited, typeset, and published online individually as
+                soon as they are ready, and remain freely accessible without
+                restriction.
               </p>
               <Link
                 href="/issue/archive"
@@ -333,6 +362,221 @@ export default function JournalPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Publication Ethics & Integrity */}
+      <section className="py-20 bg-muted/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
+              Integrity
+            </p>
+            <h2 className="font-display text-4xl font-bold">
+              Publication Ethics &amp; Integrity
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              GRPJ is committed to maintaining the highest standards of
+              publication ethics, research integrity, transparency, and
+              academic excellence, in line with COPE, ICMJE, DOAJ, OASPA, and
+              WAME guidance.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-10">
+            {ethicsPillars.map((item) => (
+              <div
+                key={item.title}
+                className="p-6 bg-white rounded-2xl border border-border hover:shadow-md transition-shadow"
+              >
+                <item.icon className="h-7 w-7 text-primary mb-3" />
+                <h3 className="font-display font-bold mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="max-w-5xl mx-auto space-y-6">
+            <PolicySection title="Responsibilities of Authors">
+              <p>Authors submitting manuscripts to GRPJ certify that:</p>
+              <ul>
+                <li>the work is original and has not been published previously;</li>
+                <li>the manuscript is not simultaneously under consideration by another journal;</li>
+                <li>all listed authors satisfy the journal&apos;s authorship requirements;</li>
+                <li>all data presented are accurate, authentic, and honestly reported;</li>
+                <li>appropriate ethical approval has been obtained when required;</li>
+                <li>informed consent has been secured where applicable;</li>
+                <li>all sources are properly acknowledged and cited;</li>
+                <li>all conflicts of interest have been disclosed; and</li>
+                <li>the manuscript complies with all journal policies.</li>
+              </ul>
+              <p>Authors remain responsible for the integrity of their work even after publication.</p>
+            </PolicySection>
+
+            <PolicySection title="Research Integrity">
+              <p>
+                Authors are expected to conduct and report research honestly,
+                transparently, and responsibly. Research misconduct
+                includes, but is not limited to:
+              </p>
+              <ul>
+                <li>fabrication or falsification of data;</li>
+                <li>selective reporting of results;</li>
+                <li>inappropriate statistical manipulation;</li>
+                <li>image manipulation that alters scientific meaning;</li>
+                <li>suppression of conflicting findings;</li>
+                <li>misleading interpretation of results; and</li>
+                <li>deliberate misrepresentation of research methods.</li>
+              </ul>
+            </PolicySection>
+
+            <PolicySection title="Originality and Plagiarism">
+              <p>
+                Submitted manuscripts must represent original scholarly
+                work. The journal screens all submissions using plagiarism
+                detection software before peer review. The following
+                constitute unacceptable publication practices: plagiarism,
+                self-plagiarism without proper citation, duplicate
+                publication, redundant publication, mosaic plagiarism,
+                translated plagiarism, and unattributed use of text,
+                figures, tables, or ideas. Proper quotation, citation, and
+                acknowledgment of previously published work are mandatory.
+                The Editorial Board reserves the right to reject manuscripts
+                or retract published articles found to contain plagiarism or
+                other forms of academic misconduct.
+              </p>
+            </PolicySection>
+
+            <PolicySection title="Duplicate and Redundant Publication">
+              <p>
+                Authors shall not submit substantially similar manuscripts
+                to more than one journal simultaneously. The journal does
+                not accept manuscripts that have already been published,
+                substantially overlap with previously published work, have
+                been divided into multiple publications without scientific
+                justification (&quot;salami publication&quot;), or
+                constitute duplicate publication. Any overlap with
+                previously disseminated work, including conference
+                proceedings, dissertations, or preprints, must be fully
+                disclosed at submission.
+              </p>
+            </PolicySection>
+
+            <PolicySection title="Data Availability and Reproducibility">
+              <p>
+                Authors are encouraged to make research data, analytical
+                code, instruments, and supplementary materials publicly
+                available whenever ethically and legally possible. Each
+                manuscript should include a Data Availability Statement
+                indicating one of the following:
+              </p>
+              <ul>
+                <li>data are publicly available;</li>
+                <li>data are available upon reasonable request;</li>
+                <li>data cannot be shared because of ethical or legal restrictions; or</li>
+                <li>no new datasets were generated.</li>
+              </ul>
+            </PolicySection>
+
+            <PolicySection title="Human Participants, Animals, and Ethical Approval">
+              <p>
+                Research involving human participants must comply with
+                internationally accepted ethical standards, including the
+                Declaration of Helsinki and relevant national regulations.
+                Authors must indicate the approving ethics committee or IRB,
+                approval or protocol number (where applicable), confirmation
+                that informed consent was obtained, and additional
+                safeguards for vulnerable populations. Personally
+                identifiable information shall not be published unless
+                scientifically justified, explicit written consent has been
+                obtained, and publication complies with applicable data
+                protection laws. Research involving animals must comply with
+                institutional, national, and international ethical
+                standards governing animal welfare, with evidence of ethical
+                approval provided.
+              </p>
+            </PolicySection>
+
+            <PolicySection title="Artificial Intelligence (AI)">
+              <p>
+                AI technologies may assist authors during manuscript
+                preparation provided their use is transparent, responsible,
+                and does not compromise research integrity — for example,
+                language editing, grammar improvement, formatting
+                assistance, coding assistance, data visualization support,
+                and literature organization. Authors remain fully
+                responsible for all content generated with AI assistance. AI
+                tools shall not be listed as authors, assume responsibility
+                for the manuscript, replace scientific interpretation,
+                fabricate references or data, or generate misleading
+                scientific conclusions. All substantial AI assistance must
+                be disclosed in an AI Use Declaration.
+              </p>
+            </PolicySection>
+
+            <PolicySection title="Authorship, Conflicts of Interest, and Funding">
+              <p>
+                Authorship should accurately reflect substantial scholarly
+                contributions, following the ICMJE authorship
+                recommendations. Each submission must include an Author
+                Contributions Statement using the CRediT (Contributor Roles
+                Taxonomy). Guest, honorary, gift, and ghost authorship are
+                considered unethical and are prohibited.
+              </p>
+              <p>
+                Authors must disclose all financial, institutional,
+                personal, professional, or political relationships that
+                could reasonably influence the interpretation of their
+                research, and must disclose all funding sources supporting
+                the research, including the funding organization, grant
+                number(s), and the funder&apos;s role in the study.
+              </p>
+            </PolicySection>
+
+            <PolicySection title="Citation Integrity, Peer Review Manipulation, and Image Integrity">
+              <p>
+                Authors should cite literature fairly, accurately, and
+                appropriately; citation practices intended solely to
+                manipulate citation metrics — such as excessive
+                self-citation, coercive citation, or citation cartels — are
+                prohibited. Any attempt to manipulate the peer-review
+                process, including fabricated reviewer identities or
+                improperly influencing reviewers, constitutes serious
+                misconduct. Figures, photographs, and graphical materials
+                must accurately represent the original data; manipulation
+                intended to deceive readers is strictly prohibited.
+              </p>
+            </PolicySection>
+
+            <PolicySection title="Corrections, Expressions of Concern, and Retractions">
+              <p>
+                The journal is committed to maintaining the accuracy of the
+                scholarly record. When necessary, GRPJ may publish an
+                Erratum to correct publisher errors, a Corrigendum to
+                correct author errors, an Expression of Concern while
+                allegations are under investigation, or a Retraction when
+                findings are unreliable because of error or misconduct.
+                Retractions remain permanently linked to the original
+                publication.
+              </p>
+            </PolicySection>
+
+            <PolicySection title="Handling Allegations of Misconduct">
+              <p>
+                All allegations of research or publication misconduct shall
+                be investigated fairly, confidentially, and in accordance
+                with COPE guidance. Depending on the nature of the
+                allegation, the journal may request explanations from
+                authors, obtain original data, consult independent experts,
+                contact the authors&apos; institutions, suspend editorial
+                processing, publish corrections, issue expressions of
+                concern, retract published articles, or prohibit future
+                submissions for a specified period. All decisions are based
+                on evidence, due process, and the principles of fairness,
+                transparency, and academic integrity.
+              </p>
+            </PolicySection>
           </div>
         </div>
       </section>
@@ -348,11 +592,18 @@ export default function JournalPage() {
               <h2 className="font-display text-3xl font-bold mb-4">
                 Editorial Office
               </h2>
-              <p className="text-background/70 leading-relaxed text-sm">
+              <p className="text-background/70 leading-relaxed text-sm mb-4">
                 All correspondence regarding manuscripts, submissions, and
                 editorial matters should be addressed to the Editors-in-Chief
                 of the Gender Research and Policy Journal.
               </p>
+              <Link
+                href="/journal/editorial-board"
+                className="inline-flex items-center gap-2 text-sm font-medium text-background hover:underline"
+              >
+                View full Editorial Board &amp; contact details
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
