@@ -129,7 +129,6 @@ export default async function ArticleDetailPage({ params }: Props) {
                     Published {formatDateShort(issue.publishedAt)}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Hash className="h-4 w-4" />
                     DOI:{" "}
                     <a
                       href={`https://doi.org/${article.doi}`}

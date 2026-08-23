@@ -54,8 +54,15 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
               Published {formatDateShort(issue.publishedAt)}
             </span>
             <span className="flex items-center gap-1.5">
-              <Hash className="h-4 w-4" />
-              ISSN: {issue.issn}
+              DOI:{" "}
+              <a
+                href={`https://doi.org/${issue.doi}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-primary transition-colors"
+              >
+                https://doi.org/{issue.doi}
+              </a>
             </span>
           </div>
         </div>

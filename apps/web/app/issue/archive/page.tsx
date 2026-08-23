@@ -5,6 +5,7 @@ import { formatDateShort, formatYear } from "@/lib/utils";
 import { Hash, Search, User } from "lucide-react";
 import { getIssues } from "@/services/issue";
 import { IssueQuickLinks } from "@/components/journal/issue-quick-links";
+import { DoiLink } from "@/components/journal/doi-link";
 
 export const metadata: Metadata = {
   title: "Archive",
@@ -140,8 +141,7 @@ export default async function ArchivePage({
                       )}
                       {issue.issn && (
                         <span className="text-xs text-muted-foreground flex items-center gap-1.5">
-                          <Hash className="h-4 w-4" />
-                          ISSN: {issue.issn}
+                          DOI: <DoiLink doi={issue.doi} />
                         </span>
                       )}
                       {/* <div className="flex items-center gap-1.5 text-xs text-muted-foreground">

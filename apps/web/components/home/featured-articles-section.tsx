@@ -5,6 +5,7 @@ import { ArrowRight, Calendar, Hash } from "lucide-react";
 import { formatDateShort, formatYear } from "@/lib/utils";
 import { IssueCover } from "@/components/journal/issue-cover";
 import type { Issue } from "@gad/types/issue";
+import { DoiLink } from "../journal/doi-link";
 
 interface FeaturedArticlesSectionProps {
   issues?: Issue[];
@@ -74,24 +75,14 @@ export function FeaturedArticlesSection({
                 {formatYear(currentIssue.publishedAt)}) Gender Research and
                 Policy Journal
               </h3>
-              {currentIssue.editorial && (
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  {currentIssue.editorial
-                    .replace(/<[^>]+>/g, " ")
-                    .replace(/\s+/g, " ")
-                    .trim()
-                    .slice(0, 180)}
-                </p>
-              )}
               <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-3.5 w-3.5" />
                   {formatDateShort(currentIssue.publishedAt)}
                 </span>
-                {currentIssue.issn && (
-                  <span className="flex items-center gap-1.5 truncate">
-                    <Hash className="h-3.5 w-3.5 shrink-0" />
-                    ISSN: {currentIssue.issn}
+                {currentIssue.doi && (
+                  <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    DOI: <DoiLink doi={currentIssue.doi} />
                   </span>
                 )}
               </div>
@@ -115,18 +106,9 @@ export function FeaturedArticlesSection({
                     {formatYear(issue.publishedAt)}) Gender Research and Policy
                     Journal
                   </h3>
-                  {issue.editorial && (
-                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                      {issue.editorial
-                        .replace(/<[^>]+>/g, " ")
-                        .replace(/\s+/g, " ")
-                        .trim()
-                        .slice(0, 120)}
-                    </p>
-                  )}
+
                   <span className="text-xs text-muted-foreground flex items-center gap-1.5">
-                    <Hash className="h-4 w-4" />
-                    ISSN: {issue.issn}
+                    DOI: <DoiLink doi={currentIssue.doi} />
                   </span>
                 </div>
               </Link>
