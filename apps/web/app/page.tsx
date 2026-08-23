@@ -16,7 +16,7 @@ export default async function HomePage() {
     <>
       <HeroSection issue={result.issue} articles={result.articles} />
       <ResearchAreasSection />
-      <FeaturedArticlesSection />
+      <FeaturedArticlesSection issues={issues} currentIssue={currentIssue} />
       <MissionSection />
 
       {/* Newsletter / CTA Banner */}

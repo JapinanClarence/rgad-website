@@ -2,57 +2,26 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@gad/ui/button";
 import { ArrowRight, Calendar, Hash } from "lucide-react";
-import { formatDate } from "@/lib/utils";
+import { formatDateShort, formatYear } from "@/lib/utils";
 import { IssueCover } from "@/components/journal/issue-cover";
-import type { Database } from "@gad/supabase/types";
+import type { Issue } from "@gad/types/issue";
 
-type Issue = Database["public"]["Tables"]["archive"]["Row"];
+interface FeaturedArticlesSectionProps {
+  issues?: Issue[];
+  currentIssue?: Issue;
+}
 
-// Static placeholder issues for display; replace with real published issues.
-const FEATURED_ISSUES: Issue[] = [
-  {
-    id: "v2i1",
-    created_at: "2025-06-15T00:00:00.000Z",
-    volume_no: 2,
-    issue_no: 1,
-    doi: "10.63346/RGANXI.2025.0201",
-    issn: "3082-5431",
-    cover_image: null,
-    editorial: null,
-    editorial_author: null,
-    published_at: "2025-06-15",
-    is_current: true,
-  },
-  {
-    id: "v1i2",
-    created_at: "2024-12-10T00:00:00.000Z",
-    volume_no: 1,
-    issue_no: 2,
-    doi: "10.63346/RGANXI.2024.0102",
-    issn: "3082-5431",
-    cover_image: null,
-    editorial: null,
-    editorial_author: null,
-    published_at: "2024-12-10",
-    is_current: false,
-  },
-  {
-    id: "v1i1",
-    created_at: "2024-06-05T00:00:00.000Z",
-    volume_no: 1,
-    issue_no: 1,
-    doi: "10.63346/RGANXI.2024.0101",
-    issn: "3082-5431",
-    cover_image: null,
-    editorial: null,
-    editorial_author: null,
-    published_at: "2024-06-05",
-    is_current: false,
-  },
-];
-
-export function FeaturedArticlesSection() {
-  const [main, ...rest] = FEATURED_ISSUES;
+export function FeaturedArticlesSection({
+  issues,
+  currentIssue,
+}: FeaturedArticlesSectionProps) {
+  const otherIssues = issues
+    .filter((issue) => issue.id !== currentIssue.id)
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+    )
+    .slice(0, 2);
 
   return (
     <section className="py-24">
@@ -74,38 +43,40 @@ export function FeaturedArticlesSection() {
         </div>
 
         <div className="grid lg:grid-cols-5 gap-6">
-          {/* Main featured issue */}
+          {/* currentIssue featured issue */}
           <Link
-            href={`/issue/${main.id}`}
+            href={`/issue/${currentIssue.id}`}
             className="lg:col-span-3 group grid sm:grid-cols-[minmax(180px,220px)_minmax(0,1fr)] bg-white rounded-3xl border border-border hover:shadow-xl transition-all duration-300 overflow-hidden"
           >
             <IssueCover
-              volume={main.volume_no}
-              issueNo={main.issue_no}
+              volume={currentIssue.volume}
+              issueNo={currentIssue.issueNo}
               theme={
-                main.editorial
-                  ? main.editorial
+                currentIssue.editorial
+                  ? currentIssue.editorial
                       .replace(/<[^>]+>/g, " ")
                       .replace(/\s+/g, " ")
                       .trim()
                   : null
               }
-              coverImage={main.cover_image}
+              coverImage={currentIssue.coverImage}
               priority
               className="rounded-none shadow-none ring-0 sm:aspect-auto sm:min-h-[300px] sm:h-full"
             />
-            <div className="flex max-w-xl flex-col justify-center justify-self-center py-8 sm:py-10">
-              {main.is_current && (
+            <div className="flex max-w-xl px-5 flex-col justify-center justify-self-center py-8 sm:py-10">
+              {currentIssue.isCurrent && (
                 <span className="inline-flex w-fit items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary mb-3">
                   Current Issue
                 </span>
               )}
               <h3 className="font-display text-2xl font-bold mb-3 group-hover:text-primary transition-colors leading-snug">
-                Vol. {main.volume_no}, No. {main.issue_no}
+                Vol. {currentIssue.volume} No. {currentIssue.issueNo} (
+                {formatYear(currentIssue.publishedAt)}) Gender Research and
+                Policy Journal
               </h3>
-              {main.editorial && (
+              {currentIssue.editorial && (
                 <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                  {main.editorial
+                  {currentIssue.editorial
                     .replace(/<[^>]+>/g, " ")
                     .replace(/\s+/g, " ")
                     .trim()
@@ -115,12 +86,12 @@ export function FeaturedArticlesSection() {
               <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="h-3.5 w-3.5" />
-                  {formatDate(main.published_at)}
+                  {formatDateShort(currentIssue.publishedAt)}
                 </span>
-                {main.doi && (
+                {currentIssue.issn && (
                   <span className="flex items-center gap-1.5 truncate">
                     <Hash className="h-3.5 w-3.5 shrink-0" />
-                    {main.doi}
+                    ISSN: {currentIssue.issn}
                   </span>
                 )}
               </div>
@@ -129,26 +100,20 @@ export function FeaturedArticlesSection() {
 
           {/* Previous issues */}
           <div className="lg:col-span-2 space-y-6">
-            {rest.map((issue) => (
+            {otherIssues.map((issue) => (
               <Link
                 key={issue.id}
                 href={`/issue/${issue.id}`}
                 className="group grid  bg-white rounded-2xl border border-border hover:shadow-lg transition-all duration-300 overflow-hidden"
               >
-                {/* <IssueCover
-                  volume={issue.volume}
-                  issueNo={issue.issue_no}
-                  theme={issue.theme}
-                  coverImage={issue.cover_image}
-                  className="aspect-auto h-full min-h-[138px] w-full rounded-none shadow-none ring-0"
-                /> */}
                 <div className="flex min-w-0 flex-col justify-center p-5">
                   <span className="text-xs text-muted-foreground mb-1">
-                    {formatDate(issue.published_at)}
+                    {formatDateShort(issue.publishedAt)}
                   </span>
                   <h3 className="font-display font-bold text-base leading-snug mb-2 group-hover:text-primary transition-colors">
-                    Vol. {issue.volume_no}, No. {issue.issue_no} Gender Research
-                    and Policy Journal
+                    Vol. {issue.volume} No. {issue.issueNo} (
+                    {formatYear(issue.publishedAt)}) Gender Research and Policy
+                    Journal
                   </h3>
                   {issue.editorial && (
                     <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
@@ -159,6 +124,10 @@ export function FeaturedArticlesSection() {
                         .slice(0, 120)}
                     </p>
                   )}
+                  <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                    <Hash className="h-4 w-4" />
+                    ISSN: {issue.issn}
+                  </span>
                 </div>
               </Link>
             ))}
