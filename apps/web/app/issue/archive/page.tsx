@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDateShort, formatYear } from "@/lib/utils";
-import { Search, User } from "lucide-react";
+import { Hash, Search, User } from "lucide-react";
 import { getIssues } from "@/services/issue";
 import { IssueQuickLinks } from "@/components/journal/issue-quick-links";
 
@@ -133,9 +133,17 @@ export default async function ArchivePage({
                         {formatYear(issue.publishedAt)}) Gender Research and
                         Policy Journal
                       </h2>
-                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                        {plainText(issue.editorial) || "Journal archive issue"}
-                      </p>
+                      {issue.editorial && (
+                        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                          {plainText(issue.editorial)}
+                        </p>
+                      )}
+                      {issue.issn && (
+                        <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                          <Hash className="h-4 w-4" />
+                          ISSN: {issue.issn}
+                        </span>
+                      )}
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <User className="h-3.5 w-3.5" />
                         <span>
