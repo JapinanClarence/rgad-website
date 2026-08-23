@@ -144,12 +144,12 @@ export default async function ArchivePage({
                           ISSN: {issue.issn}
                         </span>
                       )}
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      {/* <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                         <User className="h-3.5 w-3.5" />
                         <span>
                           {issue.editorialAuthor ?? "RGAN XI Editorial Team"}
                         </span>
-                      </div>
+                      </div> */}
                     </div>
                   </Link>
                 ))}
