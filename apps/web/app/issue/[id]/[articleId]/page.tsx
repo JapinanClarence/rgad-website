@@ -9,7 +9,7 @@ import { IssueQuickLinks } from "@/components/journal/issue-quick-links";
 import { CiteButton } from "@/components/journal/cite-button";
 import { Button } from "@gad/ui/button";
 import { Badge } from "@gad/ui/badge";
-import { formatDate } from "@/lib/utils";
+import { formatDateShort } from "@/lib/utils";
 import { ArrowLeft, Calendar, Users, FileText, Hash } from "lucide-react";
 
 interface Props {
@@ -126,7 +126,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Calendar className="h-4 w-4" />
-                    Published {formatDate(issue.publishedAt)}
+                    Published {formatDateShort(issue.publishedAt)}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Hash className="h-4 w-4" />

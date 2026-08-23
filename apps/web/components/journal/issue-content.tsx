@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "@gad/ui/button";
 import { IssueCover } from "@/components/journal/issue-cover";
-import { formatDate, formatYear } from "@/lib/utils";
+import { formatDateShort, formatYear } from "@/lib/utils";
 import { Calendar, Hash, FileText, Users } from "lucide-react";
 import type { Issue, IssueArticle } from "@gad/types/issue";
 
@@ -51,7 +51,7 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground mb-6">
             <span className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4" />
-              Published {formatDate(issue.publishedAt)}
+              Published {formatDateShort(issue.publishedAt)}
             </span>
             <span className="flex items-center gap-1.5">
               <Hash className="h-4 w-4" />
