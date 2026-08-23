@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 
 const tabs = [
   { label: "Journal Information", href: "/journal" },
+  { label: "Publication Ethics & Integrity", href: "/journal/publication-ethics" },
   { label: "Peer Review Policy", href: "/journal/peer-review-policy" },
   { label: "Submission Guidelines", href: "/journal/submission-guidelines" },
   { label: "Editorial Workflow", href: "/journal/workflow" },

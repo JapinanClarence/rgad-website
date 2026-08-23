@@ -25,6 +25,10 @@ const navLinks = [
     href: "/journal",
     children: [
       { label: "Journal Information", href: "/journal" },
+      {
+        label: "Publication Ethics & Integrity",
+        href: "/journal/publication-ethics",
+      },
       { label: "Peer Review Policy", href: "/journal/peer-review-policy" },
       {
         label: "Submission Guidelines",
