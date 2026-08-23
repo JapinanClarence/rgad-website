@@ -14,6 +14,8 @@ import {
 import { JournalTabs } from "@/components/journal/journal-tabs";
 import { JournalPageHeader } from "@/components/journal/journal-page-header";
 import { PolicySection } from "@/components/journal/policy-section";
+import Image from "next/image";
+import { images } from "@/constants/images";
 
 export const metadata: Metadata = {
   title: "Editorial Board & Contact — GRPJ",
@@ -40,6 +42,7 @@ function initials(name: string) {
 }
 
 type Member = {
+  profile?: any;
   name: string;
   affiliation: string;
   orcid?: string;
@@ -48,6 +51,7 @@ type Member = {
 
 const editorsInChief: Member[] = [
   {
+    profile: images.villegas,
     name: "Jhonnel P. Villegas",
     affiliation: "Davao Oriental State University, Philippines",
     orcid: "https://orcid.org/0000-0001-6387-2381",
@@ -55,96 +59,121 @@ const editorsInChief: Member[] = [
       "Wildlife Ecology, Conservation Biology, Human-Wildlife Interactions, Tropical Cervidology, Gender and Conservation",
   },
   {
+    profile: images.bauyot,
     name: "Mary Fil M. Bauyot",
     affiliation: "Davao Oriental State University, Philippines",
     orcid: "https://orcid.org/0000-0002-4600-0570",
-    interests: "Psychology, Indigenous Psychology, Women and Gender, Reproductive Health",
+    interests:
+      "Psychology, Indigenous Psychology, Women and Gender, Reproductive Health",
   },
 ];
 
 const managingEditor: Member[] = [
   {
+    profile: images.rafon,
     name: "John Kenny A. Rafon",
     affiliation: "Davao de Oro State College, Philippines",
     orcid: "https://orcid.org/0009-0006-0615-984X",
-    interests: "Science Education, Conservation Education, Fisheries Management, Gender and Development",
+    interests:
+      "Science Education, Conservation Education, Fisheries Management, Gender and Development",
   },
 ];
 
 const associateEditors: Member[] = [
   {
+    profile: images.orencita,
     name: "Orencita Aireen V. Lozada",
     affiliation: "San Pedro College, Philippines",
     orcid: "https://orcid.org/0009-0000-5069-5654",
-    interests: "Gender and Marital Dynamics, Pastoral and Existential Counseling, Community and Indigenous Mental Health, Workplace and Family Wellness",
+    interests:
+      "Gender and Marital Dynamics, Pastoral and Existential Counseling, Community and Indigenous Mental Health, Workplace and Family Wellness",
   },
   {
+    profile: images.jeralyn,
     name: "Jeralyn N. Hemillan",
     affiliation: "Davao Oriental State University, Philippines",
     orcid: "https://orcid.org/0000-0003-1237-4037",
-    interests: "Criminal Justice, Criminology, Gender Mainstreaming, Governance",
+    interests:
+      "Criminal Justice, Criminology, Gender Mainstreaming, Governance",
   },
   {
+    profile: images.helina,
     name: "Helina Jean P. Dupa",
     affiliation: "Davao Oriental State University, Philippines",
     orcid: "https://orcid.org/0000-0002-8440-9422",
-    interests: "Pedagogy, Gender Sociology, Rural Sociology, Gender and Development",
+    interests:
+      "Pedagogy, Gender Sociology, Rural Sociology, Gender and Development",
   },
   {
+    profile: images.sadie,
     name: "Sadie D. Law-ay",
     affiliation: "Davao del Norte State College, Philippines",
     orcid: "https://orcid.org/0000-0001-6288-4428",
-    interests: "Gender and Development, Women and Youth, Indigenous Culture, Development Studies",
+    interests:
+      "Gender and Development, Women and Youth, Indigenous Culture, Development Studies",
   },
   {
+    profile: images.tio,
     name: "Revrev A. Tio",
     affiliation: "Davao del Norte State College, Philippines",
     orcid: "https://orcid.org/0009-0004-1166-8177",
     interests: "Gender and Development, Social Studies, Sociology, Education",
   },
   {
+    profile: images.canoy,
     name: "Fe T. Canoy",
-    affiliation: "Southern Philippines Agri-Business and Marine and Aquatic School of Technology (SPAMAST), Philippines",
+    affiliation:
+      "Southern Philippines Agri-Business and Marine and Aquatic School of Technology (SPAMAST), Philippines",
     orcid: "https://orcid.org/0009-0001-5276-6185",
     interests: "Language, Sociolinguistics, Education, Leadership",
   },
   {
+    profile: images.sanjose,
     name: "Ariel E. San Jose",
-    affiliation: "Southern Philippines Agri-Business and Marine and Aquatic School of Technology (SPAMAST), Philippines",
+    affiliation:
+      "Southern Philippines Agri-Business and Marine and Aquatic School of Technology (SPAMAST), Philippines",
     orcid: "https://orcid.org/0000-0002-3117-7728",
     interests: "Linguistics, Gender, Culture, Language Learning",
   },
   {
+    profile: images.condes,
     name: "Rikka Bianca Condes",
     affiliation: "Davao del Sur State College, Philippines",
     orcid: "https://orcid.org/0000-0003-4335-6202",
     interests: "Science Education, Biology, Disaster Risk Reduction",
   },
   {
+    profile: images.matalandang,
     name: "Sheruel G. Matalandang",
     affiliation: "Davao del Sur State College, Philippines",
     orcid: "https://orcid.org/0000-0003-4907-1566",
-    interests: "Indigenous Knowledge Systems and Practices, Public Administration, Sustainable Development Studies, Women, Peace and Security",
+    interests:
+      "Indigenous Knowledge Systems and Practices, Public Administration, Sustainable Development Studies, Women, Peace and Security",
   },
 ];
 
 const statisticalEditors: Member[] = [
   {
+    profile: images.delagente,
     name: "Jerd M. Dela Gente",
     affiliation: "Davao Oriental State University, Philippines",
     orcid: "https://orcid.org/0000-0001-9711-9515",
-    interests: "Mathematics Education, Multivariate Analysis, Time Series Analysis, Regenerative Education",
+    interests:
+      "Mathematics Education, Multivariate Analysis, Time Series Analysis, Regenerative Education",
   },
   {
+    profile: images.montejo,
     name: "Diether C. Montejo",
     affiliation: "Holy Cross of Davao College, Philippines",
     orcid: "https://orcid.org/0009-0000-2123-1797",
-    interests: "Applied Mathematics, Machine Learning, Mathematics Education, Regenerative Education",
+    interests:
+      "Applied Mathematics, Machine Learning, Mathematics Education, Regenerative Education",
   },
 ];
 
 const websiteManager: Member[] = [
   {
+    profile: images.simo,
     name: "Wilkin F. Simo",
     affiliation: "Davao Oriental State University, Philippines",
     interests: "Website and digital infrastructure management",
@@ -153,13 +182,17 @@ const websiteManager: Member[] = [
 
 const advisoryBoard: Member[] = [
   {
+    profile: images.caquejo,
     name: "Maricar R. Casquejo",
-    affiliation: "Commission on Higher Education – Regional Office XI, Philippines",
+    affiliation:
+      "Commission on Higher Education – Regional Office XI, Philippines",
     interests: "Higher education policy, Gender and Development oversight",
   },
   {
+    profile: images.evelyn,
     name: "Evelyn S. Ecle",
-    affiliation: "Commission on Higher Education – Regional Office XI, Philippines",
+    affiliation:
+      "Commission on Higher Education – Regional Office XI, Philippines",
     interests: "Higher education policy, Gender and Development oversight",
   },
 ];
@@ -186,11 +219,20 @@ function MemberGrid({ members }: { members: Member[] }) {
             className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold mb-4 group-hover:scale-105 transition-transform`}
           >
             {initials(member.name)}
+            {member.profile && (
+              <Image
+                src={member.profile}
+                alt={member.name}
+                className="w-14 h-14 rounded-2xl object-cover absolute "
+              />
+            )}
           </div>
           <h3 className="font-display font-bold text-base leading-tight">
             {member.name}
           </h3>
-          <p className="text-xs text-muted-foreground mt-1">{member.affiliation}</p>
+          <p className="text-xs text-muted-foreground mt-1">
+            {member.affiliation}
+          </p>
           <p className="text-xs text-muted-foreground/80 mt-2 leading-relaxed">
             {member.interests}
           </p>
@@ -244,15 +286,23 @@ export default function EditorialBoardPage() {
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
               <Users className="h-5 w-5 text-primary" />
             </div>
-            <h2 className="font-display text-2xl font-bold">Editorial Structure</h2>
+            <h2 className="font-display text-2xl font-bold">
+              Editorial Structure
+            </h2>
           </div>
 
           <BoardSection title="Editors-in-Chief" members={editorsInChief} />
           <BoardSection title="Managing Editor" members={managingEditor} />
           <BoardSection title="Associate Editors" members={associateEditors} />
-          <BoardSection title="Statistical Editors" members={statisticalEditors} />
+          <BoardSection
+            title="Statistical Editors"
+            members={statisticalEditors}
+          />
           <BoardSection title="Website Manager" members={websiteManager} />
-          <BoardSection title="Editorial Advisory Board" members={advisoryBoard} />
+          <BoardSection
+            title="Editorial Advisory Board"
+            members={advisoryBoard}
+          />
         </div>
       </section>
 
@@ -261,14 +311,14 @@ export default function EditorialBoardPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <PolicySection icon={BookUser} title="Reviewer Database">
             <p>
-              The journal maintains an international database of qualified
-              peer reviewers representing diverse disciplines relevant to
-              gender research and policy. Reviewer selection is based on
-              subject expertise, publication history, peer-review
-              experience, research integrity, absence of conflicts of
-              interest, and demonstrated commitment to timely, high-quality
-              reviews. The reviewer database is updated regularly to ensure
-              diversity, expertise, and responsiveness.
+              The journal maintains an international database of qualified peer
+              reviewers representing diverse disciplines relevant to gender
+              research and policy. Reviewer selection is based on subject
+              expertise, publication history, peer-review experience, research
+              integrity, absence of conflicts of interest, and demonstrated
+              commitment to timely, high-quality reviews. The reviewer database
+              is updated regularly to ensure diversity, expertise, and
+              responsiveness.
             </p>
           </PolicySection>
 
@@ -277,10 +327,10 @@ export default function EditorialBoardPage() {
               The Editorial Office coordinates manuscript submission, peer
               review, production, publication, and post-publication
               communications, including receiving manuscript submissions,
-              administrative screening, editorial correspondence,
-              coordinating peer review, copyediting and production,
-              maintaining publication records, assisting authors and
-              reviewers, and responding to general inquiries.
+              administrative screening, editorial correspondence, coordinating
+              peer review, copyediting and production, maintaining publication
+              records, assisting authors and reviewers, and responding to
+              general inquiries.
             </p>
           </PolicySection>
 
@@ -288,14 +338,13 @@ export default function EditorialBoardPage() {
             <p>
               GRPJ is published by the Region XI Gender and Development
               Advocates Network (RGAN XI), a non-profit, non-stock,
-              non-sectarian, and apolitical organization dedicated to
-              advancing gender equality, women&apos;s empowerment,
-              diversity, equity, and inclusive development through
-              research, education, policy engagement, capacity-building, and
-              community partnerships. As the publisher of GRPJ, RGAN XI
-              supports high-quality scholarly publishing while respecting
-              the Editorial Board&apos;s independence in all editorial
-              decisions.
+              non-sectarian, and apolitical organization dedicated to advancing
+              gender equality, women&apos;s empowerment, diversity, equity, and
+              inclusive development through research, education, policy
+              engagement, capacity-building, and community partnerships. As the
+              publisher of GRPJ, RGAN XI supports high-quality scholarly
+              publishing while respecting the Editorial Board&apos;s
+              independence in all editorial decisions.
             </p>
             <p>The journal is co-published by:</p>
             <ul>
@@ -342,8 +391,8 @@ export default function EditorialBoardPage() {
               <div className="flex items-center gap-3">
                 <MapPin className="h-5 w-5 text-background/50 shrink-0" />
                 <p className="text-sm text-background/80">
-                  Publisher: Region XI Gender and Development Advocates
-                  Network (RGAN XI)
+                  Publisher: Region XI Gender and Development Advocates Network
+                  (RGAN XI)
                 </p>
               </div>
               <div className="flex items-center gap-3">
@@ -359,7 +408,10 @@ export default function EditorialBoardPage() {
                 <Globe2 className="h-5 w-5 text-background/50 shrink-0" />
                 <p className="text-sm text-background/80">
                   You are on the journal&apos;s official website —{" "}
-                  <Link href="/journal" className="underline hover:text-background">
+                  <Link
+                    href="/journal"
+                    className="underline hover:text-background"
+                  >
                     view Journal Information
                   </Link>
                 </p>

@@ -12,6 +12,16 @@ import joyce from "@/assets/images/Jasa, Joyce.png";
 import imelda from "@/assets/images/Lauron, Imelda.png";
 import villegas from "@/assets/images/Villegas, Jhonnel P.png";
 import evelyn from "@/assets/images/Ecle, Evelyn S.png";
+import canoy from "@/assets/images/Canoy, Fe T.png";
+import caquejo from "@/assets/images/Casquejo, Maricar R.png";
+import condes from "@/assets/images/Condes, Rikka Bianca.png";
+import delagente from "@/assets/images/Dela Gente, Jerd M.png";
+import matalandang from "@/assets/images/Matalandang, Sheruel.png";
+import montejo from "@/assets/images/Montejo, Diether C_.png";
+import rafon from "@/assets/images/Rafon, John Kenny A..png";
+import sanjose from "@/assets/images/San Jose, Ariel E.png";
+import simo from "@/assets/images/Simo, Wilkin F_.png";
+import tio from "@/assets/images/Tio, Revrev A.png";
 import ched_logo from "@/assets/images/Logo_CHED.png";
 import ddosc_logo from "@/assets/images/Logo_DDOSC.png";
 import dorsu_logo from "@/assets/images/Logo_DOrSU.png";
@@ -34,6 +44,16 @@ export const images = {
   imelda,
   villegas,
   evelyn,
+  canoy,
+  caquejo,
+  condes,
+  delagente,
+  matalandang,
+  montejo,
+  rafon,
+  sanjose,
+  simo,
+  tio,
   ched_logo,
   ddosc_logo,
   dorsu_logo,
