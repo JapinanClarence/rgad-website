@@ -24,8 +24,11 @@ const navLinks = [
     label: "Journal",
     href: "/journal",
     children: [
-      { label: "About GRPJ", href: "/journal" },
-      { label: "Journal Information", href: "/journal#journal-info" },
+      { label: "Journal Information", href: "/journal" },
+      { label: "Peer Review Policy", href: "/journal/peer-review-policy" },
+      { label: "Submission Guidelines", href: "/journal/submission-guidelines" },
+      { label: "Submission & Publication Workflow", href: "/journal/workflow" },
+      { label: "Editorial Board & Contact", href: "/journal/editorial-board" },
     ],
   },
   {
