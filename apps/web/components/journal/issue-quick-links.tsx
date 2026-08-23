@@ -10,7 +10,7 @@ const QUICK_LINKS = [
   },
   {
     label: "Editorial Team",
-    href: "/about#team",
+    href: "/journal/editorial-board",
     icon: Users,
   },
   {
