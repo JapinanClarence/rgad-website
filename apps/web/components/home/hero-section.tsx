@@ -219,8 +219,7 @@ export function HeroSection({ issue, articles }: HeroSectionProps) {
               <p className="text-3xl font-display font-bold">{articleCount}</p>
               <p className="text-xs text-white/80 flex items-center gap-1">
                 {/* <Calendar className="h-3 w-3" /> */}
-                {articleCount > 1 ? `${articleCount} articles` : "article"} in
-                this issue
+                {articleCount > 1 ? `articles` : "article"} in this issue
               </p>
             </div>
           </div>
