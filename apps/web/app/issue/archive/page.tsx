@@ -39,8 +39,6 @@ export default async function ArchivePage({
           `issue ${issue.issueNo}`,
           issue.title,
           formatYear(issue.publishedAt),
-          plainText(issue.editorial),
-          issue.editorialAuthor ?? "",
           issue.issn,
         ]
           .join(" ")
@@ -134,11 +132,6 @@ export default async function ArchivePage({
                         {formatYear(issue.publishedAt)}) Gender Research and
                         Policy Journal
                       </h2>
-                      {issue.editorial && (
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                          {plainText(issue.editorial)}
-                        </p>
-                      )}
                       {issue.issn && (
                         <span className="text-xs text-muted-foreground flex items-center gap-1.5">
                           DOI: <DoiLink doi={issue.doi} />

@@ -17,12 +17,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { issue } = result;
   return {
     title: `Vol. ${issue.volume}, Issue ${issue.issueNo}`,
-    description: issue.editorial
-      ? issue.editorial
-          .replace(/<[^>]+>/g, " ")
-          .replace(/\s+/g, " ")
-          .trim()
-      : "An issue of the Gender Research and Policy Journal.",
   };
 }
 

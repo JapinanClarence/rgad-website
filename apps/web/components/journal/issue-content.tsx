@@ -28,7 +28,6 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
         <IssueCover
           volume={issue.volume}
           issueNo={issue.issueNo}
-          theme={plainText(issue.editorial) || null}
           coverImage={issue.coverImage}
           className="max-w-[220px] mx-auto md:mx-0"
           priority
@@ -43,11 +42,7 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
             Vol. {issue.volume} No. {issue.issueNo} (
             {formatYear(issue.publishedAt)}) Gender Research and Policy Journal
           </h1>
-          {issue.editorial && (
-            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              {plainText(issue.editorial).slice(0, 180)}
-            </p>
-          )}
+
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground mb-6">
             <span className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4" />
@@ -67,24 +62,6 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
           </div>
         </div>
       </div>
-
-      {/* Editorial */}
-      {issue.editorial && (
-        <div className="mb-16 pb-16 border-b border-border">
-          <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
-            Editorial
-          </p>
-          <div
-            className="article-prose text-foreground/85 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: issue.editorial }}
-          />
-          {issue.editorialAuthor && (
-            <p className="mt-6 text-sm font-medium text-foreground/70">
-              — {issue.editorialAuthor}
-            </p>
-          )}
-        </div>
-      )}
 
       {/* Table of contents */}
       <div>

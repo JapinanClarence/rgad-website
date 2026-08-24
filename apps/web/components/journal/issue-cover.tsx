@@ -19,7 +19,6 @@ interface IssueCoverProps {
 export function IssueCover({
   volume,
   issueNo,
-  theme,
   coverImage,
   className,
   priority,
@@ -52,11 +51,6 @@ export function IssueCover({
           <p className="font-display font-bold text-base text-foreground/80 mt-1 mb-4">
             Issue {issueNo}
           </p>
-          {theme && (
-            <p className="text-foreground/70 text-xs leading-snug line-clamp-4">
-              {theme}
-            </p>
-          )}
         </div>
       )}
     </div>

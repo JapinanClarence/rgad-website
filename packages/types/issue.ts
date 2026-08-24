@@ -6,8 +6,6 @@ export type Issue = {
   doi?: string;
   issn: string;
   coverImage?: string | null;
-  editorial?: string;
-  editorialAuthor?: string;
   publishedAt: string;
   isCurrent: boolean;
   date: string;

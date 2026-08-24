@@ -79,7 +79,6 @@ export default async function ArticleDetailPage({ params }: Props) {
                 <IssueCover
                   volume={issue.volume}
                   issueNo={issue.issueNo}
-                  theme={plainText(issue.editorial) || null}
                   coverImage={issue.coverImage}
                   className="mb-4"
                   priority
