@@ -5,17 +5,22 @@ import { Button } from "@gad/ui/button";
 import { Quote, Copy, Check } from "lucide-react";
 
 interface CiteButtonProps {
-  citation: string;
+  citation: React.ReactNode;
+  citationText: string;
   className?: string;
 }
 
-export function CiteButton({ citation, className }: CiteButtonProps) {
+export function CiteButton({
+  citation,
+  citationText,
+  className,
+}: CiteButtonProps) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
     try {
-      await navigator.clipboard.writeText(citation);
+      await navigator.clipboard.writeText(citationText);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -37,7 +42,7 @@ export function CiteButton({ citation, className }: CiteButtonProps) {
 
       {open && (
         <div className="mt-3 rounded-lg border border-border bg-muted/40 p-4">
-          <p className="text-xs text-foreground/80 leading-relaxed">
+          <p className="text-xs text-foreground/80 leading-relaxed text-pretty break-words">
             {citation}
           </p>
           <button

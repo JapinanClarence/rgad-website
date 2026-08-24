@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getIssueById } from "@/services/issue";
-import { type Issue, IssueArticle } from "@gad/types/issue";
+import { type Issue, IssueArticle, ArticleAuthor } from "@gad/types/issue";
 import { IssueCover } from "@/components/journal/issue-cover";
 import { IssueQuickLinks } from "@/components/journal/issue-quick-links";
 import { CiteButton } from "@/components/journal/cite-button";
@@ -35,12 +35,32 @@ async function getArticle(issueId: string, articleId: string) {
 
 function buildCitation(issue: Issue, article: IssueArticle) {
   const year = new Date(issue.publishedAt).getFullYear();
+
   const authorList =
     article.authors.length > 0
-      ? article.authors.join(", ")
+      ? article.authors.map(toApaAuthorName).join(", ")
       : "RGAN XI Editorial Team";
+
   const pages = article.pages ? `, ${article.pages}` : "";
-  return `${authorList} (${year}). ${article.title}. Gender Research and Policy Journal, ${issue.volume}(${issue.issueNo})${pages}.`;
+  const doi = article.doi ? ` https://doi.org/${article.doi}` : "";
+
+  const citationText =
+    `${authorList} (${year}). ${article.title}. ` +
+    `Gender Research and Policy Journal, ${issue.volume}(${issue.issueNo})` +
+    `${pages}.${doi}`;
+
+  const citation = (
+    <>
+      {authorList} ({year}). {article.title}.{" "}
+      <em>Gender Research and Policy Journal, {issue.volume}</em>(
+      {issue.issueNo}){pages}.{doi}
+    </>
+  );
+
+  return {
+    citation,
+    citationText,
+  };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -52,6 +72,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       plainText(result.article.abstract) ||
       "An article from the Gender Research and Policy Journal.",
   };
+}
+
+function toApaAuthorName(author: ArticleAuthor): string {
+  const initials = [author.firstname, author.middlename]
+    .filter(Boolean)
+    .map((name) => `${name!.charAt(0).toUpperCase()}.`)
+    .join(" ");
+
+  return `${author.lastname}, ${initials}`;
 }
 
 function toAuthorName(author: {
@@ -107,7 +136,10 @@ export default async function ArticleDetailPage({ params }: Props) {
                       </a>
                     </Button>
                   )}
-                  <CiteButton citation={citation} />
+                  <CiteButton
+                    citation={citation.citation}
+                    citationText={citation.citationText}
+                  />
                 </div>
               </div>
 
