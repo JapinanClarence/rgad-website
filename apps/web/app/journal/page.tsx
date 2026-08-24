@@ -180,73 +180,71 @@ export default function JournalPage() {
       {/* About the Journal */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8 items-start">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
-                <BookOpen className="h-6 w-6 text-primary" />
-              </div>
-              <h2 className="font-display text-3xl font-bold mb-4">
-                About the Journal
-              </h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                The Gender Research and Policy Journal (GRPJ) is a
-                peer-reviewed, open-access scholarly journal published by the
-                Region XI Gender and Development Advocates Network (RGAN XI).
-                The journal provides an interdisciplinary platform for
-                disseminating high-quality research that advances scholarly
-                understanding of gender and its implications for policy,
-                governance, education, health, development, culture, and
-                society.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                GRPJ is committed to publishing original and rigorous
-                research that contributes to evidence-based policymaking and
-                promotes gender equality, diversity, equity, and social
-                inclusion across local, national, regional, and global
-                contexts. The journal welcomes empirical, theoretical,
-                methodological, and policy-oriented contributions from
-                diverse academic disciplines and encourages dialogue among
-                researchers, educators, practitioners, policymakers, civil
-                society organizations, and development partners.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Published in English, GRPJ accepts manuscripts from authors
-                worldwide while maintaining a strong commitment to
-                highlighting gender issues and policy innovations relevant to
-                the Philippines and the broader Southeast Asia and the Global
-                South. Through international collaboration and scholarly
-                exchange, the journal aims to foster inclusive knowledge
-                production and contribute to the achievement of the United
-                Nations Sustainable Development Goals (SDGs), particularly
-                SDG 5: Gender Equality, while recognizing the
-                interconnectedness of gender with other development
-                priorities.
-              </p>
+          <div className="max-w-3xl mb-10">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+              <BookOpen className="h-6 w-6 text-primary" />
             </div>
+            <h2 className="font-display text-3xl font-bold mb-4">
+              About the Journal
+            </h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              The Gender Research and Policy Journal (GRPJ) is a
+              peer-reviewed, open-access scholarly journal published by the
+              Region XI Gender and Development Advocates Network (RGAN XI).
+              The journal provides an interdisciplinary platform for
+              disseminating high-quality research that advances scholarly
+              understanding of gender and its implications for policy,
+              governance, education, health, development, culture, and
+              society.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              GRPJ is committed to publishing original and rigorous research
+              that contributes to evidence-based policymaking and promotes
+              gender equality, diversity, equity, and social inclusion
+              across local, national, regional, and global contexts. The
+              journal welcomes empirical, theoretical, methodological, and
+              policy-oriented contributions from diverse academic
+              disciplines and encourages dialogue among researchers,
+              educators, practitioners, policymakers, civil society
+              organizations, and development partners.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Published in English, GRPJ accepts manuscripts from authors
+              worldwide while maintaining a strong commitment to
+              highlighting gender issues and policy innovations relevant to
+              the Philippines and the broader Southeast Asia and the Global
+              South. Through international collaboration and scholarly
+              exchange, the journal aims to foster inclusive knowledge
+              production and contribute to the achievement of the United
+              Nations Sustainable Development Goals (SDGs), particularly
+              SDG 5: Gender Equality, while recognizing the
+              interconnectedness of gender with other development
+              priorities.
+            </p>
+          </div>
 
-            <div className="bg-white rounded-3xl border border-border p-8 shadow-sm">
-              <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-5">
-                <Globe className="h-6 w-6 text-secondary" />
-              </div>
-              <h3 className="font-display text-xl font-bold mb-3">
-                Open Access Policy
-              </h3>
-              <p className="text-muted-foreground leading-relaxed text-sm mb-4">
-                GRPJ is a fully open-access journal. All published articles
-                are made freely and permanently available online immediately
-                upon publication without subscription fees, registration
-                requirements, or access restrictions.
-              </p>
-              <p className="text-muted-foreground leading-relaxed text-sm">
-                Authors are not charged any fees for manuscript submission,
-                peer review, editorial processing, or publication. Published
-                articles are distributed under the Creative Commons
-                Attribution 4.0 International (CC BY 4.0) License. Authors
-                retain copyright of their published work while granting GRPJ
-                the right to publish and identify itself as the original
-                publisher.
-              </p>
+          <div className="bg-white rounded-3xl border border-border p-8 shadow-sm max-w-3xl">
+            <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-5">
+              <Globe className="h-6 w-6 text-secondary" />
             </div>
+            <h3 className="font-display text-xl font-bold mb-3">
+              Open Access Policy
+            </h3>
+            <p className="text-muted-foreground leading-relaxed text-sm mb-4">
+              GRPJ is a fully open-access journal. All published articles
+              are made freely and permanently available online immediately
+              upon publication without subscription fees, registration
+              requirements, or access restrictions.
+            </p>
+            <p className="text-muted-foreground leading-relaxed text-sm">
+              Authors are not charged any fees for manuscript submission,
+              peer review, editorial processing, or publication. Published
+              articles are distributed under the Creative Commons
+              Attribution 4.0 International (CC BY 4.0) License. Authors
+              retain copyright of their published work while granting GRPJ
+              the right to publish and identify itself as the original
+              publisher.
+            </p>
           </div>
         </div>
       </section>
