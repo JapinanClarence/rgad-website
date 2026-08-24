@@ -52,14 +52,6 @@ export function FeaturedArticlesSection({
             <IssueCover
               volume={currentIssue.volume}
               issueNo={currentIssue.issueNo}
-              theme={
-                currentIssue.editorial
-                  ? currentIssue.editorial
-                      .replace(/<[^>]+>/g, " ")
-                      .replace(/\s+/g, " ")
-                      .trim()
-                  : null
-              }
               coverImage={currentIssue.coverImage}
               priority
               className="rounded-none shadow-none ring-0 sm:aspect-auto sm:min-h-[300px] sm:h-full"

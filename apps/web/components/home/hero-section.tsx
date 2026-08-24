@@ -33,12 +33,6 @@ interface HeroSectionProps {
 export function HeroSection({ issue, articles }: HeroSectionProps) {
   const articleCount = articles?.length;
 
-  const [editorialName, editorialRole] = (
-    issue.editorialAuthor ?? "RGAN XI Editorial Board"
-  )
-    .split(",")
-    .map((part) => part.trim());
-
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden hero-pattern">
       {/* Background decorative elements */}
@@ -161,15 +155,6 @@ export function HeroSection({ issue, articles }: HeroSectionProps) {
                 </p>
 
                 <div className="flex items-center justify-between pt-2 border-t border-border">
-                  {/* <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-secondary" />
-                    <div>
-                      <p className="text-xs font-medium">{editorialName}</p>
-                      <p className="text-[10px] text-muted-foreground">
-                        {editorialRole ?? "Editor"}
-                      </p>
-                    </div>
-                  </div> */}
                   <span className="text-xs text-muted-foreground">
                     {formatDateShort(issue.publishedAt)}
                   </span>
