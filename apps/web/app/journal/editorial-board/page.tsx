@@ -46,6 +46,8 @@ type Member = {
   name: string;
   affiliation: string;
   orcid?: string;
+  researcherId?: string;
+  scopusId?: string;
   interests: string;
 };
 
@@ -55,6 +57,8 @@ const editorsInChief: Member[] = [
     name: "Jhonnel P. Villegas",
     affiliation: "Davao Oriental State University, Philippines",
     orcid: "https://orcid.org/0000-0001-6387-2381",
+    researcherId: "IST-3086-2023",
+    scopusId: "57747764800",
     interests:
       "Wildlife Ecology, Conservation Biology, Human-Wildlife Interactions, Tropical Cervidology, Gender and Conservation",
   },
@@ -150,6 +154,33 @@ const associateEditors: Member[] = [
     interests:
       "Indigenous Knowledge Systems and Practices, Public Administration, Sustainable Development Studies, Women, Peace and Security",
   },
+  {
+    name: "Sajed S. Ingilan",
+    affiliation: "University of Southeastern Philippines, Philippines",
+    orcid: "https://orcid.org/0000-0002-4466-2028",
+    interests: "Linguistics, Language Education, Sulu and Mindanao Studies",
+  },
+  {
+    name: "Francis N. Reginio",
+    affiliation: "University of Southeastern Philippines, Philippines",
+    orcid: "https://orcid.org/0000-0001-5939-4508",
+    interests:
+      "Public Policy, Political Science, Cultural Studies, Development Studies",
+  },
+  {
+    name: "Jay Mark D. Bantayan",
+    affiliation: "Davao de Oro State College, Philippines",
+    orcid: "https://orcid.org/0000-0002-0361-1929",
+    interests:
+      "Marine Biodiversity, Subsistence Fisheries, Environmental Science, Gender Studies",
+  },
+  {
+    name: "Elizer M. Rebucas",
+    affiliation: "Davao de Oro State College, Philippines",
+    orcid: "https://orcid.org/0000-0003-1485-6689",
+    interests:
+      "Science Education, Instructional Design, Applied Social Sciences, Higher Education",
+  },
 ];
 
 const statisticalEditors: Member[] = [
@@ -164,7 +195,7 @@ const statisticalEditors: Member[] = [
   {
     profile: images.montejo,
     name: "Diether C. Montejo",
-    affiliation: "Holy Cross of Davao College, Philippines",
+    affiliation: "Davao Oriental State University, Philippines",
     orcid: "https://orcid.org/0009-0000-2123-1797",
     interests:
       "Applied Mathematics, Machine Learning, Mathematics Education, Regenerative Education",
@@ -186,14 +217,14 @@ const advisoryBoard: Member[] = [
     name: "Maricar R. Casquejo",
     affiliation:
       "Commission on Higher Education – Regional Office XI, Philippines",
-    interests: "Higher education policy, Gender and Development oversight",
+    interests: "Higher Education, Educational Leadership, Gender and Development",
   },
   {
     profile: images.evelyn,
     name: "Evelyn S. Ecle",
     affiliation:
       "Commission on Higher Education – Regional Office XI, Philippines",
-    interests: "Higher education policy, Gender and Development oversight",
+    interests: "Higher Education, Educational Leadership, Gender and Development",
   },
 ];
 
@@ -236,6 +267,20 @@ function MemberGrid({ members }: { members: Member[] }) {
           <p className="text-xs text-muted-foreground/80 mt-2 leading-relaxed">
             {member.interests}
           </p>
+          {(member.researcherId || member.scopusId) && (
+            <div className="mt-2 space-y-0.5">
+              {member.researcherId && (
+                <p className="text-[11px] text-muted-foreground/70">
+                  ResearcherID: {member.researcherId}
+                </p>
+              )}
+              {member.scopusId && (
+                <p className="text-[11px] text-muted-foreground/70">
+                  Scopus Author ID: {member.scopusId}
+                </p>
+              )}
+            </div>
+          )}
           {member.orcid && (
             <a
               href={member.orcid}
