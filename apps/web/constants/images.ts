@@ -28,6 +28,8 @@ import dorsu_logo from "@/assets/images/Logo_DOrSU.png";
 import dssc_logo from "@/assets/images/Logo_DSSC.png";
 import spamast_logo from "@/assets/images/Logo_SPAMAST.png";
 import usep_logo from "@/assets/images/Logo_USeP.png";
+import asci_logo from "@/assets/images/ASCI Logo 1.png";
+import pej_logo from "@/assets/images/Philippine E-Journals.png";
 
 export const images = {
   bauyot,
@@ -60,4 +62,6 @@ export const images = {
   dssc_logo,
   spamast_logo,
   usep_logo,
+  asci_logo,
+  pej_logo,
 };

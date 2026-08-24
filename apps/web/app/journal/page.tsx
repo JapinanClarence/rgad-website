@@ -1,6 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
+import { images } from "@/constants/images";
 import {
   BookOpen,
   Globe,
@@ -325,6 +327,34 @@ export default function JournalPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Indexing Partner Logos */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm font-medium text-muted-foreground uppercase tracking-widest mb-10">
+            Indexed &amp; Registered With
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-10">
+            <img
+              src="https://assets.crossref.org/logo/crossref-logo-landscape-200.svg"
+              width={200}
+              height={68}
+              alt="Crossref logo"
+              className="h-10 w-auto object-contain grayscale hover:grayscale-0 transition-all"
+            />
+            <Image
+              src={images.asci_logo}
+              alt="Asian Science Citation Index (ASCI) logo"
+              className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all"
+            />
+            <Image
+              src={images.pej_logo}
+              alt="Philippine E-Journals (PEJ) logo"
+              className="h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all"
+            />
           </div>
         </div>
       </section>
