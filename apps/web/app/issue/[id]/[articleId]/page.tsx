@@ -54,6 +54,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+function toAuthorName(author: {
+  firstname?: string | null;
+  middlename?: string | null;
+  lastname?: string | null;
+}): string {
+  const first = author.firstname ?? "";
+  const middle = author.middlename ? ` ${author.middlename}` : "";
+  const last = author.lastname ?? "";
+  return `${first}${middle} ${last}`.trim();
+}
+
 export default async function ArticleDetailPage({ params }: Props) {
   const result = await getArticle(params.id, params.articleId);
   if (!result) notFound();
@@ -120,7 +131,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                   <span className="flex items-center gap-1.5">
                     <Users className="h-4 w-4" />
                     {article.authors.length > 0
-                      ? article.authors.join(", ")
+                      ? article.authors.map(toAuthorName).join(", ")
                       : "RGAN XI Editorial Team"}
                   </span>
                   <span className="flex items-center gap-1.5">

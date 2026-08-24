@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Database } from "@gad/supabase/types";
-import type { Issue, IssueArticle } from "@gad/types/issue";
+import type { Issue, IssueArticle, ArticleAuthor } from "@gad/types/issue";
 
 function formatIssueDate(value: string): string {
   return new Intl.DateTimeFormat("en-PH", {
@@ -9,17 +9,6 @@ function formatIssueDate(value: string): string {
     year: "numeric",
     timeZone: "UTC",
   }).format(new Date(`${value}T00:00:00Z`));
-}
-
-function toAuthorName(author: {
-  firstname?: string | null;
-  middlename?: string | null;
-  lastname?: string | null;
-}): string {
-  const first = author.firstname ?? "";
-  const middle = author.middlename ? ` ${author.middlename}` : "";
-  const last = author.lastname ?? "";
-  return `${first}${middle} ${last}`.trim();
 }
 
 export async function getIssues(): Promise<Issue[]> {
@@ -68,11 +57,8 @@ export async function getIssueById(
       pdf_url: string;
       keywords: string[] | null;
       doi: string | null;
-      authors?: Array<{
-        firstname?: string | null;
-        middlename?: string | null;
-        lastname?: string | null;
-      }>;
+      authors?: ArticleAuthor[];
+      correspondence?: string | null;
     }>;
   };
 
@@ -90,9 +76,14 @@ export async function getIssueById(
   };
 
   const articles: IssueArticle[] = (archive.articles ?? []).map((article) => {
-    const authors = (article.authors ?? [])
-      .map((author) => toAuthorName(author))
-      .filter(Boolean);
+    const authors: ArticleAuthor[] = (article.authors ?? []).map((author) => ({
+      firstname: author.firstname,
+      middlename: author.middlename,
+      lastname: author.lastname,
+      school: author.school,
+      department: author.department,
+      orcid_no: author.orcid_no,
+    }));
 
     return {
       id: article.id,
@@ -103,6 +94,7 @@ export async function getIssueById(
       authors,
       doi: article.doi,
       keywords: article.keywords ?? [],
+      correspondence: article.correspondence ?? undefined,
     };
   });
 
