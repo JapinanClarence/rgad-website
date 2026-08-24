@@ -21,7 +21,7 @@ const team = [
   },
   {
     profile: images.tahoy,
-    name: "Genesesly Tahoy",
+    name: "Genesesly Tahoy, MAEd",
     role: "Vice-President for Operations",
     dept: "University of Southeastern Philippines ",
     initials: "GT",
@@ -84,14 +84,14 @@ const team = [
   },
   {
     profile: images.joyce,
-    name: "Joyce C. Jasa",
+    name: "Joyce C. Jasa, MAEd",
     role: "Board of Directors",
     dept: "Brokenshire College",
     initials: "JJ",
   },
   {
     profile: images.imelda,
-    name: "Imelda T. Lauron",
+    name: "Imelda T. Lauron, MA",
     role: "Board of Directors",
     dept: "Southern Philippines Agri-Business and Marine and Aquatic School of Technology",
     initials: "IL",
