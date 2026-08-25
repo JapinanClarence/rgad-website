@@ -1,16 +1,20 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getIssueById } from "@/services/issue";
 import { type Issue, IssueArticle, ArticleAuthor } from "@gad/types/issue";
 import { IssueCover } from "@/components/journal/issue-cover";
 import { IssueQuickLinks } from "@/components/journal/issue-quick-links";
 import { CiteButton } from "@/components/journal/cite-button";
+import { AltmetricBadge } from "@/components/journal/altmetric-badge";
 import { Button } from "@gad/ui/button";
 import { Badge } from "@gad/ui/badge";
 import { formatDateShort } from "@/lib/utils";
-import { ArrowLeft, Calendar, Users, FileText, Hash } from "lucide-react";
+import { formatAuthorName } from "@/lib/authors";
+import { images } from "@/constants/images";
+import { ArrowLeft, Calendar, Users, FileText, Mail } from "lucide-react";
 
 interface Props {
   params: { id: string; articleId: string };
@@ -31,6 +35,15 @@ async function getArticle(issueId: string, articleId: string) {
   const article = result.articles.find((a) => a.id === articleId);
   if (!article) return null;
   return { issue: result.issue, article };
+}
+
+function toApaAuthorName(author: ArticleAuthor): string {
+  const initials = [author.firstname, author.middlename]
+    .filter(Boolean)
+    .map((name) => `${name!.charAt(0).toUpperCase()}.`)
+    .join(" ");
+
+  return `${author.lastname}, ${initials}`;
 }
 
 function buildCitation(issue: Issue, article: IssueArticle) {
@@ -72,26 +85,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       plainText(result.article.abstract) ||
       "An article from the Gender Research and Policy Journal.",
   };
-}
-
-function toApaAuthorName(author: ArticleAuthor): string {
-  const initials = [author.firstname, author.middlename]
-    .filter(Boolean)
-    .map((name) => `${name!.charAt(0).toUpperCase()}.`)
-    .join(" ");
-
-  return `${author.lastname}, ${initials}`;
-}
-
-function toAuthorName(author: {
-  firstname?: string | null;
-  middlename?: string | null;
-  lastname?: string | null;
-}): string {
-  const first = author.firstname ?? "";
-  const middle = author.middlename ? ` ${author.middlename}` : "";
-  const last = author.lastname ?? "";
-  return `${first}${middle} ${last}`.trim();
 }
 
 export default async function ArticleDetailPage({ params }: Props) {
@@ -145,27 +138,47 @@ export default async function ArticleDetailPage({ params }: Props) {
 
               {/* Title / metadata */}
               <div className="flex flex-col justify-center">
-                <h1 className="font-display text-2xl lg:text-3xl font-bold mb-4 leading-snug">
+                <h1 className="font-display text-2xl lg:text-3xl font-bold mb-5 leading-snug">
                   {article.title}
                 </h1>
 
-                {article.keywords.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-5">
-                    {article.keywords.map((keyword) => (
-                      <Badge key={keyword} variant="category">
-                        {keyword}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                {/* Authors: full name, institution, ORCID */}
+                <div className="space-y-3 mb-5">
+                  {article.authors.length > 0 ? (
+                    article.authors.map((author, idx) => (
+                      <div key={idx} className="flex items-start gap-2">
+                        <Users className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
+                        <div className="text-sm">
+                          <p className="font-medium text-foreground/90">
+                            {formatAuthorName(author)}
+                          </p>
+                          {author.school && (
+                            <p className="text-muted-foreground text-xs">
+                              {author.school}
+                            </p>
+                          )}
+                          {author.orcid_no && (
+                            <a
+                              href={`https://orcid.org/${author.orcid_no}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-primary underline hover:no-underline"
+                            >
+                              ORCID: {author.orcid_no}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Users className="h-4 w-4" />
+                      RGAN XI Editorial Team
+                    </div>
+                  )}
+                </div>
 
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1.5">
-                    <Users className="h-4 w-4" />
-                    {article.authors.length > 0
-                      ? article.authors.map(toAuthorName).join(", ")
-                      : "RGAN XI Editorial Team"}
-                  </span>
                   <span className="flex items-center gap-1.5">
                     <Calendar className="h-4 w-4" />
                     Published {formatDateShort(issue.publishedAt)}
@@ -182,6 +195,19 @@ export default async function ArticleDetailPage({ params }: Props) {
                     </a>
                   </span>
                 </div>
+
+                {article.correspondence && (
+                  <p className="flex items-center gap-1.5 text-sm text-muted-foreground mt-3">
+                    <Mail className="h-4 w-4 shrink-0" />
+                    Correspondence:{" "}
+                    <a
+                      href={`mailto:${article.correspondence}`}
+                      className="underline hover:text-primary transition-colors"
+                    >
+                      {article.correspondence}
+                    </a>
+                  </p>
+                )}
               </div>
             </div>
 
@@ -200,10 +226,49 @@ export default async function ArticleDetailPage({ params }: Props) {
                 </p>
               )}
             </div>
+
+            {/* Keywords */}
+            {article.keywords.length > 0 && (
+              <div className="mt-10 pt-10 border-t border-border">
+                <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
+                  Keywords
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {article.keywords.map((keyword) => (
+                    <Badge key={keyword} variant="category">
+                      {keyword}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          <aside className="lg:col-span-1">
+          <aside className="lg:col-span-1 space-y-6">
             <IssueQuickLinks />
+
+            <div className="bg-white border border-border rounded-2xl p-6">
+              <p className="font-display font-bold text-xs uppercase tracking-widest text-muted-foreground mb-4">
+                Article Metrics
+              </p>
+              {article.doi && (
+                <div className="mb-5 flex justify-center">
+                  <AltmetricBadge doi={article.doi} />
+                </div>
+              )}
+              <div className="flex items-center gap-2.5 pt-4 border-t border-border">
+                <Image
+                  src={images.open_access_logo}
+                  alt="Open Access"
+                  width={28}
+                  height={28}
+                  className="shrink-0"
+                />
+                <span className="text-xs text-muted-foreground">
+                  Open Access — freely available to read and download.
+                </span>
+              </div>
+            </div>
           </aside>
         </div>
       </div>

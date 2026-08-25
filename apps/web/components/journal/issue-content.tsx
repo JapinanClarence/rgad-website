@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Button } from "@gad/ui/button";
 import { IssueCover } from "@/components/journal/issue-cover";
 import { formatDateShort, formatYear } from "@/lib/utils";
-import { Calendar, Hash, FileText, Users } from "lucide-react";
+import { formatAuthorName } from "@/lib/authors";
+import { Calendar, FileText, Users } from "lucide-react";
 import type { Issue, IssueArticle } from "@gad/types/issue";
 
 function plainText(html?: string) {
@@ -89,7 +90,9 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1.5">
                       <Users className="h-3.5 w-3.5 shrink-0" />
-                      {article.authors.join(", ")}
+                      {article.authors.length > 0
+                        ? article.authors.map(formatAuthorName).join(", ")
+                        : "RGAN XI Editorial Team"}
                     </span>
                     {article.pages && <span>pp. {article.pages}</span>}
                   </div>

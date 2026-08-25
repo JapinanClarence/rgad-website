@@ -30,6 +30,7 @@ import spamast_logo from "@/assets/images/Logo_SPAMAST.png";
 import usep_logo from "@/assets/images/Logo_USeP.png";
 import asci_logo from "@/assets/images/ASCI Logo 1.png";
 import pej_logo from "@/assets/images/Philippine E-Journals.png";
+import open_access_logo from "@gad/assets/images/Open Access Logo.png";
 
 export const images = {
   bauyot,
@@ -64,4 +65,5 @@ export const images = {
   usep_logo,
   asci_logo,
   pej_logo,
+  open_access_logo,
 };
