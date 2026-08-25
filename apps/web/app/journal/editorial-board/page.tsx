@@ -155,12 +155,14 @@ const associateEditors: Member[] = [
       "Indigenous Knowledge Systems and Practices, Public Administration, Sustainable Development Studies, Women, Peace and Security",
   },
   {
+    profile: images.ingilan,
     name: "Sajed S. Ingilan",
     affiliation: "University of Southeastern Philippines, Philippines",
     orcid: "https://orcid.org/0000-0002-4466-2028",
     interests: "Linguistics, Language Education, Sulu and Mindanao Studies",
   },
   {
+    profile: images.reginio,
     name: "Francis N. Reginio",
     affiliation: "University of Southeastern Philippines, Philippines",
     orcid: "https://orcid.org/0000-0001-5939-4508",
@@ -168,6 +170,7 @@ const associateEditors: Member[] = [
       "Public Policy, Political Science, Cultural Studies, Development Studies",
   },
   {
+    profile: images.bantayan,
     name: "Jay Mark D. Bantayan",
     affiliation: "Davao de Oro State College, Philippines",
     orcid: "https://orcid.org/0000-0002-0361-1929",
@@ -175,6 +178,7 @@ const associateEditors: Member[] = [
       "Marine Biodiversity, Subsistence Fisheries, Environmental Science, Gender Studies",
   },
   {
+    profile: images.rebucas,
     name: "Elizer M. Rebucas",
     affiliation: "Davao de Oro State College, Philippines",
     orcid: "https://orcid.org/0000-0003-1485-6689",
@@ -217,14 +221,16 @@ const advisoryBoard: Member[] = [
     name: "Maricar R. Casquejo",
     affiliation:
       "Commission on Higher Education – Regional Office XI, Philippines",
-    interests: "Higher Education, Educational Leadership, Gender and Development",
+    interests:
+      "Higher Education, Educational Leadership, Gender and Development",
   },
   {
     profile: images.evelyn,
     name: "Evelyn S. Ecle",
     affiliation:
       "Commission on Higher Education – Regional Office XI, Philippines",
-    interests: "Higher Education, Educational Leadership, Gender and Development",
+    interests:
+      "Higher Education, Educational Leadership, Gender and Development",
   },
 ];
 

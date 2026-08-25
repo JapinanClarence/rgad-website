@@ -22,6 +22,10 @@ import rafon from "@/assets/images/Rafon, John Kenny A..png";
 import sanjose from "@/assets/images/San Jose, Ariel E.png";
 import simo from "@/assets/images/Simo, Wilkin F_.png";
 import tio from "@/assets/images/Tio, Revrev A.png";
+import bantayan from "@/assets/images/Bantayan, Jay Mark D.png";
+import ingilan from "@/assets/images/Ingilan, Sajed.png";
+import rebucas from "@/assets/images/Rebucas, Elizer M..png";
+import reginio from "@/assets/images/Reginio, Francis.png";
 import ched_logo from "@/assets/images/Logo_CHED.png";
 import ddosc_logo from "@/assets/images/Logo_DDOSC.png";
 import dorsu_logo from "@/assets/images/Logo_DOrSU.png";
@@ -57,6 +61,10 @@ export const images = {
   sanjose,
   simo,
   tio,
+  bantayan,
+  ingilan,
+  rebucas,
+  reginio,
   ched_logo,
   ddosc_logo,
   dorsu_logo,
