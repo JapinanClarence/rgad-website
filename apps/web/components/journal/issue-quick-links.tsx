@@ -28,7 +28,7 @@ const QUICK_LINKS = [
 export function IssueQuickLinks({ className }: { className?: string }) {
   return (
     <div
-      className={`sticky top-40 bg-white border border-border rounded-2xl p-6 ${className ?? ""}`}
+      className={` bg-white border border-border rounded-2xl p-6 ${className ?? ""}`}
     >
       <p className="font-display font-bold text-xs uppercase tracking-widest text-muted-foreground mb-4">
         Quick Links

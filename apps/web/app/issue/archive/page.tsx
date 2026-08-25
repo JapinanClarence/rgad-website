@@ -157,7 +157,9 @@ export default async function ArchivePage({
 
           {/* Quick links */}
           <aside className="lg:col-span-1">
-            <IssueQuickLinks />
+            <div className="sticky top-40 ">
+              <IssueQuickLinks />
+            </div>
           </aside>
         </div>
       </section>

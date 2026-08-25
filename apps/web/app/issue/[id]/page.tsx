@@ -42,7 +42,9 @@ export default async function IssueDetailPage({ params }: Props) {
           </div>
 
           <aside className="lg:col-span-1">
-            <IssueQuickLinks />
+            <div className="sticky top-40">
+              <IssueQuickLinks />
+            </div>
           </aside>
         </div>
       </div>

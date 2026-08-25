@@ -245,28 +245,30 @@ export default async function ArticleDetailPage({ params }: Props) {
           </div>
 
           <aside className="lg:col-span-1 space-y-6">
-            <IssueQuickLinks />
+            <div className="sticky top-40 space-y-6">
+              <IssueQuickLinks />
 
-            <div className="bg-white border border-border rounded-2xl p-6">
-              <p className="font-display font-bold text-xs uppercase tracking-widest text-muted-foreground mb-4">
-                Article Metrics
-              </p>
-              {article.doi && (
-                <div className="mb-5 flex justify-center">
-                  <AltmetricBadge doi={article.doi} />
+              <div className=" bg-white border border-border rounded-2xl p-6">
+                <p className="font-display font-bold text-xs uppercase tracking-widest text-muted-foreground mb-4">
+                  Article Metrics
+                </p>
+                {article.doi && (
+                  <div className="mb-5 flex justify-center">
+                    <AltmetricBadge doi={article.doi} />
+                  </div>
+                )}
+                <div className="flex items-center gap-2.5 pt-4 border-t border-border">
+                  <Image
+                    src={images.open_access_logo}
+                    alt="Open Access"
+                    width={28}
+                    height={28}
+                    className="shrink-0"
+                  />
+                  <span className="text-xs text-muted-foreground">
+                    Open Access — freely available to read and download.
+                  </span>
                 </div>
-              )}
-              <div className="flex items-center gap-2.5 pt-4 border-t border-border">
-                <Image
-                  src={images.open_access_logo}
-                  alt="Open Access"
-                  width={28}
-                  height={28}
-                  className="shrink-0"
-                />
-                <span className="text-xs text-muted-foreground">
-                  Open Access — freely available to read and download.
-                </span>
               </div>
             </div>
           </aside>

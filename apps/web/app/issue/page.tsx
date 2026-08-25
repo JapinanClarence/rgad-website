@@ -28,8 +28,7 @@ export default async function CurrentIssuePage() {
               Current Issue
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl">
-              No current issue has been published yet. Please check back
-              soon.
+              No current issue has been published yet. Please check back soon.
             </p>
           </div>
         </section>
@@ -52,8 +51,8 @@ export default async function CurrentIssuePage() {
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl">
             The latest issue of the Gender Research and Policy Journal —
-            peer-reviewed studies, policy analyses, and field research
-            published by RGAN XI.
+            peer-reviewed studies, policy analyses, and field research published
+            by RGAN XI.
           </p>
           <Link
             href="/issue/archive"
@@ -79,7 +78,9 @@ export default async function CurrentIssuePage() {
           </div>
 
           <aside className="lg:col-span-1">
-            <IssueQuickLinks />
+            <div className="sticky top-40">
+              <IssueQuickLinks />
+            </div>
           </aside>
         </div>
       </section>
