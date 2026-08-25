@@ -14,7 +14,17 @@ import { Badge } from "@gad/ui/badge";
 import { formatDateShort } from "@/lib/utils";
 import { formatAuthorName } from "@/lib/authors";
 import { images } from "@/constants/images";
-import { ArrowLeft, Calendar, Users, FileText, Mail } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Users,
+  FileText,
+  Mail,
+  Eye,
+  Download,
+  Copy,
+} from "lucide-react";
+import { Separator } from "@gad/ui/separator";
 
 interface Props {
   params: { id: string; articleId: string };
@@ -248,16 +258,46 @@ export default async function ArticleDetailPage({ params }: Props) {
             <div className="sticky top-40 space-y-6">
               <IssueQuickLinks />
 
-              <div className=" bg-white border border-border rounded-2xl p-6">
-                <p className="font-display font-bold text-xs uppercase tracking-widest text-muted-foreground mb-4">
+              <div className="bg-white border border-border rounded-2xl p-6">
+                <p className="font-display font-bold text-xs uppercase tracking-widest text-muted-foreground mb-5">
                   Article Metrics
                 </p>
-                {article.doi && (
-                  <div className="mb-5 flex justify-center">
-                    <AltmetricBadge doi={article.doi} />
+
+                <div className="grid grid-cols-3 divide-x divide-border">
+                  <div className="flex flex-col items-center text-center px-2">
+                    <Eye className="h-4 w-4 text-muted-foreground mb-2" />
+                    <span className="font-display font-semibold text-lg text-foreground">
+                      0
+                    </span>
+                    <span className="mt-0.5 text-[11px] text-muted-foreground">
+                      Views
+                    </span>
                   </div>
-                )}
-                <div className="flex items-center gap-2.5 pt-4 border-t border-border">
+
+                  <div className="flex flex-col items-center text-center px-2">
+                    <Download className="h-4 w-4 text-muted-foreground mb-2" />
+                    <span className="font-display font-semibold text-lg text-foreground">
+                      0
+                    </span>
+                    <span className="mt-0.5 text-[11px] text-muted-foreground">
+                      Downloads
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col items-center text-center px-2">
+                    <Copy className="h-4 w-4 text-muted-foreground mb-2" />
+                    <span className="font-display font-semibold text-lg text-foreground">
+                      0
+                    </span>
+                    <span className="mt-0.5 text-[11px] text-muted-foreground">
+                      Citations
+                    </span>
+                  </div>
+                </div>
+
+                <Separator className="my-5" />
+
+                <div className="flex items-center gap-3">
                   <Image
                     src={images.open_access_logo}
                     alt="Open Access"
@@ -265,9 +305,15 @@ export default async function ArticleDetailPage({ params }: Props) {
                     height={28}
                     className="shrink-0"
                   />
-                  <span className="text-xs text-muted-foreground">
-                    Open Access — freely available to read and download.
-                  </span>
+
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-foreground">
+                      Open Access
+                    </p>
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                      Freely available to read and download.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
