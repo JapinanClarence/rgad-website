@@ -1,2 +1,3 @@
 export { type Summit } from "./summit";
-export { type Issue, type IssueArticle, type ArticleAuthor } from "./issue";
+export type { Issue, IssueArticle, ArticleAuthor } from "./issue";
+export type { Reviewer } from "./reviewer";

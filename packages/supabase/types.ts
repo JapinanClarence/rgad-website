@@ -107,81 +107,21 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["summit"]["Insert"]>;
         Relationships: [];
       };
-      categories: {
+      reviewers: {
         Row: {
           id: string;
-          name: string;
-          slug: string;
-          description: string | null;
-          color: string;
           created_at: string;
+          firstname: string;
+          middlename: string | null;
+          lastname: string;
+          school: string;
+          country: string | null;
         };
         Insert: Omit<
-          Database["public"]["Tables"]["categories"]["Row"],
+          Database["public"]["Tables"]["reviewers"]["Row"],
           "id" | "created_at"
         >;
-        Update: Partial<Database["public"]["Tables"]["categories"]["Insert"]>;
-        Relationships: [];
-      };
-      organization: {
-        Row: {
-          id: string;
-          name: string;
-          tagline: string | null;
-          description: string | null;
-          mission: string | null;
-          vision: string | null;
-          email: string | null;
-          phone: string | null;
-          address: string | null;
-          facebook: string | null;
-          twitter: string | null;
-          logo_url: string | null;
-          updated_at: string;
-        };
-        Insert: Omit<
-          Database["public"]["Tables"]["organization"]["Row"],
-          "id" | "updated_at"
-        >;
-        Update: Partial<Database["public"]["Tables"]["organization"]["Insert"]>;
-        Relationships: [];
-      };
-      team_members: {
-        Row: {
-          id: string;
-          name: string;
-          position: string;
-          department: string | null;
-          bio: string | null;
-          avatar: string | null;
-          email: string | null;
-          order_index: number;
-          active: boolean;
-          created_at: string;
-        };
-        Insert: Omit<
-          Database["public"]["Tables"]["team_members"]["Row"],
-          "id" | "created_at"
-        >;
-        Update: Partial<Database["public"]["Tables"]["team_members"]["Insert"]>;
-        Relationships: [];
-      };
-      research_areas: {
-        Row: {
-          id: string;
-          title: string;
-          description: string;
-          icon: string | null;
-          order_index: number;
-          created_at: string;
-        };
-        Insert: Omit<
-          Database["public"]["Tables"]["research_areas"]["Row"],
-          "id" | "created_at"
-        >;
-        Update: Partial<
-          Database["public"]["Tables"]["research_areas"]["Insert"]
-        >;
+        Update: Partial<Database["public"]["Tables"]["reviewers"]["Insert"]>;
         Relationships: [];
       };
     };

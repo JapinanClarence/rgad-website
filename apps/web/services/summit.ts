@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@gad/supabase";
 import type { Database } from "@gad/supabase/types";
 import type { Summit } from "@gad/types/";
 
