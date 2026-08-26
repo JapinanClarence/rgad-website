@@ -47,7 +47,8 @@ const navLinks = [
     ],
   },
   { label: "GAD Summit", href: "/summit" },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Announcements", href: "/announcements" },
 ];
 
 export function Navbar() {
@@ -88,7 +89,7 @@ export function Navbar() {
                 RGAN XI
               </p>
               <p className="text-[10px] text-muted-foreground leading-tight">
-                Region XI Gender and Development Advocates Network
+                EST. 2023
               </p>
             </div>
           </Link>

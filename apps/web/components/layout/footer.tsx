@@ -28,9 +28,7 @@ export function Footer() {
                 <p className="font-display font-bold text-background">
                   RGAN XI
                 </p>
-                <p className="text-xs text-background/60">
-                  Region XI Gender and Development Advocates Network
-                </p>
+                <p className="text-xs text-background/60">EST. 2023</p>
               </div>
             </div>
             <p className="text-background/70 text-sm leading-relaxed max-w-sm mb-6">
