@@ -35,7 +35,7 @@ function initials(name: string) {
     .join("");
 }
 
-export function formatName(reviewer: Reviewer): string {
+function formatName(reviewer: Reviewer): string {
   const middle = reviewer.middlename ? ` ${reviewer.middlename}` : "";
   return `${reviewer.firstname}${middle} ${reviewer.lastname}`.trim();
 }
