@@ -12,6 +12,11 @@ export const metadata: Metadata = {
     "The international database of peer reviewers supporting the Gender Research and Policy Journal (GRPJ), published by RGAN XI.",
 };
 
+// Always fetch the latest reviewers on each request instead of serving a
+// statically-generated (and possibly stale/empty) list from build time.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const gradients = [
   "from-purple-500 to-pink-500",
   "from-teal-500 to-cyan-500",
@@ -30,72 +35,6 @@ function initials(name: string) {
     .join("");
 }
 
-// type Reviewer = {
-//   name: string;
-//   affiliation: string;
-// };
-
-// const reviewers: Reviewer[] = [
-//   {
-//     name: "Glory Dee A. Romo",
-//     affiliation: "University of the Philippines Mindanao, Philippines",
-//   },
-//   {
-//     name: "Ricksterlie C. Verzosa",
-//     affiliation: "Davao Oriental State University, Philippines",
-//   },
-//   {
-//     name: "Randy A. Tudy",
-//     affiliation: "University of Southeastern Philippines, Philippines",
-//   },
-//   {
-//     name: "Romeo Toring Jr.",
-//     affiliation: "Eikei University, Japan",
-//   },
-//   {
-//     name: "Mark Aljen D. Binocal",
-//     affiliation: "Davao Oriental State University, Philippines",
-//   },
-//   {
-//     name: "Leo D. Rayon",
-//     affiliation: "Davao del Norte State College, Philippines",
-//   },
-//   {
-//     name: "Daniel Fritz V. Silvallana",
-//     affiliation:
-//       "Davao del Norte State College, Philippines / Deakin University, Australia",
-//   },
-//   {
-//     name: "Ronel G. Dagohoy",
-//     affiliation:
-//       "Kapalong College of Agriculture, Sciences and Technology, Philippines",
-//   },
-//   {
-//     name: "Elsa May D. Baron",
-//     affiliation: "San Pedro College, Philippines",
-//   },
-//   {
-//     name: "Robie V. Catubigan",
-//     affiliation: "Davao Oriental State University, Philippines",
-//   },
-//   {
-//     name: "Rose Anelyn V. Ceniza",
-//     affiliation: "Davao Oriental State University, Philippines",
-//   },
-//   {
-//     name: "Klent Rodni M. Delima",
-//     affiliation: "Hiraya-Diwa Psychological Services, Philippines",
-//   },
-//   {
-//     name: "Aimee Lynn B. Dupo",
-//     affiliation: "University of the Philippines - Los Baños, Philippines",
-//   },
-//   {
-//     name: "Milton Norman D. Medina",
-//     affiliation: "Davao Oriental State University, Philippines",
-//   },
-// ];
-
 export function formatName(reviewer: Reviewer): string {
   const middle = reviewer.middlename ? ` ${reviewer.middlename}` : "";
   return `${reviewer.firstname}${middle} ${reviewer.lastname}`.trim();
@@ -103,7 +42,6 @@ export function formatName(reviewer: Reviewer): string {
 
 export default async function ReviewersPage() {
   const reviewers = await getReviewers();
-  // console.log(reviewer);
 
   return (
     <div className="pt-20">
@@ -141,7 +79,7 @@ export default async function ReviewersPage() {
                 <div
                   className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold mb-4 group-hover:scale-105 transition-transform`}
                 >
-                  {"GD"}
+                  {initials(formatName(reviewer))}
                 </div>
                 <h3 className="font-display font-bold text-base leading-tight">
                   {formatName(reviewer)}
