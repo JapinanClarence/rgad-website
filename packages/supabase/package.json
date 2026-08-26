@@ -5,10 +5,15 @@
   "types": "./client.ts",
   "exports": {
     ".": "./client.ts",
+    "./client": "./client.ts",
+    "./server": "./server.ts",
     "./types": "./types.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.43.0"
+  },
+  "peerDependencies": {
+    "next": "^14"
   }
 }

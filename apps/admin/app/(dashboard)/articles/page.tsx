@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@gad/supabase/server'
 import { formatDate } from '@/lib/utils'
 import { PlusCircle, Search, Edit, Trash2, Eye } from 'lucide-react'
 import type { Metadata } from 'next'

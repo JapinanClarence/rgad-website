@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@gad/supabase/client'
 import {
   LayoutDashboard, FileText, PlusCircle, Users, Settings, LogOut,
   ChevronLeft, ChevronRight, BookOpen, Image as ImageIcon,

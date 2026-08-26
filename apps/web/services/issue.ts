@@ -1,4 +1,4 @@
-import { createClient } from "@gad/supabase";
+import { createClient } from "@gad/supabase/server";
 import type { Database } from "@gad/supabase/types";
 import type { Issue, IssueArticle, ArticleAuthor } from "@gad/types/issue";
 

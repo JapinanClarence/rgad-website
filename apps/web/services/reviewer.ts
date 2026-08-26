@@ -1,5 +1,5 @@
-import { createClient } from "@gad/supabase";
-import type { Database } from "@gad/supabase";
+import { createClient } from "@gad/supabase/server";
+import type { Database } from "@gad/supabase/types";
 import type { Reviewer } from "@gad/types";
 
 export async function getReviewers(): Promise<Reviewer[]> {

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '@gad/supabase/client'
 import { Save, Send, ArrowLeft, ImagePlus, X } from 'lucide-react'
 import Link from 'next/link'
 
