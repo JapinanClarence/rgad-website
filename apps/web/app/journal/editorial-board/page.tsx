@@ -10,6 +10,7 @@ import {
   Globe2,
   BookUser,
   Building2,
+  ChevronRight,
 } from "lucide-react";
 import { JournalTabs } from "@/components/journal/journal-tabs";
 import { JournalPageHeader } from "@/components/journal/journal-page-header";
@@ -360,18 +361,37 @@ export default function EditorialBoardPage() {
       {/* Reviewer Database & Editorial Office */}
       <section className="py-4 pb-16 bg-muted/20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <PolicySection icon={BookUser} title="Reviewer Database">
-            <p>
-              The journal maintains an international database of qualified peer
-              reviewers representing diverse disciplines relevant to gender
-              research and policy. Reviewer selection is based on subject
-              expertise, publication history, peer-review experience, research
-              integrity, absence of conflicts of interest, and demonstrated
-              commitment to timely, high-quality reviews. The reviewer database
-              is updated regularly to ensure diversity, expertise, and
-              responsiveness.
-            </p>
-          </PolicySection>
+          <Link
+            href="/journal/editorial-board/reviewers"
+            className="group block bg-white rounded-3xl border border-border shadow-sm p-8 lg:p-10 hover:shadow-md hover:border-primary/30 transition-all"
+          >
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                <BookUser className="h-5 w-5 text-primary" />
+              </div>
+              <h2 className="font-display text-2xl font-bold flex-1">
+                Reviewer Database
+              </h2>
+              <ChevronRight className="h-5 w-5 text-muted-foreground shrink-0 group-hover:translate-x-1 group-hover:text-primary transition-all" />
+            </div>
+            <div className="article-prose text-muted-foreground text-sm lg:text-[15px]">
+              <p>
+                The journal maintains an international database of qualified
+                peer reviewers representing diverse disciplines relevant to
+                gender research and policy. Reviewer selection is based on
+                subject expertise, publication history, peer-review
+                experience, research integrity, absence of conflicts of
+                interest, and demonstrated commitment to timely,
+                high-quality reviews. The reviewer database is updated
+                regularly to ensure diversity, expertise, and
+                responsiveness.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary mt-2">
+              View the Reviewer List
+              <ChevronRight className="h-3.5 w-3.5" />
+            </span>
+          </Link>
 
           <PolicySection icon={Landmark} title="Editorial Office">
             <p>
