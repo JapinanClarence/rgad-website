@@ -4,7 +4,8 @@ import Link from "next/link";
 import { ArrowLeft, Mail, BookUser } from "lucide-react";
 import { JournalTabs } from "@/components/journal/journal-tabs";
 import { JournalPageHeader } from "@/components/journal/journal-page-header";
-
+import { getReviewers } from "@/services/reviewer";
+import type { Reviewer } from "@gad/types";
 export const metadata: Metadata = {
   title: "Reviewer Database — GRPJ",
   description:
@@ -29,73 +30,81 @@ function initials(name: string) {
     .join("");
 }
 
-type Reviewer = {
-  name: string;
-  affiliation: string;
-};
+// type Reviewer = {
+//   name: string;
+//   affiliation: string;
+// };
 
-const reviewers: Reviewer[] = [
-  {
-    name: "Glory Dee A. Romo",
-    affiliation: "University of the Philippines Mindanao, Philippines",
-  },
-  {
-    name: "Ricksterlie C. Verzosa",
-    affiliation: "Davao Oriental State University, Philippines",
-  },
-  {
-    name: "Randy A. Tudy",
-    affiliation: "University of Southeastern Philippines, Philippines",
-  },
-  {
-    name: "Romeo Toring Jr.",
-    affiliation: "Eikei University, Japan",
-  },
-  {
-    name: "Mark Aljen D. Binocal",
-    affiliation: "Davao Oriental State University, Philippines",
-  },
-  {
-    name: "Leo D. Rayon",
-    affiliation: "Davao del Norte State College, Philippines",
-  },
-  {
-    name: "Daniel Fritz V. Silvallana",
-    affiliation:
-      "Davao del Norte State College, Philippines / Deakin University, Australia",
-  },
-  {
-    name: "Ronel G. Dagohoy",
-    affiliation:
-      "Kapalong College of Agriculture, Sciences and Technology, Philippines",
-  },
-  {
-    name: "Elsa May D. Baron",
-    affiliation: "San Pedro College, Philippines",
-  },
-  {
-    name: "Robie V. Catubigan",
-    affiliation: "Davao Oriental State University, Philippines",
-  },
-  {
-    name: "Rose Anelyn V. Ceniza",
-    affiliation: "Davao Oriental State University, Philippines",
-  },
-  {
-    name: "Klent Rodni M. Delima",
-    affiliation: "Hiraya-Diwa Psychological Services, Philippines",
-  },
-  {
-    name: "Aimee Lynn B. Dupo",
-    affiliation: "University of the Philippines - Los Baños, Philippines",
-  },
-  {
-    name: "Milton Norman D. Medina",
-    affiliation: "Davao Oriental State University, Philippines",
-  },
-];
+// const reviewers: Reviewer[] = [
+//   {
+//     name: "Glory Dee A. Romo",
+//     affiliation: "University of the Philippines Mindanao, Philippines",
+//   },
+//   {
+//     name: "Ricksterlie C. Verzosa",
+//     affiliation: "Davao Oriental State University, Philippines",
+//   },
+//   {
+//     name: "Randy A. Tudy",
+//     affiliation: "University of Southeastern Philippines, Philippines",
+//   },
+//   {
+//     name: "Romeo Toring Jr.",
+//     affiliation: "Eikei University, Japan",
+//   },
+//   {
+//     name: "Mark Aljen D. Binocal",
+//     affiliation: "Davao Oriental State University, Philippines",
+//   },
+//   {
+//     name: "Leo D. Rayon",
+//     affiliation: "Davao del Norte State College, Philippines",
+//   },
+//   {
+//     name: "Daniel Fritz V. Silvallana",
+//     affiliation:
+//       "Davao del Norte State College, Philippines / Deakin University, Australia",
+//   },
+//   {
+//     name: "Ronel G. Dagohoy",
+//     affiliation:
+//       "Kapalong College of Agriculture, Sciences and Technology, Philippines",
+//   },
+//   {
+//     name: "Elsa May D. Baron",
+//     affiliation: "San Pedro College, Philippines",
+//   },
+//   {
+//     name: "Robie V. Catubigan",
+//     affiliation: "Davao Oriental State University, Philippines",
+//   },
+//   {
+//     name: "Rose Anelyn V. Ceniza",
+//     affiliation: "Davao Oriental State University, Philippines",
+//   },
+//   {
+//     name: "Klent Rodni M. Delima",
+//     affiliation: "Hiraya-Diwa Psychological Services, Philippines",
+//   },
+//   {
+//     name: "Aimee Lynn B. Dupo",
+//     affiliation: "University of the Philippines - Los Baños, Philippines",
+//   },
+//   {
+//     name: "Milton Norman D. Medina",
+//     affiliation: "Davao Oriental State University, Philippines",
+//   },
+// ];
 
-export default function ReviewersPage() {
+export function formatName(reviewer: Reviewer): string {
+  const middle = reviewer.middlename ? ` ${reviewer.middlename}` : "";
+  return `${reviewer.firstname}${middle} ${reviewer.lastname}`.trim();
+}
+
+export default async function ReviewersPage() {
+  const reviewers = await getReviewers();
+  // console.log(reviewer);
+
   return (
     <div className="pt-20">
       <JournalPageHeader
@@ -126,19 +135,19 @@ export default function ReviewersPage() {
           <div className="grid sm:grid-cols-2 gap-5 mb-14">
             {reviewers.map((reviewer, i) => (
               <div
-                key={reviewer.name}
+                key={reviewer.id}
                 className="group bg-white rounded-2xl border border-border p-6 hover:shadow-md transition-all hover:-translate-y-0.5 duration-200"
               >
                 <div
                   className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold mb-4 group-hover:scale-105 transition-transform`}
                 >
-                  {initials(reviewer.name)}
+                  {"GD"}
                 </div>
                 <h3 className="font-display font-bold text-base leading-tight">
-                  {reviewer.name}
+                  {formatName(reviewer)}
                 </h3>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {reviewer.affiliation}
+                  {reviewer.school}
                 </p>
               </div>
             ))}
