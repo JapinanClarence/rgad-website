@@ -49,17 +49,16 @@ export default async function Announcements({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
-              Latest
+              Latest from RGAN XI
             </p>
-            <h1 className="font-display text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Announcements
+            <h1 className="font-display text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight mb-6">
+              Stay ahead with{" "}
+              <span className="text-gradient">announcements</span> that move the
+              network forward
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              The Region XI Gender and Development Advocates Network (RGAN XI
-              Inc.) is a non-stock, non-profit, non-sectarian, and apolitical
-              organization dedicated to advancing gender equality, diversity,
-              equity, and social inclusion through research, education, policy
-              engagement, and community partnerships.
+              The latest calls for papers, events, and network milestones from
+              RGAN XI, updated regularly, open to all.
             </p>
           </div>
         </div>
