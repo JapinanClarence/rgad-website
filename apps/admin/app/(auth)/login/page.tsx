@@ -1,31 +1,35 @@
-'use client'
-import React, { useState } from 'react'
-import { createClient } from '@gad/supabase/client'
-import { useRouter } from 'next/navigation'
-import { Eye, EyeOff, LogIn } from 'lucide-react'
+"use client";
+import React, { useState } from "react";
+import { createClient } from "@gad/supabase/client";
+import { useRouter } from "next/navigation";
+import { Eye, EyeOff, LogIn } from "lucide-react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const router = useRouter()
-  const supabase = createClient()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
+  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    console.log(error);
     if (error) {
-      setError(error.message)
-      setLoading(false)
+      setError(error.message);
+      setLoading(false);
     } else {
-      router.push('/dashboard')
-      router.refresh()
+      router.push("/dashboard");
+      router.refresh();
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex">
@@ -46,15 +50,16 @@ export default function LoginPage() {
             Manage your research platform
           </h1>
           <p className="text-white/80 text-lg leading-relaxed">
-            Publish articles, manage the team, and keep the research library up to date.
+            Publish articles, manage the team, and keep the research library up
+            to date.
           </p>
         </div>
 
         <div className="grid grid-cols-3 gap-4">
           {[
-            { value: '200+', label: 'Articles' },
-            { value: '50+', label: 'Researchers' },
-            { value: '15+', label: 'Years' },
+            { value: "200+", label: "Articles" },
+            { value: "50+", label: "Researchers" },
+            { value: "15+", label: "Years" },
           ].map((s) => (
             <div key={s.label} className="bg-white/10 rounded-xl p-4">
               <p className="font-display font-bold text-3xl">{s.value}</p>
@@ -76,11 +81,18 @@ export default function LoginPage() {
           </div>
 
           <h2 className="font-display text-3xl font-bold mb-2">Welcome back</h2>
-          <p className="text-muted-foreground mb-8">Sign in to your admin account</p>
+          <p className="text-muted-foreground mb-8">
+            Sign in to your admin account
+          </p>
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium mb-1.5" htmlFor="email">Email address</label>
+              <label
+                className="block text-sm font-medium mb-1.5"
+                htmlFor="email"
+              >
+                Email address
+              </label>
               <input
                 id="email"
                 type="email"
@@ -93,11 +105,16 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5" htmlFor="password">Password</label>
+              <label
+                className="block text-sm font-medium mb-1.5"
+                htmlFor="password"
+              >
+                Password
+              </label>
               <div className="relative">
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-2.5 pr-11 rounded-lg border border-input bg-white text-sm focus:outline-none focus:ring-2 focus:ring-ring transition-shadow"
@@ -109,7 +126,11 @@ export default function LoginPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
                 </button>
               </div>
             </div>
@@ -130,11 +151,11 @@ export default function LoginPage() {
               ) : (
                 <LogIn className="h-4 w-4" />
               )}
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
         </div>
       </div>
     </div>
-  )
+  );
 }
