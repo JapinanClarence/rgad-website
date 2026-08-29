@@ -8,6 +8,14 @@
     ".": "./index.ts",
     "./*": "./*"
   },
+  "dependencies": {
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^2.3.0",
+    "react-hook-form": "^7.51.0"
+  },
   "peerDependencies": {
     "react": "^18",
     "next": "^14"
