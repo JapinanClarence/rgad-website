@@ -1,71 +1,137 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@gad/supabase/client'
-import { Save, Send, ArrowLeft, ImagePlus, X } from 'lucide-react'
+import { Save, ArrowLeft, X, Plus, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 
-const CATEGORIES = [
-  'Gender Policy', 'Women Empowerment', 'Social Inclusion',
-  'Governance', 'Education', 'VAWC', 'Legal Framework',
-]
+type IssueOption = {
+  id: string
+  volume_no: number
+  issue_no: number
+}
+
+type AuthorForm = {
+  firstname: string
+  middlename: string
+  lastname: string
+  department: string
+  school: string
+  city: string
+  country: string
+}
+
+const EMPTY_AUTHOR: AuthorForm = {
+  firstname: '',
+  middlename: '',
+  lastname: '',
+  department: '',
+  school: '',
+  city: '',
+  country: '',
+}
 
 export default function NewArticlePage() {
   const router = useRouter()
   const supabase = createClient()
 
+  const [issues, setIssues] = useState<IssueOption[]>([])
+  const [loadingIssues, setLoadingIssues] = useState(true)
+
   const [form, setForm] = useState({
     title: '',
-    slug: '',
-    excerpt: '',
-    content: '',
-    category: 'Gender Policy',
-    tags: [] as string[],
-    published: false,
-    featured: false,
+    abstract: '',
+    pages: '',
+    pdf_url: '',
+    archive_id: '',
+    keywords: [] as string[],
   })
-  const [tagInput, setTagInput] = useState('')
+  const [keywordInput, setKeywordInput] = useState('')
+  const [authors, setAuthors] = useState<AuthorForm[]>([{ ...EMPTY_AUTHOR }])
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
-  const slugify = (text: string) =>
-    text.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-')
+  useEffect(() => {
+    const loadIssues = async () => {
+      try {
+        const { data } = await supabase
+          .from('archive')
+          .select('id, volume_no, issue_no')
+          .order('volume_no', { ascending: false })
+          .order('issue_no', { ascending: false })
+        if (data) {
+          setIssues(data as IssueOption[])
+          if (data.length > 0) setForm((f) => ({ ...f, archive_id: data[0].id }))
+        }
+      } catch {
+        // leave issues empty, dropdown will show "No issues found"
+      } finally {
+        setLoadingIssues(false)
+      }
+    }
+    loadIssues()
+  }, [supabase])
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const title = e.target.value
-    setForm((f) => ({ ...f, title, slug: slugify(title) }))
-  }
-
-  const addTag = () => {
-    if (tagInput && !form.tags.includes(tagInput)) {
-      setForm((f) => ({ ...f, tags: [...f.tags, tagInput.trim()] }))
-      setTagInput('')
+  const addKeyword = () => {
+    if (keywordInput && !form.keywords.includes(keywordInput)) {
+      setForm((f) => ({ ...f, keywords: [...f.keywords, keywordInput.trim()] }))
+      setKeywordInput('')
     }
   }
 
-  const removeTag = (tag: string) =>
-    setForm((f) => ({ ...f, tags: f.tags.filter((t) => t !== tag) }))
+  const removeKeyword = (keyword: string) =>
+    setForm((f) => ({ ...f, keywords: f.keywords.filter((k) => k !== keyword) }))
 
-  const handleSave = async (publish = false) => {
+  const updateAuthor = (index: number, field: keyof AuthorForm, value: string) => {
+    setAuthors((prev) => prev.map((a, i) => (i === index ? { ...a, [field]: value } : a)))
+  }
+
+  const addAuthor = () => setAuthors((prev) => [...prev, { ...EMPTY_AUTHOR }])
+
+  const removeAuthor = (index: number) =>
+    setAuthors((prev) => (prev.length > 1 ? prev.filter((_, i) => i !== index) : prev))
+
+  const handleSave = async () => {
     setSaving(true)
     setError('')
     try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) throw new Error('Not authenticated')
+      if (!form.archive_id) throw new Error('Please select an issue')
 
-      const { error: err } = await supabase.from('articles').insert({
-        title: form.title,
-        slug: form.slug,
-        excerpt: form.excerpt,
-        content: form.content,
-        category: form.category,
-        tags: form.tags,
-        published: publish ? true : form.published,
-        featured: form.featured,
-        author_id: user.id,
-        published_at: publish ? new Date().toISOString() : null,
-      })
-      if (err) throw err
+      const validAuthors = authors.filter((a) => a.firstname.trim() && a.lastname.trim() && a.school.trim())
+      if (validAuthors.length === 0) {
+        throw new Error('At least one author with first name, last name, and school is required')
+      }
+
+      const { data: article, error: articleErr } = await supabase
+        .from('articles')
+        .insert({
+          title: form.title,
+          abstract: form.abstract,
+          pages: form.pages,
+          pdf_url: form.pdf_url,
+          archive_id: form.archive_id,
+          keywords: form.keywords,
+        })
+        .select('id')
+        .single()
+
+      if (articleErr) throw articleErr
+
+      const { error: authorsErr } = await supabase.from('authors').insert(
+        validAuthors.map((a) => ({
+          article_id: article.id,
+          firstname: a.firstname,
+          middlename: a.middlename || null,
+          lastname: a.lastname,
+          department: a.department || null,
+          school: a.school,
+          city: a.city || null,
+          country: a.country || null,
+        }))
+      )
+
+      if (authorsErr) throw authorsErr
+
       router.push('/articles')
     } catch (e: any) {
       setError(e.message)
@@ -85,24 +151,14 @@ export default function NewArticlePage() {
         <div className="flex-1">
           <h1 className="font-display text-3xl font-bold">New Article</h1>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => handleSave(false)}
-            disabled={saving || !form.title}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-white text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50"
-          >
-            <Save className="h-4 w-4" />
-            Save Draft
-          </button>
-          <button
-            onClick={() => handleSave(true)}
-            disabled={saving || !form.title}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg gad-gradient text-white text-sm font-medium hover:opacity-90 transition-opacity shadow-md disabled:opacity-50"
-          >
-            <Send className="h-4 w-4" />
-            Publish
-          </button>
-        </div>
+        <button
+          onClick={handleSave}
+          disabled={saving || !form.title}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg gad-gradient text-white text-sm font-medium hover:opacity-90 transition-opacity shadow-md disabled:opacity-50"
+        >
+          <Save className="h-4 w-4" />
+          {saving ? 'Saving...' : 'Save Article'}
+        </button>
       </div>
 
       {error && (
@@ -120,135 +176,192 @@ export default function NewArticlePage() {
               <input
                 type="text"
                 value={form.title}
-                onChange={handleTitleChange}
+                onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                 className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="Enter article title..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1.5">Slug</label>
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">/articles/</span>
+              <label className="block text-sm font-medium mb-1.5">Abstract</label>
+              <textarea
+                value={form.abstract}
+                onChange={(e) => setForm((f) => ({ ...f, abstract: e.target.value }))}
+                rows={6}
+                className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+                placeholder="Enter the article abstract..."
+              />
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1.5">Pages</label>
                 <input
                   type="text"
-                  value={form.slug}
-                  onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
-                  className="flex-1 px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring font-mono"
-                  placeholder="article-slug"
+                  value={form.pages}
+                  onChange={(e) => setForm((f) => ({ ...f, pages: e.target.value }))}
+                  className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  placeholder="e.g. 1-18"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1.5">PDF URL</label>
+                <input
+                  type="url"
+                  value={form.pdf_url}
+                  onChange={(e) => setForm((f) => ({ ...f, pdf_url: e.target.value }))}
+                  className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  placeholder="https://..."
                 />
               </div>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1.5">Excerpt</label>
-              <textarea
-                value={form.excerpt}
-                onChange={(e) => setForm((f) => ({ ...f, excerpt: e.target.value }))}
-                rows={3}
-                className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
-                placeholder="Brief summary of the article (shown on listing pages)..."
-              />
-            </div>
           </div>
 
+          {/* Authors */}
           <div className="bg-white rounded-2xl border border-border shadow-sm p-6">
-            <label className="block text-sm font-medium mb-3">Article Content</label>
-            <textarea
-              value={form.content}
-              onChange={(e) => setForm((f) => ({ ...f, content: e.target.value }))}
-              rows={20}
-              className="w-full px-4 py-3 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-y font-mono text-xs leading-relaxed"
-              placeholder="Write your article content here. HTML is supported for rich formatting (e.g., <h2>, <p>, <blockquote>, <ul>)..."
-            />
-            <p className="text-xs text-muted-foreground mt-2">
-              HTML is supported. Use semantic tags: &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;blockquote&gt;, etc.
-            </p>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-medium text-sm">Authors *</h3>
+              <button
+                type="button"
+                onClick={addAuthor}
+                className="flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+              >
+                <UserPlus className="h-3.5 w-3.5" />
+                Add Author
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {authors.map((author, index) => (
+                <div key={index} className="relative border border-border rounded-xl p-4">
+                  {authors.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeAuthor(index)}
+                      className="absolute top-3 right-3 p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+                      title="Remove author"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                  <p className="text-xs font-medium text-muted-foreground mb-3">Author {index + 1}</p>
+                  <div className="grid sm:grid-cols-3 gap-3 mb-3">
+                    <input
+                      type="text"
+                      value={author.firstname}
+                      onChange={(e) => updateAuthor(index, 'firstname', e.target.value)}
+                      className="px-3 py-2 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="First name *"
+                    />
+                    <input
+                      type="text"
+                      value={author.middlename}
+                      onChange={(e) => updateAuthor(index, 'middlename', e.target.value)}
+                      className="px-3 py-2 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="Middle name"
+                    />
+                    <input
+                      type="text"
+                      value={author.lastname}
+                      onChange={(e) => updateAuthor(index, 'lastname', e.target.value)}
+                      className="px-3 py-2 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="Last name *"
+                    />
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3 mb-3">
+                    <input
+                      type="text"
+                      value={author.school}
+                      onChange={(e) => updateAuthor(index, 'school', e.target.value)}
+                      className="px-3 py-2 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="School / Institution *"
+                    />
+                    <input
+                      type="text"
+                      value={author.department}
+                      onChange={(e) => updateAuthor(index, 'department', e.target.value)}
+                      className="px-3 py-2 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="Department"
+                    />
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      value={author.city}
+                      onChange={(e) => updateAuthor(index, 'city', e.target.value)}
+                      className="px-3 py-2 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="City"
+                    />
+                    <input
+                      type="text"
+                      value={author.country}
+                      onChange={(e) => updateAuthor(index, 'country', e.target.value)}
+                      className="px-3 py-2 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                      placeholder="Country"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-5">
-          {/* Category */}
+          {/* Issue */}
           <div className="bg-white rounded-2xl border border-border shadow-sm p-5">
-            <h3 className="font-medium text-sm mb-3">Category</h3>
-            <div className="space-y-2">
-              {CATEGORIES.map((cat) => (
-                <label key={cat} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name="category"
-                    value={cat}
-                    checked={form.category === cat}
-                    onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-                    className="accent-primary"
-                  />
-                  <span className="text-sm">{cat}</span>
-                </label>
-              ))}
-            </div>
+            <h3 className="font-medium text-sm mb-3">Issue *</h3>
+            {loadingIssues ? (
+              <p className="text-xs text-muted-foreground">Loading issues...</p>
+            ) : issues.length === 0 ? (
+              <p className="text-xs text-muted-foreground">
+                No issues found. Create an issue first before adding an article.
+              </p>
+            ) : (
+              <select
+                value={form.archive_id}
+                onChange={(e) => setForm((f) => ({ ...f, archive_id: e.target.value }))}
+                className="w-full px-3 py-2 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring bg-white"
+              >
+                {issues.map((issue) => (
+                  <option key={issue.id} value={issue.id}>
+                    Vol. {issue.volume_no}, Issue {issue.issue_no}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
-          {/* Tags */}
+          {/* Keywords */}
           <div className="bg-white rounded-2xl border border-border shadow-sm p-5">
-            <h3 className="font-medium text-sm mb-3">Tags</h3>
+            <h3 className="font-medium text-sm mb-3">Keywords</h3>
             <div className="flex gap-2 mb-3">
               <input
                 type="text"
-                value={tagInput}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                value={keywordInput}
+                onChange={(e) => setKeywordInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addKeyword())}
                 className="flex-1 px-3 py-1.5 rounded-md border border-input text-sm focus:outline-none focus:ring-1 focus:ring-ring"
-                placeholder="Add tag..."
+                placeholder="Add keyword..."
               />
               <button
                 type="button"
-                onClick={addTag}
+                onClick={addKeyword}
                 className="px-3 py-1.5 rounded-md bg-primary/10 text-primary text-sm hover:bg-primary/20 transition-colors"
               >
-                Add
+                <Plus className="h-3.5 w-3.5" />
               </button>
             </div>
             <div className="flex flex-wrap gap-1.5">
-              {form.tags.map((tag) => (
-                <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-xs">
-                  {tag}
-                  <button onClick={() => removeTag(tag)} className="text-muted-foreground hover:text-destructive transition-colors">
+              {form.keywords.map((keyword) => (
+                <span key={keyword} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted text-xs">
+                  {keyword}
+                  <button onClick={() => removeKeyword(keyword)} className="text-muted-foreground hover:text-destructive transition-colors">
                     <X className="h-2.5 w-2.5" />
                   </button>
                 </span>
               ))}
             </div>
-          </div>
-
-          {/* Options */}
-          <div className="bg-white rounded-2xl border border-border shadow-sm p-5">
-            <h3 className="font-medium text-sm mb-3">Options</h3>
-            <div className="space-y-3">
-              <label className="flex items-center justify-between cursor-pointer">
-                <span className="text-sm">Mark as Featured</span>
-                <div
-                  onClick={() => setForm((f) => ({ ...f, featured: !f.featured }))}
-                  className={`relative w-10 h-5 rounded-full transition-colors cursor-pointer ${form.featured ? 'bg-primary' : 'bg-muted'}`}
-                >
-                  <div className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${form.featured ? 'translate-x-5' : 'translate-x-0'}`} />
-                </div>
-              </label>
-            </div>
-          </div>
-
-          {/* Cover image placeholder */}
-          <div className="bg-white rounded-2xl border border-border shadow-sm p-5">
-            <h3 className="font-medium text-sm mb-3">Cover Image</h3>
-            <div className="border-2 border-dashed border-border rounded-xl h-32 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:border-primary/50 transition-colors cursor-pointer group">
-              <ImagePlus className="h-6 w-6 group-hover:text-primary transition-colors" />
-              <p className="text-xs">Click to upload or enter URL</p>
-            </div>
-            <input
-              type="url"
-              className="mt-2 w-full px-3 py-1.5 rounded-md border border-input text-xs focus:outline-none focus:ring-1 focus:ring-ring"
-              placeholder="https://... (optional)"
-            />
           </div>
         </div>
       </div>
