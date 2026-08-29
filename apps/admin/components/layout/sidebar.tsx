@@ -7,12 +7,17 @@ import { createClient } from '@gad/supabase/client'
 import {
   LayoutDashboard, FileText, PlusCircle, Users, Settings, LogOut,
   ChevronLeft, ChevronRight, BookOpen, Image as ImageIcon,
+  Layers, UserCheck, Megaphone,
 } from 'lucide-react'
 
 const navItems = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { label: 'Articles', href: '/articles', icon: FileText },
   { label: 'New Article', href: '/articles/new', icon: PlusCircle },
+  { label: 'Issues', href: '/issues', icon: Layers },
+  { label: 'Summit', href: '/summit', icon: BookOpen },
+  { label: 'Reviewers', href: '/reviewers', icon: UserCheck },
+  { label: 'Announcements', href: '/announcements', icon: Megaphone },
   { label: 'Team', href: '/team', icon: Users },
   { label: 'Media', href: '/media', icon: ImageIcon },
   { label: 'Settings', href: '/settings', icon: Settings },
