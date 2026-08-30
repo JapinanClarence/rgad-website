@@ -6,9 +6,20 @@ import {
 } from "@gad/schema";
 import type { IssueArticle, ArticleAuthor } from "@gad/types";
 
+// The success/error branches both declare the other's fields as `?: never`.
+// Without this, TypeScript's control-flow narrowing does not reliably
+// narrow a boolean-literal discriminant (`success: true | false`) on a
+// negated check like `if (!result.success)`, so `result.error` stays
+// unresolved at the call site even though the branch is provably correct.
+// This mirrors the pattern zod itself uses for `SafeParseReturnType`.
 type ServiceResult<T> =
-  | { success: true; data: T }
-  | { success: false; error: string; fieldErrors?: Record<string, string[]> };
+  | { success: true; data: T; error?: never; fieldErrors?: never }
+  | {
+      success: false;
+      error: string;
+      fieldErrors?: Record<string, string[]>;
+      data?: never;
+    };
 
 function toArticleAuthor(row: {
   firstname: string;
