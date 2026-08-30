@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@gad/supabase/client'
+import { articleFormSchema, type ArticleFormInput, type AuthorFormInput } from '@gad/schema'
 import { Save, ArrowLeft, X, Plus, UserPlus } from 'lucide-react'
 import Link from 'next/link'
+import { createArticleAction } from '../actions'
 
 type IssueOption = {
   id: string
@@ -11,15 +13,7 @@ type IssueOption = {
   issue_no: number
 }
 
-type AuthorForm = {
-  firstname: string
-  middlename: string
-  lastname: string
-  department: string
-  school: string
-  city: string
-  country: string
-}
+type AuthorForm = AuthorFormInput
 
 const EMPTY_AUTHOR: AuthorForm = {
   firstname: '',
@@ -29,6 +23,12 @@ const EMPTY_AUTHOR: AuthorForm = {
   school: '',
   city: '',
   country: '',
+}
+
+type FieldErrors = Record<string, string[]>
+
+function fieldError(errors: FieldErrors, field: string) {
+  return errors[field]?.[0]
 }
 
 export default function NewArticlePage() {
@@ -50,6 +50,7 @@ export default function NewArticlePage() {
   const [authors, setAuthors] = useState<AuthorForm[]>([{ ...EMPTY_AUTHOR }])
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
 
   useEffect(() => {
     const loadIssues = async () => {
@@ -92,51 +93,41 @@ export default function NewArticlePage() {
     setAuthors((prev) => (prev.length > 1 ? prev.filter((_, i) => i !== index) : prev))
 
   const handleSave = async () => {
-    setSaving(true)
     setError('')
-    try {
-      if (!form.archive_id) throw new Error('Please select an issue')
+    setFieldErrors({})
 
-      const validAuthors = authors.filter((a) => a.firstname.trim() && a.lastname.trim() && a.school.trim())
-      if (validAuthors.length === 0) {
-        throw new Error('At least one author with first name, last name, and school is required')
-      }
+    const validAuthors = authors.filter(
+      (a) => a.firstname.trim() && a.lastname.trim() && a.school.trim()
+    )
 
-      const { data: article, error: articleErr } = await supabase
-        .from('articles')
-        .insert({
-          title: form.title,
-          abstract: form.abstract,
-          pages: form.pages,
-          pdf_url: form.pdf_url,
-          archive_id: form.archive_id,
-          keywords: form.keywords,
-        })
-        .select('id')
-        .single()
-
-      if (articleErr) throw articleErr
-
-      const { error: authorsErr } = await supabase.from('authors').insert(
-        validAuthors.map((a) => ({
-          article_id: article.id,
-          firstname: a.firstname,
-          middlename: a.middlename || null,
-          lastname: a.lastname,
-          department: a.department || null,
-          school: a.school,
-          city: a.city || null,
-          country: a.country || null,
-        }))
-      )
-
-      if (authorsErr) throw authorsErr
-
-      router.push('/articles')
-    } catch (e: any) {
-      setError(e.message)
-      setSaving(false)
+    const payload: ArticleFormInput = {
+      title: form.title,
+      abstract: form.abstract,
+      pages: form.pages,
+      pdf_url: form.pdf_url,
+      archive_id: form.archive_id,
+      keywords: form.keywords,
+      authors: validAuthors,
     }
+
+    const parsed = articleFormSchema.safeParse(payload)
+    if (!parsed.success) {
+      setFieldErrors(parsed.error.flatten().fieldErrors as FieldErrors)
+      setError('Please fix the errors below before saving.')
+      return
+    }
+
+    setSaving(true)
+    const result = await createArticleAction(parsed.data)
+
+    if (!result.success) {
+      setError(result.error)
+      if (result.fieldErrors) setFieldErrors(result.fieldErrors)
+      setSaving(false)
+      return
+    }
+
+    router.push('/articles')
   }
 
   return (
@@ -180,6 +171,9 @@ export default function NewArticlePage() {
                 className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="Enter article title..."
               />
+              {fieldError(fieldErrors, 'title') && (
+                <p className="mt-1 text-xs text-destructive">{fieldError(fieldErrors, 'title')}</p>
+              )}
             </div>
 
             <div>
@@ -191,6 +185,9 @@ export default function NewArticlePage() {
                 className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
                 placeholder="Enter the article abstract..."
               />
+              {fieldError(fieldErrors, 'abstract') && (
+                <p className="mt-1 text-xs text-destructive">{fieldError(fieldErrors, 'abstract')}</p>
+              )}
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
@@ -203,6 +200,9 @@ export default function NewArticlePage() {
                   className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="e.g. 1-18"
                 />
+                {fieldError(fieldErrors, 'pages') && (
+                  <p className="mt-1 text-xs text-destructive">{fieldError(fieldErrors, 'pages')}</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1.5">PDF URL</label>
@@ -213,6 +213,9 @@ export default function NewArticlePage() {
                   className="w-full px-4 py-2.5 rounded-lg border border-input text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="https://..."
                 />
+                {fieldError(fieldErrors, 'pdf_url') && (
+                  <p className="mt-1 text-xs text-destructive">{fieldError(fieldErrors, 'pdf_url')}</p>
+                )}
               </div>
             </div>
           </div>
@@ -303,6 +306,9 @@ export default function NewArticlePage() {
                 </div>
               ))}
             </div>
+            {fieldError(fieldErrors, 'authors') && (
+              <p className="mt-3 text-xs text-destructive">{fieldError(fieldErrors, 'authors')}</p>
+            )}
           </div>
         </div>
 
@@ -329,6 +335,9 @@ export default function NewArticlePage() {
                   </option>
                 ))}
               </select>
+            )}
+            {fieldError(fieldErrors, 'archive_id') && (
+              <p className="mt-2 text-xs text-destructive">{fieldError(fieldErrors, 'archive_id')}</p>
             )}
           </div>
 
