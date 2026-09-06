@@ -1,4 +1,5 @@
 import { createClient } from "@gad/supabase/server";
+import type { Database } from "@gad/supabase/types";
 import {
   articleFormSchema,
   type ArticleFormInput,
@@ -142,7 +143,8 @@ export async function updateArticle(
   const { authors, ...fields } = parsed.data;
   const supabase = createClient();
 
-  const updatePayload: Record<string, unknown> = {};
+  const updatePayload: Database["public"]["Tables"]["articles"]["Update"] =
+    {};
   if (fields.title !== undefined) updatePayload.title = fields.title;
   if (fields.abstract !== undefined)
     updatePayload.abstract = fields.abstract || "";

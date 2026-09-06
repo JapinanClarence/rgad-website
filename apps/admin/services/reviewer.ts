@@ -1,4 +1,5 @@
 import { createClient } from "@gad/supabase/server";
+import type { Database } from "@gad/supabase/types";
 import { reviewerFormSchema, type ReviewerFormInput } from "@gad/schema";
 import type { Reviewer } from "@gad/types";
 
@@ -77,7 +78,8 @@ export async function updateReviewer(
   const fields = parsed.data;
   const supabase = createClient();
 
-  const updatePayload: Record<string, unknown> = {};
+  const updatePayload: Database["public"]["Tables"]["reviewers"]["Update"] =
+    {};
   if (fields.firstname !== undefined)
     updatePayload.firstname = fields.firstname;
   if (fields.middlename !== undefined)

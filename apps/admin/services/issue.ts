@@ -1,4 +1,5 @@
 import { createClient } from "@gad/supabase/server";
+import type { Database } from "@gad/supabase/types";
 import { issueFormSchema, type IssueFormInput } from "@gad/schema";
 import type { Issue } from "@gad/types";
 
@@ -115,7 +116,7 @@ export async function updateIssue(
     }
   }
 
-  const updatePayload: Record<string, unknown> = {};
+  const updatePayload: Database["public"]["Tables"]["archive"]["Update"] = {};
   if (fields.volume !== undefined) updatePayload.volume_no = fields.volume;
   if (fields.issueNo !== undefined) updatePayload.issue_no = fields.issueNo;
   if (fields.doi !== undefined) updatePayload.doi = fields.doi || null;

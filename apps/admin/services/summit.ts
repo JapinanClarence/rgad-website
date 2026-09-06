@@ -1,4 +1,5 @@
 import { createClient } from "@gad/supabase/server";
+import type { Database } from "@gad/supabase/types";
 import { summitFormSchema, type SummitFormInput } from "@gad/schema";
 import type { Summit } from "@gad/types";
 
@@ -96,7 +97,7 @@ export async function updateSummit(
   const fields = parsed.data;
   const supabase = createClient();
 
-  const updatePayload: Record<string, unknown> = {};
+  const updatePayload: Database["public"]["Tables"]["summit"]["Update"] = {};
   if (fields.theme !== undefined) updatePayload.theme = fields.theme;
   if (fields.location !== undefined) updatePayload.location = fields.location;
   if (fields.summary !== undefined) updatePayload.summary = fields.summary;
