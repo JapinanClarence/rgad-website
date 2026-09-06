@@ -13,6 +13,7 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   BookOpen,
   Image as ImageIcon,
   Layers,
@@ -22,8 +23,14 @@ import {
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Articles", href: "/articles", icon: FileText },
-  { label: "New Article", href: "/articles/new", icon: PlusCircle },
+  {
+    label: "Articles",
+    href: "/articles",
+    icon: FileText,
+    children: [
+      { label: "New Article", href: "/articles/new", icon: PlusCircle },
+    ],
+  },
   { label: "Issues", href: "/issues", icon: Layers },
   { label: "Summit", href: "/summit", icon: BookOpen },
   { label: "Reviewers", href: "/reviewers", icon: UserCheck },
@@ -33,6 +40,7 @@ const navItems = [
 
 export function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
@@ -78,26 +86,105 @@ export function AdminSidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
+      <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto overflow-x-visible">
         {navItems.map((item) => {
           const active =
             pathname === item.href ||
             (item.href !== "/dashboard" && pathname.startsWith(item.href));
+          const isOpen = openMenu === item.href;
+
+          if (!item.children) {
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                title={collapsed ? item.label : undefined}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+                  active
+                    ? "bg-white/15 text-white"
+                    : "text-white/60 hover:text-white hover:bg-white/10",
+                )}
+              >
+                <item.icon className="h-4 w-4 shrink-0" />
+                {!collapsed && <span>{item.label}</span>}
+              </Link>
+            );
+          }
+
           return (
-            <Link
+            <div
               key={item.href}
-              href={item.href}
-              title={collapsed ? item.label : undefined}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
-                active
-                  ? "bg-white/15 text-white"
-                  : "text-white/60 hover:text-white hover:bg-white/10",
-              )}
+              className="relative"
+              onMouseEnter={() => setOpenMenu(item.href)}
+              onMouseLeave={() => setOpenMenu(null)}
             >
-              <item.icon className="h-4 w-4 shrink-0" />
-              {!collapsed && <span>{item.label}</span>}
-            </Link>
+              <div
+                className={cn(
+                  "flex items-center rounded-lg text-sm transition-colors",
+                  active
+                    ? "bg-white/15 text-white"
+                    : "text-white/60 hover:text-white hover:bg-white/10",
+                )}
+              >
+                <Link
+                  href={item.href}
+                  title={collapsed ? item.label : undefined}
+                  className="flex flex-1 items-center gap-3 px-3 py-2 min-w-0"
+                >
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  {!collapsed && (
+                    <span className="truncate">{item.label}</span>
+                  )}
+                </Link>
+                {!collapsed && (
+                  <button
+                    type="button"
+                    onClick={() => setOpenMenu(isOpen ? null : item.href)}
+                    aria-expanded={isOpen}
+                    aria-label={`Toggle ${item.label} submenu`}
+                    className="px-2 py-2 shrink-0 hover:text-white"
+                  >
+                    <ChevronDown
+                      className={cn(
+                        "h-3.5 w-3.5 transition-transform",
+                        isOpen && "rotate-180",
+                      )}
+                    />
+                  </button>
+                )}
+              </div>
+
+              {isOpen && (
+                <div
+                  className={cn(
+                    "absolute z-20 rounded-lg border shadow-lg py-1 min-w-[10rem]",
+                    collapsed ? "left-full top-0 ml-1" : "left-0 top-full mt-1",
+                  )}
+                  style={{
+                    background: "hsl(var(--sidebar))",
+                    borderColor: "hsl(var(--sidebar-border))",
+                  }}
+                >
+                  {item.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      onClick={() => setOpenMenu(null)}
+                      className={cn(
+                        "flex items-center gap-2.5 px-3 py-2 text-sm whitespace-nowrap transition-colors",
+                        pathname === child.href
+                          ? "bg-white/15 text-white"
+                          : "text-white/60 hover:text-white hover:bg-white/10",
+                      )}
+                    >
+                      <child.icon className="h-3.5 w-3.5 shrink-0" />
+                      {child.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           );
         })}
       </nav>
@@ -131,3 +218,4 @@ export function AdminSidebar() {
     </aside>
   );
 }
+
