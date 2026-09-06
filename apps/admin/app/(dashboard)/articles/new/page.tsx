@@ -5,9 +5,19 @@ import { useForm, useFieldArray, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClient } from "@gad/supabase/client";
 import { articleFormSchema, type ArticleFormInput } from "@gad/schema";
-import { Save, ArrowLeft, X, Plus, UserPlus } from "lucide-react";
+import {
+  Save,
+  ArrowLeft,
+  X,
+  Plus,
+  UserPlus,
+  Upload,
+  FileText,
+  Loader2,
+} from "lucide-react";
 import Link from "next/link";
 import { createArticleAction } from "../actions";
+import { uploadPdf } from "@/services/storage";
 import { Button } from "@gad/ui/button";
 import { Input } from "@gad/ui/input";
 import { Label } from "@gad/ui/label";
@@ -36,6 +46,8 @@ const EMPTY_AUTHOR = {
   country: "",
 };
 
+const ARTICLE_PDF_MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+
 const DEFAULT_VALUES: ArticleFormInput = {
   title: "",
   abstract: "",
@@ -55,6 +67,10 @@ export default function NewArticlePage() {
   const [keywordInput, setKeywordInput] = React.useState("");
   const [saving, setSaving] = React.useState(false);
   const [submitError, setSubmitError] = React.useState("");
+  const [uploadingPdf, setUploadingPdf] = React.useState(false);
+  const [pdfUploadError, setPdfUploadError] = React.useState("");
+  const [pdfFileName, setPdfFileName] = React.useState("");
+  const pdfInputRef = React.useRef<HTMLInputElement>(null);
 
   const form = useForm<ArticleFormInput>({
     resolver: zodResolver(articleFormSchema),
@@ -117,6 +133,36 @@ export default function NewArticlePage() {
       keywords.filter((k) => k !== keyword),
       { shouldValidate: true },
     );
+
+  const handlePdfChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    setPdfUploadError("");
+    setUploadingPdf(true);
+
+    const result = await uploadPdf(file, {
+      folder: "articles",
+      maxSizeBytes: ARTICLE_PDF_MAX_SIZE_BYTES,
+    });
+
+    setUploadingPdf(false);
+
+    if (!result.success) {
+      setPdfUploadError(result.error);
+      return;
+    }
+
+    setPdfFileName(file.name);
+    setValue("pdf_url", result.url, { shouldValidate: true });
+  };
+
+  const handleRemovePdf = () => {
+    setPdfFileName("");
+    setPdfUploadError("");
+    setValue("pdf_url", "", { shouldValidate: true });
+  };
 
   const onSubmit: SubmitHandler<ArticleFormInput> = async (values) => {
     setSubmitError("");
@@ -209,38 +255,112 @@ export default function NewArticlePage() {
                 )}
               />
 
-              <div className="grid sm:grid-cols-2 gap-4">
-                <FormField
-                  control={control}
-                  name="pages"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Pages</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g. 1-18" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={control}
-                  name="pdf_url"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>PDF URL</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="url"
-                          placeholder="https://..."
-                          {...field}
+              <FormField
+                control={control}
+                name="pages"
+                render={({ field }) => (
+                  <FormItem className="sm:max-w-xs">
+                    <FormLabel>Pages</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. 1-18" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={control}
+                name="pdf_url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Article PDF</FormLabel>
+                    <FormControl>
+                      <div>
+                        <input
+                          ref={pdfInputRef}
+                          type="file"
+                          accept="application/pdf"
+                          className="hidden"
+                          onChange={handlePdfChange}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                        <input type="hidden" {...field} />
+
+                        {field.value ? (
+                          <div className="flex items-center justify-between gap-3 rounded-lg border border-input p-3">
+                            <div className="flex min-w-0 items-center gap-2">
+                              <FileText className="h-4 w-4 shrink-0 text-primary" />
+                              <a
+                                href={field.value}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="truncate text-sm hover:underline"
+                              >
+                                {pdfFileName || "View uploaded PDF"}
+                              </a>
+                            </div>
+                            <div className="flex shrink-0 items-center gap-1">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => pdfInputRef.current?.click()}
+                                disabled={uploadingPdf}
+                                className="h-8 text-xs"
+                              >
+                                Replace
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={handleRemovePdf}
+                                disabled={uploadingPdf}
+                                className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                                title="Remove PDF"
+                              >
+                                <X className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => pdfInputRef.current?.click()}
+                            disabled={uploadingPdf}
+                            className="flex w-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-input py-6 text-center transition-colors hover:border-primary/50 hover:bg-muted/50 disabled:opacity-50"
+                          >
+                            {uploadingPdf ? (
+                              <>
+                                <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                                <span className="text-sm text-muted-foreground">
+                                  Uploading...
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <Upload className="h-5 w-5 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">
+                                  Click to upload the article PDF
+                                </span>
+                                <span className="text-xs text-muted-foreground/70">
+                                  PDF only, up to 10MB
+                                </span>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </div>
+                    </FormControl>
+                    {pdfUploadError && (
+                      <p className="text-sm font-medium text-destructive">
+                        {pdfUploadError}
+                      </p>
+                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
 
             {/* Authors */}

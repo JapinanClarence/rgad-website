@@ -27,6 +27,8 @@ type UploadOptions = {
   folder?: string;
   /** Overwrite a file already at the resolved path. Defaults to false. */
   upsert?: boolean;
+  /** Override the bucket's default max file size, in bytes. */
+  maxSizeBytes?: number;
 };
 
 const IMAGE_BUCKET = "images";
@@ -41,6 +43,8 @@ const IMAGE_ALLOWED_TYPES = [
 const PDF_BUCKET = "documents";
 const PDF_MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20MB
 const PDF_ALLOWED_TYPES = ["application/pdf"];
+
+export { IMAGE_MAX_SIZE_BYTES, PDF_MAX_SIZE_BYTES };
 
 function formatMaxSize(bytes: number): string {
   return `${Math.round(bytes / (1024 * 1024))}MB`;
@@ -75,9 +79,11 @@ async function uploadToBucket(
   bucket: string,
   file: File,
   allowedTypes: string[],
-  maxSizeBytes: number,
+  defaultMaxSizeBytes: number,
   options?: UploadOptions,
 ): Promise<UploadResult> {
+  const maxSizeBytes = options?.maxSizeBytes ?? defaultMaxSizeBytes;
+
   if (!allowedTypes.includes(file.type)) {
     return {
       success: false,
