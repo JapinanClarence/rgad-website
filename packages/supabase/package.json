@@ -10,7 +10,7 @@
     "./types": "./types.ts"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.4.0",
+    "@supabase/ssr": "^0.12.6",
     "@supabase/supabase-js": "^2.43.0"
   },
   "peerDependencies": {
