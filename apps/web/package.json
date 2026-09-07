@@ -11,7 +11,9 @@
   "dependencies": {
     "@gad/assets": "*",
     "@gad/supabase": "*",
-    "@gad/ui": "*",
+    "@gad/components": "*",
+    "@gad/lib": "*",
+    "@gad/context": "*",
     "@gad/types": "*",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-dialog": "^1.1.0",

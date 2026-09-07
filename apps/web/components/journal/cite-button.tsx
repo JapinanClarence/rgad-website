@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@gad/ui/button";
+import { Button } from "@gad/components/ui/button";
 import { Quote, Copy, Check } from "lucide-react";
 
 interface CiteButtonProps {

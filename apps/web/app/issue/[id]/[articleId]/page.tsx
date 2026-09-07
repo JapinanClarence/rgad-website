@@ -9,8 +9,8 @@ import { IssueCover } from "@/components/journal/issue-cover";
 import { IssueQuickLinks } from "@/components/journal/issue-quick-links";
 import { CiteButton } from "@/components/journal/cite-button";
 import { AltmetricBadge } from "@/components/journal/altmetric-badge";
-import { Button } from "@gad/ui/button";
-import { Badge } from "@gad/ui/badge";
+import { Button } from "@gad/components/ui/button";
+import { Badge } from "@gad/components/ui/badge";
 import { formatDateShort } from "@/lib/utils";
 import { formatAuthorName } from "@/lib/authors";
 import { images } from "@/constants/images";
@@ -24,7 +24,7 @@ import {
   Download,
   Copy,
 } from "lucide-react";
-import { Separator } from "@gad/ui/separator";
+import { Separator } from "@gad/components/ui/separator";
 
 interface Props {
   params: { id: string; articleId: string };

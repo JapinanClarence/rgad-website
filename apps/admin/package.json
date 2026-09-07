@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@gad/supabase": "*",
-    "@gad/ui": "*",
+    "@gad/components": "*",
+    "@gad/lib": "*",
+    "@gad/context": "*",
     "@gad/assets": "*",
     "@gad/types": "*",
     "@gad/schema": "*",

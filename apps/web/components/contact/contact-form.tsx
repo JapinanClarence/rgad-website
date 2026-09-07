@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Send } from "lucide-react";
-import { Button } from "@gad/ui/button";
+import { Button } from "@gad/components/ui/button";
 
 const CONTACT_EMAIL = "rganxi2023@gmail.com";
 

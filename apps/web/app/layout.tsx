@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
-import { ProgressProvider } from '@gad/ui/context/progress-context'
-import { SlimBar } from '@gad/ui/slim-bar'
+import { ProgressProvider } from '@gad/context/progress-context'
+import { SlimBar } from '@gad/components/ui/slim-bar'
 
 export const metadata: Metadata = {
   title: {

@@ -10,8 +10,8 @@
     "cssVariables": true
   },
   "aliases": {
-    "components": "@gad/ui",
-    "utils": "@gad/ui/lib/utils",
-    "ui": "@gad/ui"
+    "components": "@gad/components",
+    "utils": "@gad/lib/utils",
+    "ui": "@gad/components/ui"
   }
 }

@@ -31,7 +31,7 @@ export interface ProgressProviderProps {
 
 /**
  * Provides page-transition progress state to the tree. Pair with
- * `<SlimBar />` (from `@gad/ui/slim-bar`) which reads this context and
+ * `<SlimBar />` (from `@gad/components/ui/slim-bar`) which reads this context and
  * automatically starts/stops the bar on route changes.
  */
 export function ProgressProvider({ children }: ProgressProviderProps) {

@@ -9,7 +9,7 @@ import {
   Clock,
   ArrowRight,
 } from "lucide-react";
-import { Button } from "@gad/ui/button";
+import { Button } from "@gad/components/ui/button";
 import { ContactForm } from "@/components/contact/contact-form";
 
 const CONTACT_EMAIL = "rganxi2023@gmail.com";

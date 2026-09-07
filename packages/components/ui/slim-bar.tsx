@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { cn } from "./lib/utils";
-import { useProgress } from "./context/progress-context";
+import { cn } from "@gad/lib/utils";
+import { useProgress } from "@gad/context/progress-context";
 
 /**
  * Watches the Next.js App Router for navigation and drives the progress

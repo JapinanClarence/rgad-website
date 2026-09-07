@@ -18,9 +18,9 @@ import {
 import Link from "next/link";
 import { createArticleAction } from "../actions";
 import { uploadPdf } from "@/services/storage";
-import { Button } from "@gad/ui/button";
-import { Input } from "@gad/ui/input";
-import { Label } from "@gad/ui/label";
+import { Button } from "@gad/components/ui/button";
+import { Input } from "@gad/components/ui/input";
+import { Label } from "@gad/components/ui/label";
 import {
   Form,
   FormField,
@@ -28,7 +28,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@gad/ui/form";
+} from "@gad/components/ui/form";
 
 type IssueOption = {
   id: string;

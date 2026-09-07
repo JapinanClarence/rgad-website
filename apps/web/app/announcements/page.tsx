@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CalendarDays, Megaphone, Pin } from "lucide-react";
-import { Badge } from "@gad/ui/badge";
+import { Badge } from "@gad/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 import { getAnnouncements } from "@/services/announcement";
 import type { AnnouncementCategory } from "@gad/types/announcement";
-import { cn } from "@gad/ui/lib/utils";
+import { cn } from "@gad/lib/utils";
 
 export const metadata: Metadata = {
   title: "Announcements",
