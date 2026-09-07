@@ -86,12 +86,19 @@ export function AdminSidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto overflow-x-visible">
+      <nav className="flex-1 py-4 space-y-1 px-2 overflow-y-auto">
         {navItems.map((item) => {
           const active =
             pathname === item.href ||
             (item.href !== "/dashboard" && pathname.startsWith(item.href));
-          const isOpen = openMenu === item.href;
+          const isOpen =
+            openMenu !== null
+              ? openMenu === item.href
+              : Boolean(
+                  item.children?.some((child) =>
+                    pathname.startsWith(child.href),
+                  ),
+                );
 
           if (!item.children) {
             return (
@@ -113,12 +120,7 @@ export function AdminSidebar() {
           }
 
           return (
-            <div
-              key={item.href}
-              className="relative"
-              onMouseEnter={() => setOpenMenu(item.href)}
-              onMouseLeave={() => setOpenMenu(null)}
-            >
+            <div key={item.href}>
               <div
                 className={cn(
                   "flex items-center rounded-lg text-sm transition-colors",
@@ -133,9 +135,7 @@ export function AdminSidebar() {
                   className="flex flex-1 items-center gap-3 px-3 py-2 min-w-0"
                 >
                   <item.icon className="h-4 w-4 shrink-0" />
-                  {!collapsed && (
-                    <span className="truncate">{item.label}</span>
-                  )}
+                  {!collapsed && <span className="truncate">{item.label}</span>}
                 </Link>
                 {!collapsed && (
                   <button
@@ -147,7 +147,7 @@ export function AdminSidebar() {
                   >
                     <ChevronDown
                       className={cn(
-                        "h-3.5 w-3.5 transition-transform",
+                        "h-3.5 w-3.5 transition-transform duration-200",
                         isOpen && "rotate-180",
                       )}
                     />
@@ -155,33 +155,37 @@ export function AdminSidebar() {
                 )}
               </div>
 
-              {isOpen && (
+              {!collapsed && (
                 <div
                   className={cn(
-                    "absolute z-20 rounded-lg border shadow-lg py-1 min-w-[10rem]",
-                    collapsed ? "left-full top-0 ml-1" : "left-0 top-full mt-1",
+                    "grid transition-all duration-200 ease-in-out",
+                    isOpen
+                      ? "grid-rows-[1fr] opacity-100 mt-1"
+                      : "grid-rows-[0fr] opacity-0",
                   )}
-                  style={{
-                    background: "hsl(var(--sidebar))",
-                    borderColor: "hsl(var(--sidebar-border))",
-                  }}
                 >
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={child.href}
-                      onClick={() => setOpenMenu(null)}
-                      className={cn(
-                        "flex items-center gap-2.5 px-3 py-2 text-sm whitespace-nowrap transition-colors",
-                        pathname === child.href
-                          ? "bg-white/15 text-white"
-                          : "text-white/60 hover:text-white hover:bg-white/10",
-                      )}
+                  <div className="overflow-hidden">
+                    <div
+                      className="ml-4 pl-3 border-l space-y-1 py-0.5"
+                      style={{ borderColor: "hsl(var(--sidebar-border))" }}
                     >
-                      <child.icon className="h-3.5 w-3.5 shrink-0" />
-                      {child.label}
-                    </Link>
-                  ))}
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={cn(
+                            "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors",
+                            pathname === child.href
+                              ? "bg-white/15 text-white"
+                              : "text-white/60 hover:text-white hover:bg-white/10",
+                          )}
+                        >
+                          <child.icon className="h-3.5 w-3.5 shrink-0" />
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -218,4 +222,3 @@ export function AdminSidebar() {
     </aside>
   );
 }
-
