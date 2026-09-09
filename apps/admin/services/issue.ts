@@ -4,8 +4,13 @@ import { issueFormSchema, type IssueFormInput } from "@gad/schema";
 import type { Issue } from "@gad/types";
 
 type ServiceResult<T> =
-  | { success: true; data: T }
-  | { success: false; error: string; fieldErrors?: Record<string, string[]> };
+  | { success: true; data: T; error?: never; fieldErrors?: never }
+  | {
+      success: false;
+      error: string;
+      fieldErrors?: Record<string, string[]>;
+      data?: never;
+    };
 
 function toIssue(row: {
   id: string;
@@ -177,19 +182,51 @@ export async function getIssueById(
   return { success: true, data: data ? toIssue(data) : null };
 }
 
-export async function listIssues(): Promise<ServiceResult<Issue[]>> {
+export type ListIssuesParams = {
+  page?: number;
+  pageSize?: number;
+};
+
+export type PaginatedIssues = {
+  items: Issue[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};
+
+export async function listIssues(
+  params: ListIssuesParams = {},
+): Promise<ServiceResult<PaginatedIssues>> {
+  const page = params.page && params.page > 0 ? Math.floor(params.page) : 1;
+  const pageSize =
+    params.pageSize && params.pageSize > 0 ? Math.floor(params.pageSize) : 6;
+
   const supabase = createClient();
-  const { data, error } = await supabase
+
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
     .from("archive")
     .select(
       "id, volume_no, issue_no, doi, issn, cover_image, published_at, is_current",
+      { count: "exact" },
     )
     .order("volume_no", { ascending: false })
-    .order("issue_no", { ascending: false });
+    .order("issue_no", { ascending: false })
+    .range(from, to);
 
   if (error) {
     return { success: false, error: error.message };
   }
 
-  return { success: true, data: (data ?? []).map(toIssue) };
+  return {
+    success: true,
+    data: {
+      items: (data ?? []).map(toIssue),
+      totalCount: count ?? 0,
+      page,
+      pageSize,
+    },
+  };
 }

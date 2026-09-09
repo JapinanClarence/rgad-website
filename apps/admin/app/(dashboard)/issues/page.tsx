@@ -4,50 +4,30 @@ import { formatDate } from "@/lib/utils";
 import { PlusCircle, Search, Edit, Trash2, BadgeCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { PaginationNav } from "@/components/pagination-nav";
+import { listIssues } from "@/services/issue";
 
 export const metadata: Metadata = { title: "Issues" };
 
-const SAMPLE_ISSUES = [
-  {
-    id: "1",
-    volume_no: 3,
-    issue_no: 1,
-    issn: "2984-XXXX",
-    doi: "10.5555/rgan.v3i1",
-    published_at: "2024-06-01",
-    is_current: true,
-  },
-  {
-    id: "2",
-    volume_no: 2,
-    issue_no: 2,
-    issn: "2984-XXXX",
-    doi: "10.5555/rgan.v2i2",
-    published_at: "2023-12-01",
-    is_current: false,
-  },
-  {
-    id: "3",
-    volume_no: 2,
-    issue_no: 1,
-    issn: "2984-XXXX",
-    doi: "10.5555/rgan.v2i1",
-    published_at: "2023-06-01",
-    is_current: false,
-  },
-  {
-    id: "4",
-    volume_no: 1,
-    issue_no: 1,
-    issn: "2984-XXXX",
-    doi: "10.5555/rgan.v1i1",
-    published_at: "2022-12-01",
-    is_current: false,
-  },
-];
+const PAGE_SIZE = 6;
 
-export default async function IssuesListPage() {
-  const issues = SAMPLE_ISSUES;
+type IssuesListPageProps = {
+  searchParams?: { page?: string };
+};
+
+export default async function IssuesListPage({
+  searchParams,
+}: IssuesListPageProps) {
+  const requestedPage = Number(searchParams?.page);
+  const currentPage =
+    Number.isFinite(requestedPage) && requestedPage > 0
+      ? Math.floor(requestedPage)
+      : 1;
+
+  const result = await listIssues({ page: currentPage, pageSize: PAGE_SIZE });
+
+  const issues = result.success ? result.data.items : [];
+  const totalCount = result.success ? result.data.totalCount : 0;
+  const totalPages = Math.max(Math.ceil(totalCount / PAGE_SIZE), 1);
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
@@ -55,7 +35,7 @@ export default async function IssuesListPage() {
         <div>
           <h1 className="font-display text-3xl font-bold">Issues</h1>
           <p className="text-muted-foreground text-sm mt-1">
-            {issues.length} total issues
+            {totalCount} total issues
           </p>
         </div>
         <Link
@@ -66,6 +46,12 @@ export default async function IssuesListPage() {
           New Issue
         </Link>
       </div>
+
+      {!result.success && (
+        <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          Failed to load issues: {result.error}
+        </div>
+      )}
 
       <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
         <div className="p-4 border-b border-border">
@@ -104,65 +90,87 @@ export default async function IssuesListPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {issues.map((issue) => (
-                <tr
-                  key={issue.id}
-                  className="hover:bg-muted/20 transition-colors group"
-                >
-                  <td className="px-5 py-4">
-                    <p className="text-sm font-medium">
-                      Vol. {issue.volume_no}, Issue {issue.issue_no}
-                    </p>
-                  </td>
-                  <td className="px-5 py-4 hidden md:table-cell">
-                    <span className="text-xs text-muted-foreground">
-                      {issue.issn}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 hidden lg:table-cell">
-                    <span className="text-xs text-muted-foreground font-mono">
-                      {issue.doi}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 hidden sm:table-cell">
-                    <span className="text-xs text-muted-foreground">
-                      {formatDate(issue.published_at)}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4">
-                    {issue.is_current ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                        <BadgeCheck className="h-3 w-3" />
-                        Current
-                      </span>
-                    ) : (
-                      <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-                        Archived
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-5 py-4">
-                    <div className="flex items-center justify-end gap-1">
-                      <Link
-                        href={`/issues/${issue.id}`}
-                        className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                        title="Edit"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Link>
-                      <button
-                        className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-                        title="Delete"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
+              {issues.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="px-5 py-10 text-center text-sm text-muted-foreground"
+                  >
+                    No issues found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                issues.map((issue) => (
+                  <tr
+                    key={issue.id}
+                    className="hover:bg-muted/20 transition-colors group"
+                  >
+                    <td className="px-5 py-4">
+                      <p className="text-sm font-medium">
+                        Vol. {issue.volume}, Issue {issue.issueNo}
+                      </p>
+                    </td>
+                    <td className="px-5 py-4 hidden md:table-cell">
+                      <span className="text-xs text-muted-foreground">
+                        {issue.issn}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4 hidden lg:table-cell">
+                      <span className="text-xs text-muted-foreground font-mono">
+                        {issue.doi || "-"}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4 hidden sm:table-cell">
+                      <span className="text-xs text-muted-foreground">
+                        {formatDate(issue.publishedAt)}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4">
+                      {issue.isCurrent ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                          <BadgeCheck className="h-3 w-3" />
+                          Current
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+                          Archived
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="flex items-center justify-end gap-1">
+                        <Link
+                          href={`/issues/${issue.id}`}
+                          className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                          title="Edit"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Link>
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
+                          title="Delete"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
+
+        {totalPages > 1 && (
+          <div className="p-4 border-t border-border">
+            <PaginationNav
+              currentPage={currentPage}
+              totalPages={totalPages}
+              basePath="/issues"
+              searchParams={searchParams}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
