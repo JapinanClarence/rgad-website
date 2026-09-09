@@ -9,11 +9,6 @@ export const issueFormSchema = z.object({
     .number({ invalid_type_error: "Issue number must be a number" })
     .int("Issue number must be a whole number")
     .positive("Issue number must be a positive number"),
-  title: z
-    .string()
-    .trim()
-    .min(1, "Title is required")
-    .max(300, "Title must be at most 300 characters"),
   doi: z
     .string()
     .trim()

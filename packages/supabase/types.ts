@@ -19,8 +19,6 @@ export interface Database {
           doi: string | null;
           issn: string;
           cover_image: string | null;
-          editorial: string | null;
-          editorial_author: string | null;
           published_at: string;
           is_current: boolean;
         };

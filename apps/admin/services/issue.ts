@@ -78,8 +78,6 @@ export async function createIssue(
       doi: fields.doi || null,
       issn: fields.issn,
       cover_image: fields.coverImage || null,
-      editorial: null,
-      editorial_author: null,
       published_at: fields.publishedAt.toISOString(),
       is_current: fields.isCurrent ?? false,
     })
