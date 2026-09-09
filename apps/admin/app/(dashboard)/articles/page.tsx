@@ -3,8 +3,11 @@ import Link from 'next/link'
 import { createClient } from '@gad/supabase/server'
 import { PlusCircle, Search, Edit, Trash2, FileText, Users } from 'lucide-react'
 import type { Metadata } from 'next'
+import { PaginationNav } from '@/components/pagination-nav'
 
 export const metadata: Metadata = { title: 'Articles' }
+
+const PAGE_SIZE = 6
 
 type ArticleAuthor = {
   firstname: string
@@ -70,24 +73,49 @@ function formatAuthorName(author: ArticleAuthor) {
   return `${author.firstname}${middle} ${author.lastname}`.trim()
 }
 
-export default async function ArticlesListPage() {
+type ArticlesListPageProps = {
+  searchParams?: { page?: string }
+}
+
+export default async function ArticlesListPage({ searchParams }: ArticlesListPageProps) {
   const supabase = createClient()
+
+  const requestedPage = Number(searchParams?.page)
+  const currentPage = Number.isFinite(requestedPage) && requestedPage > 0 ? Math.floor(requestedPage) : 1
+
   let articles = SAMPLE_ARTICLES
+  let totalCount = SAMPLE_ARTICLES.length
+
+  const from = (currentPage - 1) * PAGE_SIZE
+  const to = from + PAGE_SIZE - 1
 
   try {
-    const { data } = await supabase
+    const { data, count } = await supabase
       .from('articles')
-      .select('id, title, abstract, pages, pdf_url, archive_id, archive:archive_id(volume_no, issue_no), authors(firstname, middlename, lastname)')
+      .select('id, title, abstract, pages, pdf_url, archive_id, archive:archive_id(volume_no, issue_no), authors(firstname, middlename, lastname)', { count: 'exact' })
       .order('created_at', { ascending: false })
-    if (data && data.length > 0) articles = data as unknown as ArticleRow[]
-  } catch {}
+      .range(from, to)
+    if (data && data.length > 0) {
+      articles = data as unknown as ArticleRow[]
+      totalCount = count ?? data.length
+    } else if (count === 0) {
+      articles = []
+      totalCount = 0
+    } else {
+      articles = SAMPLE_ARTICLES.slice(from, to + 1)
+    }
+  } catch {
+    articles = SAMPLE_ARTICLES.slice(from, to + 1)
+  }
+
+  const totalPages = Math.max(Math.ceil(totalCount / PAGE_SIZE), 1)
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="font-display text-3xl font-bold">Articles</h1>
-          <p className="text-muted-foreground text-sm mt-1">{articles.length} total articles</p>
+          <p className="text-muted-foreground text-sm mt-1">{totalCount} total articles</p>
         </div>
         <Link
           href="/articles/new"
@@ -184,6 +212,17 @@ export default async function ArticlesListPage() {
             </tbody>
           </table>
         </div>
+
+        {totalPages > 1 && (
+          <div className="p-4 border-t border-border">
+            <PaginationNav
+              currentPage={currentPage}
+              totalPages={totalPages}
+              basePath="/articles"
+              searchParams={searchParams}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

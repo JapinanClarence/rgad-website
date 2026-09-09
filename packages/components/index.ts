@@ -27,3 +27,12 @@ export {
 } from "./ui/form";
 export { SlimBar } from "./ui/slim-bar";
 export type { SlimBarProps } from "./ui/slim-bar";
+export {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "./ui/pagination";
