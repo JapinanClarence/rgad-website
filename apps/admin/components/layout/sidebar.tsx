@@ -31,7 +31,12 @@ const navItems = [
       { label: "New Article", href: "/articles/new", icon: PlusCircle },
     ],
   },
-  { label: "Issues", href: "/issues", icon: Layers },
+  {
+    label: "Issues",
+    href: "/issues",
+    icon: Layers,
+    children: [{ label: "New Issue", href: "/issues/new", icon: PlusCircle }],
+  },
   { label: "Summit", href: "/summit", icon: BookOpen },
   { label: "Reviewers", href: "/reviewers", icon: UserCheck },
   { label: "Announcements", href: "/announcements", icon: Megaphone },

@@ -1,121 +1,94 @@
-import React from 'react'
-import Link from 'next/link'
-import { createClient } from '@gad/supabase/server'
-import { PlusCircle, Search, Edit, Trash2, FileText, Users } from 'lucide-react'
-import type { Metadata } from 'next'
-import { PaginationNav } from '@/components/pagination-nav'
+import React from "react";
+import Link from "next/link";
+import { createClient } from "@gad/supabase/server";
+import {
+  PlusCircle,
+  Search,
+  Edit,
+  Trash2,
+  FileText,
+  Users,
+} from "lucide-react";
+import type { Metadata } from "next";
+import { PaginationNav } from "@/components/pagination-nav";
 
-export const metadata: Metadata = { title: 'Articles' }
+export const metadata: Metadata = { title: "Articles" };
 
-const PAGE_SIZE = 6
+const PAGE_SIZE = 6;
 
 type ArticleAuthor = {
-  firstname: string
-  middlename: string | null
-  lastname: string
-}
+  firstname: string;
+  middlename: string | null;
+  lastname: string;
+};
 
 type ArticleRow = {
-  id: string
-  title: string
-  abstract: string
-  pages: string
-  pdf_url: string | null
-  archive_id: string
-  archive: { volume_no: number; issue_no: number } | null
-  authors: ArticleAuthor[]
-}
-
-const SAMPLE_ARTICLES: ArticleRow[] = [
-  {
-    id: '1',
-    title: 'Intersectionality in Philippine Gender Policy',
-    abstract: 'An examination of how overlapping social identities shape gender policy outcomes across Region XI.',
-    pages: '1-18',
-    pdf_url: null,
-    archive_id: '1',
-    archive: { volume_no: 3, issue_no: 1 },
-    authors: [
-      { firstname: 'Maria', middlename: 'L.', lastname: 'Santos' },
-      { firstname: 'Ramon', middlename: null, lastname: 'Cruz' },
-    ],
-  },
-  {
-    id: '2',
-    title: 'GAD Budget Utilization and LGU Compliance',
-    abstract: 'A review of gender and development budget utilization among local government units in Region XI.',
-    pages: '19-34',
-    pdf_url: null,
-    archive_id: '1',
-    archive: { volume_no: 3, issue_no: 1 },
-    authors: [
-      { firstname: 'Aisha', middlename: 'D.', lastname: 'Ingilan' },
-    ],
-  },
-  {
-    id: '3',
-    title: 'Indigenous Women and Ancestral Domain Rights',
-    abstract: 'A qualitative study on the intersection of indigenous rights and gender equity in Davao Oriental.',
-    pages: '35-52',
-    pdf_url: null,
-    archive_id: '2',
-    archive: { volume_no: 2, issue_no: 2 },
-    authors: [
-      { firstname: 'Jerd', middlename: 'M.', lastname: 'Dela Gente' },
-      { firstname: 'Diether', middlename: 'C.', lastname: 'Montejo' },
-      { firstname: 'Sheruel', middlename: 'G.', lastname: 'Matalandang' },
-    ],
-  },
-]
+  id: string;
+  title: string;
+  abstract: string;
+  pages: string;
+  pdf_url: string | null;
+  archive_id: string;
+  archive: { volume_no: number; issue_no: number } | null;
+  authors: ArticleAuthor[];
+};
 
 function formatAuthorName(author: ArticleAuthor) {
-  const middle = author.middlename ? ` ${author.middlename}` : ''
-  return `${author.firstname}${middle} ${author.lastname}`.trim()
+  const middle = author.middlename ? ` ${author.middlename}` : "";
+  return `${author.firstname}${middle} ${author.lastname}`.trim();
 }
 
 type ArticlesListPageProps = {
-  searchParams?: { page?: string }
-}
+  searchParams?: { page?: string };
+};
 
-export default async function ArticlesListPage({ searchParams }: ArticlesListPageProps) {
-  const supabase = createClient()
+export default async function ArticlesListPage({
+  searchParams,
+}: ArticlesListPageProps) {
+  const supabase = createClient();
 
-  const requestedPage = Number(searchParams?.page)
-  const currentPage = Number.isFinite(requestedPage) && requestedPage > 0 ? Math.floor(requestedPage) : 1
+  const requestedPage = Number(searchParams?.page);
+  const currentPage =
+    Number.isFinite(requestedPage) && requestedPage > 0
+      ? Math.floor(requestedPage)
+      : 1;
 
-  let articles = SAMPLE_ARTICLES
-  let totalCount = SAMPLE_ARTICLES.length
+  let articles: ArticleRow[] = [];
+  let totalCount = 0;
 
-  const from = (currentPage - 1) * PAGE_SIZE
-  const to = from + PAGE_SIZE - 1
+  const from = (currentPage - 1) * PAGE_SIZE;
+  const to = from + PAGE_SIZE - 1;
 
   try {
     const { data, count } = await supabase
-      .from('articles')
-      .select('id, title, abstract, pages, pdf_url, archive_id, archive:archive_id(volume_no, issue_no), authors(firstname, middlename, lastname)', { count: 'exact' })
-      .order('created_at', { ascending: false })
-      .range(from, to)
+      .from("articles")
+      .select(
+        "id, title, abstract, pages, pdf_url, archive_id, archive:archive_id(volume_no, issue_no), authors(firstname, middlename, lastname)",
+        { count: "exact" },
+      )
+      .order("created_at", { ascending: false })
+      .range(from, to);
     if (data && data.length > 0) {
-      articles = data as unknown as ArticleRow[]
-      totalCount = count ?? data.length
+      articles = data as unknown as ArticleRow[];
+      totalCount = count ?? data.length;
     } else if (count === 0) {
-      articles = []
-      totalCount = 0
-    } else {
-      articles = SAMPLE_ARTICLES.slice(from, to + 1)
+      articles = [];
+      totalCount = 0;
     }
   } catch {
-    articles = SAMPLE_ARTICLES.slice(from, to + 1)
+    // articles = SAMPLE_ARTICLES.slice(from, to + 1)
   }
 
-  const totalPages = Math.max(Math.ceil(totalCount / PAGE_SIZE), 1)
+  const totalPages = Math.max(Math.ceil(totalCount / PAGE_SIZE), 1);
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="font-display text-3xl font-bold">Articles</h1>
-          <p className="text-muted-foreground text-sm mt-1">{totalCount} total articles</p>
+          <p className="text-muted-foreground text-sm mt-1">
+            {totalCount} total articles
+          </p>
         </div>
         <Link
           href="/articles/new"
@@ -143,27 +116,47 @@ export default async function ArticlesListPage({ searchParams }: ArticlesListPag
           <table className="w-full">
             <thead>
               <tr className="border-b border-border bg-muted/30">
-                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Title</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden md:table-cell">Issue</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden lg:table-cell">Authors</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden sm:table-cell">Pages</th>
-                <th className="text-right px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Actions</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden md:table-cell">
+                  Issue
+                </th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden lg:table-cell">
+                  Authors
+                </th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden sm:table-cell">
+                  Pages
+                </th>
+                <th className="text-right px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               {articles.map((article) => (
-                <tr key={article.id} className="hover:bg-muted/20 transition-colors group">
+                <tr
+                  key={article.id}
+                  className="hover:bg-muted/20 transition-colors group"
+                >
                   <td className="px-5 py-4">
-                    <p className="text-sm font-medium line-clamp-1 max-w-xs">{article.title}</p>
-                    <p className="text-xs text-muted-foreground line-clamp-1 max-w-xs mt-0.5">{article.abstract}</p>
+                    <p className="text-sm font-medium line-clamp-1 max-w-xs">
+                      {article.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground line-clamp-1 max-w-xs mt-0.5">
+                      {article.abstract}
+                    </p>
                   </td>
                   <td className="px-5 py-4 hidden md:table-cell">
                     {article.archive ? (
                       <span className="text-xs text-muted-foreground whitespace-nowrap">
-                        Vol. {article.archive.volume_no}, Issue {article.archive.issue_no}
+                        Vol. {article.archive.volume_no}, Issue{" "}
+                        {article.archive.issue_no}
                       </span>
                     ) : (
-                      <span className="text-xs text-muted-foreground">Unassigned</span>
+                      <span className="text-xs text-muted-foreground">
+                        Unassigned
+                      </span>
                     )}
                   </td>
                   <td className="px-5 py-4 hidden lg:table-cell">
@@ -171,13 +164,15 @@ export default async function ArticlesListPage({ searchParams }: ArticlesListPag
                       <Users className="h-3.5 w-3.5 shrink-0" />
                       <span className="line-clamp-1">
                         {article.authors.length > 0
-                          ? article.authors.map(formatAuthorName).join(', ')
-                          : 'No authors listed'}
+                          ? article.authors.map(formatAuthorName).join(", ")
+                          : "No authors listed"}
                       </span>
                     </div>
                   </td>
                   <td className="px-5 py-4 hidden sm:table-cell">
-                    <span className="text-xs text-muted-foreground">{article.pages || '-'}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {article.pages || "-"}
+                    </span>
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center justify-end gap-1">
@@ -225,5 +220,5 @@ export default async function ArticlesListPage({ searchParams }: ArticlesListPag
         )}
       </div>
     </div>
-  )
+  );
 }
