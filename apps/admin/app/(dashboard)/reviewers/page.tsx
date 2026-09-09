@@ -1,29 +1,48 @@
-import React from 'react'
-import Link from 'next/link'
-import { PlusCircle, Search, Edit, Trash2 } from 'lucide-react'
-import type { Metadata } from 'next'
+import React from "react";
+import Link from "next/link";
+import { PlusCircle, Search, Edit, Trash2 } from "lucide-react";
+import type { Metadata } from "next";
+import { PaginationNav } from "@/components/pagination-nav";
+import { listReviewers } from "@/services/reviewer";
 
-export const metadata: Metadata = { title: 'Reviewers' }
+export const metadata: Metadata = { title: "Reviewers" };
 
-const SAMPLE_REVIEWERS = [
-  { id: '1', firstname: 'Maria', middlename: 'L.', lastname: 'Santos', school: 'Davao Oriental State University', country: 'Philippines' },
-  { id: '2', firstname: 'Ramon', middlename: null, lastname: 'Cruz', school: 'University of Southeastern Philippines', country: 'Philippines' },
-  { id: '3', firstname: 'Aisha', middlename: 'D.', lastname: 'Ingilan', school: 'Davao del Sur State College', country: 'Philippines' },
-]
+const PAGE_SIZE = 6;
 
 function initials(firstname: string, lastname: string) {
-  return `${firstname[0] ?? ''}${lastname[0] ?? ''}`.toUpperCase()
+  return `${firstname[0] ?? ""}${lastname[0] ?? ""}`.toUpperCase();
 }
 
-export default async function ReviewersListPage() {
-  const reviewers = SAMPLE_REVIEWERS
+type ReviewersListPageProps = {
+  searchParams?: { page?: string };
+};
+
+export default async function ReviewersListPage({
+  searchParams,
+}: ReviewersListPageProps) {
+  const requestedPage = Number(searchParams?.page);
+  const currentPage =
+    Number.isFinite(requestedPage) && requestedPage > 0
+      ? Math.floor(requestedPage)
+      : 1;
+
+  const result = await listReviewers({
+    page: currentPage,
+    pageSize: PAGE_SIZE,
+  });
+
+  const reviewers = result.success ? result.data.items : [];
+  const totalCount = result.success ? result.data.totalCount : 0;
+  const totalPages = Math.max(Math.ceil(totalCount / PAGE_SIZE), 1);
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="font-display text-3xl font-bold">Reviewers</h1>
-          <p className="text-muted-foreground text-sm mt-1">{reviewers.length} registered reviewers</p>
+          <p className="text-muted-foreground text-sm mt-1">
+            {totalCount} registered reviewers
+          </p>
         </div>
         <Link
           href="/reviewers/new"
@@ -33,6 +52,12 @@ export default async function ReviewersListPage() {
           New Reviewer
         </Link>
       </div>
+
+      {!result.success && (
+        <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          Failed to load reviewers: {result.error}
+        </div>
+      )}
 
       <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
         <div className="p-4 border-b border-border">
@@ -50,54 +75,93 @@ export default async function ReviewersListPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-border bg-muted/30">
-                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Name</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden md:table-cell">School</th>
-                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden sm:table-cell">Country</th>
-                <th className="text-right px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">Actions</th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden md:table-cell">
+                  School
+                </th>
+                <th className="text-left px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider hidden sm:table-cell">
+                  Country
+                </th>
+                <th className="text-right px-5 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {reviewers.map((reviewer) => (
-                <tr key={reviewer.id} className="hover:bg-muted/20 transition-colors group">
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full gad-gradient flex items-center justify-center text-white text-xs font-medium shrink-0">
-                        {initials(reviewer.firstname, reviewer.lastname)}
-                      </div>
-                      <p className="text-sm font-medium">
-                        {reviewer.firstname} {reviewer.middlename ? `${reviewer.middlename} ` : ''}{reviewer.lastname}
-                      </p>
-                    </div>
-                  </td>
-                  <td className="px-5 py-4 hidden md:table-cell">
-                    <span className="text-xs text-muted-foreground">{reviewer.school}</span>
-                  </td>
-                  <td className="px-5 py-4 hidden sm:table-cell">
-                    <span className="text-xs text-muted-foreground">{reviewer.country}</span>
-                  </td>
-                  <td className="px-5 py-4">
-                    <div className="flex items-center justify-end gap-1">
-                      <Link
-                        href={`/reviewers/${reviewer.id}`}
-                        className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
-                        title="Edit"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Link>
-                      <button
-                        className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-                        title="Delete"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
+              {reviewers.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={4}
+                    className="px-5 py-10 text-center text-sm text-muted-foreground"
+                  >
+                    No reviewers found.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                reviewers.map((reviewer) => (
+                  <tr
+                    key={reviewer.id}
+                    className="hover:bg-muted/20 transition-colors group"
+                  >
+                    <td className="px-5 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full gad-gradient flex items-center justify-center text-white text-xs font-medium shrink-0">
+                          {initials(reviewer.firstname, reviewer.lastname)}
+                        </div>
+                        <p className="text-sm font-medium">
+                          {reviewer.firstname}{" "}
+                          {reviewer.middlename ? `${reviewer.middlename} ` : ""}
+                          {reviewer.lastname}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="px-5 py-4 hidden md:table-cell">
+                      <span className="text-xs text-muted-foreground">
+                        {reviewer.school}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4 hidden sm:table-cell">
+                      <span className="text-xs text-muted-foreground">
+                        {reviewer.country || "-"}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="flex items-center justify-end gap-1">
+                        <Link
+                          href={`/reviewers/${reviewer.id}`}
+                          className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                          title="Edit"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Link>
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
+                          title="Delete"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
+
+        {totalPages > 1 && (
+          <div className="p-4 border-t border-border">
+            <PaginationNav
+              currentPage={currentPage}
+              totalPages={totalPages}
+              basePath="/reviewers"
+              searchParams={searchParams}
+            />
+          </div>
+        )}
       </div>
     </div>
-  )
+  );
 }

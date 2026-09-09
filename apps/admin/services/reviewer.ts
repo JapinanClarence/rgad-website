@@ -4,8 +4,13 @@ import { reviewerFormSchema, type ReviewerFormInput } from "@gad/schema";
 import type { Reviewer } from "@gad/types";
 
 type ServiceResult<T> =
-  | { success: true; data: T }
-  | { success: false; error: string; fieldErrors?: Record<string, string[]> };
+  | { success: true; data: T; error?: never; fieldErrors?: never }
+  | {
+      success: false;
+      error: string;
+      fieldErrors?: Record<string, string[]>;
+      data?: never;
+    };
 
 function toReviewer(row: {
   id: string;
@@ -134,16 +139,49 @@ export async function getReviewerById(
   return { success: true, data: data ? toReviewer(data) : null };
 }
 
-export async function listReviewers(): Promise<ServiceResult<Reviewer[]>> {
+export type ListReviewersParams = {
+  page?: number;
+  pageSize?: number;
+};
+
+export type PaginatedReviewers = {
+  items: Reviewer[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};
+
+export async function listReviewers(
+  params: ListReviewersParams = {},
+): Promise<ServiceResult<PaginatedReviewers>> {
+  const page = params.page && params.page > 0 ? Math.floor(params.page) : 1;
+  const pageSize =
+    params.pageSize && params.pageSize > 0 ? Math.floor(params.pageSize) : 6;
+
   const supabase = createClient();
-  const { data, error } = await supabase
+
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
     .from("reviewers")
-    .select("id, firstname, middlename, lastname, school, country")
-    .order("lastname", { ascending: true });
+    .select("id, firstname, middlename, lastname, school, country", {
+      count: "exact",
+    })
+    .order("lastname", { ascending: true })
+    .range(from, to);
 
   if (error) {
     return { success: false, error: error.message };
   }
 
-  return { success: true, data: (data ?? []).map(toReviewer) };
+  return {
+    success: true,
+    data: {
+      items: (data ?? []).map(toReviewer),
+      totalCount: count ?? 0,
+      page,
+      pageSize,
+    },
+  };
 }
