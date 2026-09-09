@@ -37,10 +37,15 @@ const navItems = [
     icon: Layers,
     children: [{ label: "New Issue", href: "/issues/new", icon: PlusCircle }],
   },
-  { label: "Summit", href: "/summit", icon: BookOpen },
+  {
+    label: "Summit",
+    href: "/summit",
+    icon: BookOpen,
+    children: [{ label: "New Summit", href: "/summit/new", icon: PlusCircle }],
+  },
   { label: "Reviewers", href: "/reviewers", icon: UserCheck },
   { label: "Announcements", href: "/announcements", icon: Megaphone },
-  { label: "Settings", href: "/settings", icon: Settings },
+  // { label: "Settings", href: "/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
