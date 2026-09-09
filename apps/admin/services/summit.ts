@@ -4,8 +4,13 @@ import { summitFormSchema, type SummitFormInput } from "@gad/schema";
 import type { Summit } from "@gad/types";
 
 type ServiceResult<T> =
-  | { success: true; data: T }
-  | { success: false; error: string; fieldErrors?: Record<string, string[]> };
+  | { success: true; data: T; error?: never; fieldErrors?: never }
+  | {
+      success: false;
+      error: string;
+      fieldErrors?: Record<string, string[]>;
+      data?: never;
+    };
 
 function toSummit(row: {
   id: string;
@@ -161,18 +166,50 @@ export async function getSummitById(
   return { success: true, data: data ? toSummit(data) : null };
 }
 
-export async function listSummits(): Promise<ServiceResult<Summit[]>> {
+export type ListSummitsParams = {
+  page?: number;
+  pageSize?: number;
+};
+
+export type PaginatedSummits = {
+  items: Summit[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+};
+
+export async function listSummits(
+  params: ListSummitsParams = {},
+): Promise<ServiceResult<PaginatedSummits>> {
+  const page = params.page && params.page > 0 ? Math.floor(params.page) : 1;
+  const pageSize =
+    params.pageSize && params.pageSize > 0 ? Math.floor(params.pageSize) : 6;
+
   const supabase = createClient();
-  const { data, error } = await supabase
+
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
     .from("summit")
     .select(
       "id, theme, location, summary, details, note, outcomes, host, start_date, end_date, images",
+      { count: "exact" },
     )
-    .order("start_date", { ascending: false });
+    .order("start_date", { ascending: false })
+    .range(from, to);
 
   if (error) {
     return { success: false, error: error.message };
   }
 
-  return { success: true, data: (data ?? []).map(toSummit) };
+  return {
+    success: true,
+    data: {
+      items: (data ?? []).map(toSummit),
+      totalCount: count ?? 0,
+      page,
+      pageSize,
+    },
+  };
 }
