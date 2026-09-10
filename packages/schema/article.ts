@@ -66,6 +66,13 @@ export const articleFormSchema = z.object({
     .url("Enter a valid URL")
     .optional()
     .or(z.literal("")),
+  doi: z.string().trim().optional().or(z.literal("")),
+  correspondence: z
+    .string()
+    .trim()
+    .max(200, "Correspondence must be at most 200 characters")
+    .optional()
+    .or(z.literal("")),
   archive_id: z.string().uuid("Please select an issue"),
   keywords: z.array(z.string().trim().min(1)).default([]),
   authors: z.array(authorFormSchema).min(1, "At least one author is required"),

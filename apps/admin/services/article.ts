@@ -87,6 +87,8 @@ export async function createArticle(
       pdf_url: fields.pdf_url || "",
       archive_id: fields.archive_id,
       keywords: fields.keywords,
+      doi: fields.doi || null,
+      correspondence: fields.correspondence || null,
     })
     .select("id, title, abstract, pages, pdf_url, keywords")
     .single();
@@ -143,8 +145,7 @@ export async function updateArticle(
   const { authors, ...fields } = parsed.data;
   const supabase = createClient();
 
-  const updatePayload: Database["public"]["Tables"]["articles"]["Update"] =
-    {};
+  const updatePayload: Database["public"]["Tables"]["articles"]["Update"] = {};
   if (fields.title !== undefined) updatePayload.title = fields.title;
   if (fields.abstract !== undefined)
     updatePayload.abstract = fields.abstract || "";

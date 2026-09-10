@@ -40,7 +40,7 @@ const IMAGE_ALLOWED_TYPES = [
   "image/gif",
 ];
 
-const PDF_BUCKET = "files";
+const PDF_BUCKET = "file";
 const PDF_MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20MB
 const PDF_ALLOWED_TYPES = ["application/pdf"];
 

@@ -56,6 +56,8 @@ const DEFAULT_VALUES: ArticleFormInput = {
   archive_id: "",
   keywords: [],
   authors: [{ ...EMPTY_AUTHOR }],
+  doi: "",
+  correspondence: "",
 };
 
 export default function NewArticlePage() {
@@ -254,109 +256,46 @@ export default function NewArticlePage() {
                   </FormItem>
                 )}
               />
-
+              <div className="grid sm:grid-cols-2 gap-3 mb-3">
+                <FormField
+                  control={control}
+                  name="pages"
+                  render={({ field }) => (
+                    <FormItem className="sm:max-w-xs">
+                      <FormLabel>Pages</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. 1-18" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="correspondence"
+                  render={({ field }) => (
+                    <FormItem className="sm:max-w-xs">
+                      <FormLabel>Correspondence</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter correspondence information..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={control}
-                name="pages"
-                render={({ field }) => (
-                  <FormItem className="sm:max-w-xs">
-                    <FormLabel>Pages</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g. 1-18" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={control}
-                name="pdf_url"
+                name="doi"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Article PDF</FormLabel>
+                    <FormLabel>DOI</FormLabel>
                     <FormControl>
-                      <div>
-                        <input
-                          ref={pdfInputRef}
-                          type="file"
-                          accept="application/pdf"
-                          className="hidden"
-                          onChange={handlePdfChange}
-                        />
-                        <input type="hidden" {...field} />
-
-                        {field.value ? (
-                          <div className="flex items-center justify-between gap-3 rounded-lg border border-input p-3">
-                            <div className="flex min-w-0 items-center gap-2">
-                              <FileText className="h-4 w-4 shrink-0 text-primary" />
-                              <a
-                                href={field.value}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="truncate text-sm hover:underline"
-                              >
-                                {pdfFileName || "View uploaded PDF"}
-                              </a>
-                            </div>
-                            <div className="flex shrink-0 items-center gap-1">
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => pdfInputRef.current?.click()}
-                                disabled={uploadingPdf}
-                                className="h-8 text-xs"
-                              >
-                                Replace
-                              </Button>
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="icon"
-                                onClick={handleRemovePdf}
-                                disabled={uploadingPdf}
-                                className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                                title="Remove PDF"
-                              >
-                                <X className="h-3.5 w-3.5" />
-                              </Button>
-                            </div>
-                          </div>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => pdfInputRef.current?.click()}
-                            disabled={uploadingPdf}
-                            className="flex w-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-input py-6 text-center transition-colors hover:border-primary/50 hover:bg-muted/50 disabled:opacity-50"
-                          >
-                            {uploadingPdf ? (
-                              <>
-                                <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                                <span className="text-sm text-muted-foreground">
-                                  Uploading...
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <Upload className="h-5 w-5 text-muted-foreground" />
-                                <span className="text-sm text-muted-foreground">
-                                  Click to upload the article PDF
-                                </span>
-                                <span className="text-xs text-muted-foreground/70">
-                                  PDF only, up to 10MB
-                                </span>
-                              </>
-                            )}
-                          </button>
-                        )}
-                      </div>
+                      <Input placeholder="Enter DOI..." {...field} />
                     </FormControl>
-                    {pdfUploadError && (
-                      <p className="text-sm font-medium text-destructive">
-                        {pdfUploadError}
-                      </p>
-                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -591,6 +530,100 @@ export default function NewArticlePage() {
                   {errors.keywords.message}
                 </p>
               )}
+            </div>
+            <div className="bg-white rounded-2xl border border-border shadow-sm p-5">
+              <FormField
+                control={control}
+                name="pdf_url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Article PDF</FormLabel>
+                    <FormControl>
+                      <div>
+                        <input
+                          ref={pdfInputRef}
+                          type="file"
+                          accept="application/pdf"
+                          className="hidden"
+                          onChange={handlePdfChange}
+                        />
+                        <input type="hidden" {...field} />
+
+                        {field.value ? (
+                          <div className="flex items-center justify-between gap-3 rounded-lg border border-input p-3">
+                            <div className="flex min-w-0 items-center gap-2">
+                              <FileText className="h-4 w-4 shrink-0 text-primary" />
+                              <a
+                                href={field.value}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="truncate text-sm hover:underline"
+                              >
+                                {pdfFileName || "View uploaded PDF"}
+                              </a>
+                            </div>
+                            <div className="flex shrink-0 items-center gap-1">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => pdfInputRef.current?.click()}
+                                disabled={uploadingPdf}
+                                className="h-8 text-xs"
+                              >
+                                Replace
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="icon"
+                                onClick={handleRemovePdf}
+                                disabled={uploadingPdf}
+                                className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                                title="Remove PDF"
+                              >
+                                <X className="h-3.5 w-3.5" />
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => pdfInputRef.current?.click()}
+                            disabled={uploadingPdf}
+                            className="flex w-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-input py-6 text-center transition-colors hover:border-primary/50 hover:bg-muted/50 disabled:opacity-50"
+                          >
+                            {uploadingPdf ? (
+                              <>
+                                <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                                <span className="text-sm text-muted-foreground">
+                                  Uploading...
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <Upload className="h-5 w-5 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground">
+                                  Click to upload the article PDF
+                                </span>
+                                <span className="text-xs text-muted-foreground/70">
+                                  PDF only, up to 10MB
+                                </span>
+                              </>
+                            )}
+                          </button>
+                        )}
+                      </div>
+                    </FormControl>
+                    {pdfUploadError && (
+                      <p className="text-sm font-medium text-destructive">
+                        {pdfUploadError}
+                      </p>
+                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
           </div>
         </div>
