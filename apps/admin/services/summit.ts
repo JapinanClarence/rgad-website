@@ -136,12 +136,64 @@ export async function updateSummit(
   return { success: true, data: toSummit(data) };
 }
 
+// Matches the bucket used by uploadImage() in services/storage.ts. Summit
+// photos live under the "summit" folder inside this bucket, e.g.
+// ".../object/public/images/summit/<unique>-<filename>.jpg".
+const IMAGE_BUCKET = "images";
+
+/**
+ * Recovers the storage path (bucket-relative) from a Supabase public
+ * storage URL, e.g. turns
+ * "https://xyz.supabase.co/storage/v1/object/public/images/summit/123-a.jpg"
+ * into "summit/123-a.jpg". Returns null if the URL doesn't match the
+ * expected public-storage shape for the given bucket.
+ */
+function extractStoragePath(url: string, bucket: string): string | null {
+  const marker = `/object/public/${bucket}/`;
+  const index = url.indexOf(marker);
+  if (index === -1) return null;
+
+  const path = url.slice(index + marker.length);
+  return path ? decodeURIComponent(path) : null;
+}
+
 export async function deleteSummit(id: string): Promise<ServiceResult<null>> {
   const supabase = createClient();
+
+  const { data: existing, error: fetchError } = await supabase
+    .from("summit")
+    .select("images")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (fetchError) {
+    return { success: false, error: fetchError.message };
+  }
+
   const { error } = await supabase.from("summit").delete().eq("id", id);
 
   if (error) {
     return { success: false, error: error.message };
+  }
+
+  // Remove the summit's photos from storage last, after the row is gone.
+  // If this fails we still treat the delete as successful (the summit is
+  // already gone from the listing/database), but log it so orphaned files
+  // in the "images" bucket can be cleaned up manually.
+  const storagePaths = (existing?.images ?? [])
+    .map((url) => extractStoragePath(url, IMAGE_BUCKET))
+    .filter((path): path is string => Boolean(path));
+
+  if (storagePaths.length > 0) {
+    const { error: storageError } = await supabase.storage
+      .from(IMAGE_BUCKET)
+      .remove(storagePaths);
+
+    if (storageError) {
+      console.error(
+        `Failed to remove summit images [${storagePaths.join(", ")}] from storage: ${storageError.message}`,
+      );
+    }
   }
 
   return { success: true, data: null };

@@ -5,13 +5,14 @@ import {
   PlusCircle,
   Search,
   Edit,
-  Trash2,
   MapPin,
   Calendar,
 } from "lucide-react";
 import type { Metadata } from "next";
 import { PaginationNav } from "@/components/pagination-nav";
+import { DeleteDialog } from "@/components/delete-dialog";
 import { listSummits } from "@/services/summit";
+import { deleteSummitAction } from "./actions";
 
 export const metadata: Metadata = { title: "Summit" };
 
@@ -107,12 +108,28 @@ export default async function SummitListPage({
                   >
                     <Edit className="h-4 w-4" />
                   </Link>
-                  <button
-                    className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-                    title="Delete"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+                  <DeleteDialog
+                    title="Delete summit"
+                    description={
+                      <>
+                        Are you sure you want to delete{" "}
+                        <span className="font-medium">
+                          &ldquo;{summit.theme || "this summit"}&rdquo;
+                        </span>
+                        ? This summit and its photos will be permanently
+                        removed.
+                      </>
+                    }
+                    onConfirm={async () => {
+                      "use server";
+                      const result = await deleteSummitAction(summit.id);
+                      if (!result.success) {
+                        throw new Error(
+                          result.error ?? "Failed to delete summit",
+                        );
+                      }
+                    }}
+                  />
                 </div>
               </div>
             ))

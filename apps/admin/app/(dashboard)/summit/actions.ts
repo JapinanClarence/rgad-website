@@ -1,11 +1,21 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createSummit } from "@/services/summit";
+import { createSummit, deleteSummit } from "@/services/summit";
 import type { SummitFormInput } from "@gad/schema";
 
 export async function createSummitAction(input: SummitFormInput) {
   const result = await createSummit(input);
+
+  if (result.success) {
+    revalidatePath("/summit");
+  }
+
+  return result;
+}
+
+export async function deleteSummitAction(id: string) {
+  const result = await deleteSummit(id);
 
   if (result.success) {
     revalidatePath("/summit");
