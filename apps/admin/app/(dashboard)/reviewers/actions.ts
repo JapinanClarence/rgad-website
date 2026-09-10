@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createReviewer, deleteReviewer } from "@/services/reviewer";
+import { createReviewer, deleteReviewer, updateReviewer } from "@/services/reviewer";
 import type { ReviewerFormInput } from "@gad/schema";
 
 export async function createReviewerAction(input: ReviewerFormInput) {
@@ -9,6 +9,20 @@ export async function createReviewerAction(input: ReviewerFormInput) {
 
   if (result.success) {
     revalidatePath("/reviewers");
+  }
+
+  return result;
+}
+
+export async function updateReviewerAction(
+  id: string,
+  input: Partial<ReviewerFormInput>,
+) {
+  const result = await updateReviewer(id, input);
+
+  if (result.success) {
+    revalidatePath("/reviewers");
+    revalidatePath(`/reviewers/${id}`);
   }
 
   return result;
