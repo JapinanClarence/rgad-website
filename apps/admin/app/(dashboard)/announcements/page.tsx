@@ -5,7 +5,8 @@ import { PlusCircle, Search, Edit, Pin, ExternalLink } from 'lucide-react'
 import type { Metadata } from 'next'
 import { PaginationNav } from '@/components/pagination-nav'
 import { listAnnouncements } from '@/services/announcement'
-import { DeleteAnnouncementButton } from './delete-announcement-button'
+import { DeleteDialog } from '@/components/delete-dialog'
+import { deleteAnnouncementAction } from './actions'
 
 export const metadata: Metadata = { title: 'Announcements' }
 
@@ -116,9 +117,28 @@ export default async function AnnouncementsListPage({
                   >
                     <Edit className="h-4 w-4" />
                   </Link>
-                  <DeleteAnnouncementButton
-                    id={announcement.id}
-                    title={announcement.title}
+                  <DeleteDialog
+                    title="Delete announcement"
+                    description={
+                      <>
+                        Are you sure you want to delete{" "}
+                        <span className="font-medium">
+                          &ldquo;{announcement.title}&rdquo;
+                        </span>
+                        ? This announcement will be permanently removed.
+                      </>
+                    }
+                    onConfirm={async () => {
+                      "use server";
+                      const result = await deleteAnnouncementAction(
+                        announcement.id,
+                      );
+                      if (!result.success) {
+                        throw new Error(
+                          result.error ?? "Failed to delete announcement",
+                        );
+                      }
+                    }}
                   />
                 </div>
               </div>

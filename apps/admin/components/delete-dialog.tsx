@@ -2,18 +2,36 @@
 
 import React from "react";
 import { Trash2, Loader2, TriangleAlert, X } from "lucide-react";
-import { deleteAnnouncementAction } from "./actions";
 import { Button } from "@gad/components/ui/button";
+import { cn } from "@/lib/utils";
 
-type DeleteAnnouncementButtonProps = {
-  id: string;
-  title: string;
+type DeleteDialogProps = {
+  /** Dialog heading, e.g. "Delete announcement" */
+  title?: string;
+  /** Confirmation message body, e.g. what item is being removed */
+  description: React.ReactNode;
+  /** Called when the user confirms the deletion. Throw an Error to surface a message in the dialog. */
+  onConfirm: () => Promise<void> | void;
+  /** Tooltip/title attribute for the trigger button */
+  triggerLabel?: string;
+  /** Extra classes applied to the trigger button */
+  triggerClassName?: string;
+  /** Icon rendered inside the trigger button */
+  triggerIcon?: React.ReactNode;
+  confirmLabel?: string;
+  cancelLabel?: string;
 };
 
-export function DeleteAnnouncementButton({
-  id,
-  title,
-}: DeleteAnnouncementButtonProps) {
+export function DeleteDialog({
+  title = "Delete item",
+  description,
+  onConfirm,
+  triggerLabel = "Delete",
+  triggerClassName,
+  triggerIcon,
+  confirmLabel = "Delete",
+  cancelLabel = "Cancel",
+}: DeleteDialogProps) {
   const [open, setOpen] = React.useState(false);
   const [deleting, setDeleting] = React.useState(false);
   const [error, setError] = React.useState("");
@@ -24,20 +42,20 @@ export function DeleteAnnouncementButton({
     setError("");
   };
 
-  const handleDelete = async () => {
+  const handleConfirm = async () => {
     setDeleting(true);
     setError("");
 
-    const result = await deleteAnnouncementAction(id);
-
-    if (!result.success) {
-      setError(result.error ?? "Failed to delete announcement");
+    try {
+      await onConfirm();
+      setOpen(false);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again.",
+      );
+    } finally {
       setDeleting(false);
-      return;
     }
-
-    setDeleting(false);
-    setOpen(false);
   };
 
   return (
@@ -45,10 +63,13 @@ export function DeleteAnnouncementButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-        title="Delete"
+        className={cn(
+          "p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive",
+          triggerClassName,
+        )}
+        title={triggerLabel}
       >
-        <Trash2 className="h-4 w-4" />
+        {triggerIcon ?? <Trash2 className="h-4 w-4" />}
       </button>
 
       {open && (
@@ -65,9 +86,7 @@ export function DeleteAnnouncementButton({
                   <TriangleAlert className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="font-display text-lg font-bold">
-                    Delete announcement
-                  </h2>
+                  <h2 className="font-display text-lg font-bold">{title}</h2>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     This action cannot be undone.
                   </p>
@@ -85,11 +104,7 @@ export function DeleteAnnouncementButton({
             </div>
 
             <div className="p-5">
-              <p className="text-sm text-foreground">
-                Are you sure you want to delete{" "}
-                <span className="font-medium">&ldquo;{title}&rdquo;</span>?
-                This announcement will be permanently removed.
-              </p>
+              <div className="text-sm text-foreground">{description}</div>
 
               {error && (
                 <div className="mt-4 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
@@ -105,12 +120,12 @@ export function DeleteAnnouncementButton({
                 onClick={handleClose}
                 disabled={deleting}
               >
-                Cancel
+                {cancelLabel}
               </Button>
               <Button
                 type="button"
                 variant="destructive"
-                onClick={handleDelete}
+                onClick={handleConfirm}
                 disabled={deleting}
               >
                 {deleting ? (
@@ -119,7 +134,7 @@ export function DeleteAnnouncementButton({
                     Deleting...
                   </>
                 ) : (
-                  "Delete"
+                  confirmLabel
                 )}
               </Button>
             </div>
