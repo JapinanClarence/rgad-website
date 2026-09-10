@@ -37,6 +37,8 @@ export interface Database {
           pages: string;
           title: string;
           abstract: string;
+          doi: string | null;
+          correspondence: string | null;
           keywords: string[] | null;
           archive_id: string;
         };
