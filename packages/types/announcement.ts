@@ -4,5 +4,6 @@ export type Announcement = {
   title: string;
   description: string;
   publishedAt: string;
-  isPinned?: boolean;
+  isPinned: boolean;
+  externalUrl?: string;
 };

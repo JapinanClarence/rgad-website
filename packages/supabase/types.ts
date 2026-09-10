@@ -124,6 +124,26 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["reviewers"]["Insert"]>;
         Relationships: [];
       };
+      announcements: {
+        Row: {
+          id: string;
+          created_at: string;
+          title: string;
+          description: string;
+          slug: string;
+          published_at: string;
+          external_url: string | null;
+          is_pinned: boolean;
+        };
+        Insert: Omit<
+          Database["public"]["Tables"]["announcements"]["Row"],
+          "id" | "created_at"
+        >;
+        Update: Partial<
+          Database["public"]["Tables"]["announcements"]["Insert"]
+        >;
+        Relationships: [];
+      };
     };
     Views: {};
     Functions: {};
