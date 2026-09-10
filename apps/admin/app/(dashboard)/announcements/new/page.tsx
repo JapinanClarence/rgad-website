@@ -168,30 +168,6 @@ export default function NewAnnouncementPage() {
 
           <FormField
             control={control}
-            name="slug"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Slug *</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="e.g. call-for-papers-volume-3-issue-2"
-                    {...field}
-                    onChange={(e) =>
-                      handleSlugChange(e.target.value, field.onChange)
-                    }
-                  />
-                </FormControl>
-                <FormDescription>
-                  Used in the announcement's public URL. Lowercase letters,
-                  numbers, and hyphens only.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={control}
             name="description"
             render={({ field }) => (
               <FormItem>
@@ -222,9 +198,7 @@ export default function NewAnnouncementPage() {
                       value={toDateInputValue(field.value)}
                       onChange={(e) =>
                         field.onChange(
-                          e.target.value
-                            ? new Date(e.target.value)
-                            : undefined,
+                          e.target.value ? new Date(e.target.value) : undefined,
                         )
                       }
                     />
