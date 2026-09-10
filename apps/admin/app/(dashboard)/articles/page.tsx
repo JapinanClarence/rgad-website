@@ -5,12 +5,13 @@ import {
   PlusCircle,
   Search,
   Edit,
-  Trash2,
   FileText,
   Users,
 } from "lucide-react";
 import type { Metadata } from "next";
 import { PaginationNav } from "@/components/pagination-nav";
+import { DeleteDialog } from "@/components/delete-dialog";
+import { deleteArticleAction } from "./actions";
 
 export const metadata: Metadata = { title: "Articles" };
 
@@ -194,12 +195,30 @@ export default async function ArticlesListPage({
                       >
                         <Edit className="h-4 w-4" />
                       </Link>
-                      <button
-                        className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-                        title="Delete"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <DeleteDialog
+                        title="Delete article"
+                        description={
+                          <>
+                            Are you sure you want to delete{" "}
+                            <span className="font-medium">
+                              &ldquo;{article.title}&rdquo;
+                            </span>
+                            ? This article and its authors will be
+                            permanently removed.
+                          </>
+                        }
+                        onConfirm={async () => {
+                          "use server";
+                          const result = await deleteArticleAction(
+                            article.id,
+                          );
+                          if (!result.success) {
+                            throw new Error(
+                              result.error ?? "Failed to delete article",
+                            );
+                          }
+                        }}
+                      />
                     </div>
                   </td>
                 </tr>

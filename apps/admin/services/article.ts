@@ -217,6 +217,19 @@ export async function updateArticle(
 
 export async function deleteArticle(id: string): Promise<ServiceResult<null>> {
   const supabase = createClient();
+
+  // Authors are not automatically removed when an article is deleted, so we
+  // clean them up explicitly first, the same way updateArticle manages the
+  // authors table when replacing an article's author list.
+  const { error: authorsError } = await supabase
+    .from("authors")
+    .delete()
+    .eq("article_id", id);
+
+  if (authorsError) {
+    return { success: false, error: authorsError.message };
+  }
+
   const { error } = await supabase.from("articles").delete().eq("id", id);
 
   if (error) {
