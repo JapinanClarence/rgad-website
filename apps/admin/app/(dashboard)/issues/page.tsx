@@ -1,10 +1,12 @@
 import React from "react";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
-import { PlusCircle, Search, Edit, Trash2, BadgeCheck } from "lucide-react";
+import { PlusCircle, Search, Edit, BadgeCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { PaginationNav } from "@/components/pagination-nav";
+import { DeleteDialog } from "@/components/delete-dialog";
 import { listIssues } from "@/services/issue";
+import { deleteIssueAction } from "./actions";
 
 export const metadata: Metadata = { title: "Issues" };
 
@@ -146,12 +148,29 @@ export default async function IssuesListPage({
                         >
                           <Edit className="h-4 w-4" />
                         </Link>
-                        <button
-                          className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-                          title="Delete"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                        <DeleteDialog
+                          title="Delete issue"
+                          description={
+                            <>
+                              Are you sure you want to delete{" "}
+                              <span className="font-medium">
+                                &ldquo;Vol. {issue.volume}, Issue{" "}
+                                {issue.issueNo}&rdquo;
+                              </span>
+                              ? This will permanently remove the issue along
+                              with all of its articles.
+                            </>
+                          }
+                          onConfirm={async () => {
+                            "use server";
+                            const result = await deleteIssueAction(issue.id);
+                            if (!result.success) {
+                              throw new Error(
+                                result.error ?? "Failed to delete issue",
+                              );
+                            }
+                          }}
+                        />
                       </div>
                     </td>
                   </tr>

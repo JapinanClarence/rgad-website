@@ -2,6 +2,7 @@ import { createClient } from "@gad/supabase/server";
 import type { Database } from "@gad/supabase/types";
 import { issueFormSchema, type IssueFormInput } from "@gad/schema";
 import type { Issue } from "@gad/types";
+import { deleteArticle } from "./article";
 
 type ServiceResult<T> =
   | { success: true; data: T; error?: never; fieldErrors?: never }
@@ -150,12 +151,84 @@ export async function updateIssue(
   return { success: true, data: toIssue(data) };
 }
 
+// Matches the bucket used by uploadImage() in services/storage.ts. Issue
+// cover images live under the "covers" folder inside this bucket, e.g.
+// ".../object/public/images/covers/<unique>-<filename>.jpg".
+const IMAGE_BUCKET = "images";
+
+/**
+ * Recovers the storage path (bucket-relative) from a Supabase public
+ * storage URL, e.g. turns
+ * "https://xyz.supabase.co/storage/v1/object/public/images/covers/123-a.jpg"
+ * into "covers/123-a.jpg". Returns null if the URL doesn't match the
+ * expected public-storage shape for the given bucket.
+ */
+function extractStoragePath(url: string, bucket: string): string | null {
+  const marker = `/object/public/${bucket}/`;
+  const index = url.indexOf(marker);
+  if (index === -1) return null;
+
+  const path = url.slice(index + marker.length);
+  return path ? decodeURIComponent(path) : null;
+}
+
 export async function deleteIssue(id: string): Promise<ServiceResult<null>> {
   const supabase = createClient();
+
+  const { data: existingIssue, error: issueFetchError } = await supabase
+    .from("archive")
+    .select("cover_image")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (issueFetchError) {
+    return { success: false, error: issueFetchError.message };
+  }
+
+  const { data: articles, error: articlesFetchError } = await supabase
+    .from("articles")
+    .select("id")
+    .eq("archive_id", id);
+
+  if (articlesFetchError) {
+    return { success: false, error: articlesFetchError.message };
+  }
+
+  // An issue's articles are not automatically removed when the issue is
+  // deleted, so route each one through deleteArticle first. That also
+  // cleans up each article's authors and uploaded PDF, the same as
+  // deleting an article individually.
+  for (const article of articles ?? []) {
+    const result = await deleteArticle(article.id);
+    if (!result.success) {
+      return { success: false, error: result.error };
+    }
+  }
+
   const { error } = await supabase.from("archive").delete().eq("id", id);
 
   if (error) {
     return { success: false, error: error.message };
+  }
+
+  // Remove the issue's cover image from storage last, after the row is
+  // gone. If this fails we still treat the delete as successful (the issue
+  // is already gone from the listing/database), but log it so an orphaned
+  // file in the "images" bucket can be cleaned up manually.
+  const storagePath = existingIssue?.cover_image
+    ? extractStoragePath(existingIssue.cover_image, IMAGE_BUCKET)
+    : null;
+
+  if (storagePath) {
+    const { error: storageError } = await supabase.storage
+      .from(IMAGE_BUCKET)
+      .remove([storagePath]);
+
+    if (storageError) {
+      console.error(
+        `Failed to remove issue cover image "${storagePath}" from storage: ${storageError.message}`,
+      );
+    }
   }
 
   return { success: true, data: null };
