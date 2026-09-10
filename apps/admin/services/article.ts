@@ -37,6 +37,8 @@ function toArticleAuthor(row: {
     lastname: row.lastname,
     school: row.school,
     department: row.department,
+    city: row.city,
+    country: row.country,
     orcid_no: null,
   };
 }
@@ -49,6 +51,9 @@ function toIssueArticle(
     pages: string;
     pdf_url: string;
     keywords: string[] | null;
+    archive_id?: string;
+    doi?: string | null;
+    correspondence?: string | null;
   },
   authors: ArticleAuthor[],
 ): IssueArticle {
@@ -60,6 +65,9 @@ function toIssueArticle(
     pdfUrl: row.pdf_url,
     authors,
     keywords: row.keywords ?? [],
+    archiveId: row.archive_id,
+    doi: row.doi ?? undefined,
+    correspondence: row.correspondence ?? undefined,
   };
 }
 
@@ -90,7 +98,7 @@ export async function createArticle(
       doi: fields.doi || null,
       correspondence: fields.correspondence || null,
     })
-    .select("id, title, abstract, pages, pdf_url, keywords")
+    .select("id, title, abstract, pages, pdf_url, keywords, archive_id, doi, correspondence")
     .single();
 
   if (articleError || !article) {
@@ -155,12 +163,15 @@ export async function updateArticle(
   if (fields.archive_id !== undefined)
     updatePayload.archive_id = fields.archive_id;
   if (fields.keywords !== undefined) updatePayload.keywords = fields.keywords;
+  if (fields.doi !== undefined) updatePayload.doi = fields.doi || null;
+  if (fields.correspondence !== undefined)
+    updatePayload.correspondence = fields.correspondence || null;
 
   const { data: article, error: articleError } = await supabase
     .from("articles")
     .update(updatePayload)
     .eq("id", id)
-    .select("id, title, abstract, pages, pdf_url, keywords")
+    .select("id, title, abstract, pages, pdf_url, keywords, archive_id, doi, correspondence")
     .single();
 
   if (articleError || !article) {
@@ -297,7 +308,7 @@ export async function getArticleById(
 
   const { data: article, error: articleError } = await supabase
     .from("articles")
-    .select("id, title, abstract, pages, pdf_url, keywords")
+    .select("id, title, abstract, pages, pdf_url, keywords, archive_id, doi, correspondence")
     .eq("id", id)
     .maybeSingle();
 

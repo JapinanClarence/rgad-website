@@ -19,6 +19,7 @@ export type IssueArticle = {
   pdfUrl: string;
   authors: ArticleAuthor[];
   keywords: string[];
+  archiveId?: string;
   doi?: string;
   correspondence?: string;
 };
@@ -29,5 +30,7 @@ export type ArticleAuthor = {
   lastname: string;
   school?: string | null;
   department?: string | null;
+  city?: string | null;
+  country?: string | null;
   orcid_no?: string | null;
 };
