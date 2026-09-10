@@ -43,7 +43,14 @@ const navItems = [
     icon: BookOpen,
     children: [{ label: "New Summit", href: "/summit/new", icon: PlusCircle }],
   },
-  { label: "Reviewers", href: "/reviewers", icon: UserCheck },
+  {
+    label: "Reviewers",
+    href: "/reviewers",
+    icon: UserCheck,
+    children: [
+      { label: "New Reviewer", href: "/reviewers/new", icon: PlusCircle },
+    ],
+  },
   { label: "Announcements", href: "/announcements", icon: Megaphone },
   // { label: "Settings", href: "/settings", icon: Settings },
 ];
