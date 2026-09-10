@@ -1,10 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
 import { formatDate } from '@/lib/utils'
-import { PlusCircle, Search, Edit, Trash2, Pin, ExternalLink } from 'lucide-react'
+import { PlusCircle, Search, Edit, Pin, ExternalLink } from 'lucide-react'
 import type { Metadata } from 'next'
 import { PaginationNav } from '@/components/pagination-nav'
 import { listAnnouncements } from '@/services/announcement'
+import { DeleteAnnouncementButton } from './delete-announcement-button'
 
 export const metadata: Metadata = { title: 'Announcements' }
 
@@ -115,12 +116,10 @@ export default async function AnnouncementsListPage({
                   >
                     <Edit className="h-4 w-4" />
                   </Link>
-                  <button
-                    className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-                    title="Delete"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+                  <DeleteAnnouncementButton
+                    id={announcement.id}
+                    title={announcement.title}
+                  />
                 </div>
               </div>
             ))
