@@ -37,3 +37,9 @@ export function truncate(text: string, length: number) {
   if (text.length <= length) return text;
   return text.slice(0, length) + "...";
 }
+
+export function truncateWords(text: string, wordLimit: number) {
+  const words = text.trim().split(/\s+/);
+  if (words.length <= wordLimit) return text;
+  return words.slice(0, wordLimit).join(" ") + "...";
+}
