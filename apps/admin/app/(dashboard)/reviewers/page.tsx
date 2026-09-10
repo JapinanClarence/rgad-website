@@ -1,9 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { PlusCircle, Search, Edit, Trash2 } from "lucide-react";
+import { PlusCircle, Search, Edit } from "lucide-react";
 import type { Metadata } from "next";
 import { PaginationNav } from "@/components/pagination-nav";
+import { DeleteDialog } from "@/components/delete-dialog";
 import { listReviewers } from "@/services/reviewer";
+import { deleteReviewerAction } from "./actions";
 
 export const metadata: Metadata = { title: "Reviewers" };
 
@@ -136,12 +138,30 @@ export default async function ReviewersListPage({
                         >
                           <Edit className="h-4 w-4" />
                         </Link>
-                        <button
-                          className="p-1.5 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
-                          title="Delete"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
+                        <DeleteDialog
+                          title="Delete reviewer"
+                          description={
+                            <>
+                              Are you sure you want to delete{" "}
+                              <span className="font-medium">
+                                &ldquo;{reviewer.firstname}{" "}
+                                {reviewer.lastname}&rdquo;
+                              </span>
+                              ? This reviewer will be permanently removed.
+                            </>
+                          }
+                          onConfirm={async () => {
+                            "use server";
+                            const result = await deleteReviewerAction(
+                              reviewer.id,
+                            );
+                            if (!result.success) {
+                              throw new Error(
+                                result.error ?? "Failed to delete reviewer",
+                              );
+                            }
+                          }}
+                        />
                       </div>
                     </td>
                   </tr>
