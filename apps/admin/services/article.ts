@@ -215,8 +215,39 @@ export async function updateArticle(
   };
 }
 
+// Matches the bucket used by uploadPdf() in services/storage.ts. Article
+// PDFs live under the "articles" folder inside this bucket, e.g.
+// ".../object/public/file/articles/<unique>-<filename>.pdf".
+const PDF_BUCKET = "file";
+
+/**
+ * Recovers the storage path (bucket-relative) from a Supabase public
+ * storage URL, e.g. turns
+ * "https://xyz.supabase.co/storage/v1/object/public/file/articles/123-a.pdf"
+ * into "articles/123-a.pdf". Returns null if the URL doesn't match the
+ * expected public-storage shape for the given bucket.
+ */
+function extractStoragePath(url: string, bucket: string): string | null {
+  const marker = `/object/public/${bucket}/`;
+  const index = url.indexOf(marker);
+  if (index === -1) return null;
+
+  const path = url.slice(index + marker.length);
+  return path ? decodeURIComponent(path) : null;
+}
+
 export async function deleteArticle(id: string): Promise<ServiceResult<null>> {
   const supabase = createClient();
+
+  const { data: existing, error: fetchError } = await supabase
+    .from("articles")
+    .select("pdf_url")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (fetchError) {
+    return { success: false, error: fetchError.message };
+  }
 
   // Authors are not automatically removed when an article is deleted, so we
   // clean them up explicitly first, the same way updateArticle manages the
@@ -234,6 +265,26 @@ export async function deleteArticle(id: string): Promise<ServiceResult<null>> {
 
   if (error) {
     return { success: false, error: error.message };
+  }
+
+  // Remove the PDF from storage last, after the rows are gone. If this
+  // fails we still treat the delete as successful (the article is already
+  // gone from the listing/database), but log it so an orphaned file in the
+  // "file" bucket can be cleaned up manually.
+  const storagePath = existing?.pdf_url
+    ? extractStoragePath(existing.pdf_url, PDF_BUCKET)
+    : null;
+
+  if (storagePath) {
+    const { error: storageError } = await supabase.storage
+      .from(PDF_BUCKET)
+      .remove([storagePath]);
+
+    if (storageError) {
+      console.error(
+        `Failed to remove article PDF "${storagePath}" from storage: ${storageError.message}`,
+      );
+    }
   }
 
   return { success: true, data: null };
