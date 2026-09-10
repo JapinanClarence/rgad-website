@@ -51,7 +51,18 @@ const navItems = [
       { label: "New Reviewer", href: "/reviewers/new", icon: PlusCircle },
     ],
   },
-  { label: "Announcements", href: "/announcements", icon: Megaphone },
+  {
+    label: "Announcements",
+    href: "/announcements",
+    icon: Megaphone,
+    children: [
+      {
+        label: "New Announcement",
+        href: "/announcements/new",
+        icon: PlusCircle,
+      },
+    ],
+  },
   // { label: "Settings", href: "/settings", icon: Settings },
 ];
 

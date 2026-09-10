@@ -30,6 +30,7 @@ const MOCK_ANNOUNCEMENTS: Announcement[] = [
     description:
       "GRPJ is expanding its pool of peer reviewers across gender studies, education, public policy, and the social sciences. Qualified academics and practitioners from higher education institutions, government agencies, and civil society organizations in and beyond Region XI are encouraged to apply. Reviewers help uphold the journal's double blind review process and contribute to strengthening the quality and rigor of published research. Interested applicants may submit their credentials and areas of expertise through the journal's reviewer application form.",
     publishedAt: "2026-07-28",
+    isPinned: false,
   },
   {
     id: "4",
@@ -38,6 +39,7 @@ const MOCK_ANNOUNCEMENTS: Announcement[] = [
     description:
       "The latest issue features six peer-reviewed articles on gender-responsive governance, indigenous women's participation, and inclusive higher education policy in Mindanao. Contributing authors represent member institutions from across Region XI, reflecting the Network's growing role as a venue for evidence-based gender scholarship. The full issue, including abstracts, citations, and downloadable PDFs, is now available on the journal's archive page. Readers are encouraged to explore the issue and share it with colleagues working on gender and development research.",
     publishedAt: "2026-06-30",
+    isPinned: false,
   },
   {
     id: "5",
@@ -46,6 +48,7 @@ const MOCK_ANNOUNCEMENTS: Announcement[] = [
     description:
       "The Network formally welcomed three additional state colleges to its growing coalition of higher education institutions committed to gender and development work across the region. The new members join founding partners Davao Oriental State University, Davao del Norte State College, Davao de Oro State College, Davao del Sur State College, SPAMAST, and the University of Southeastern Philippines. Their inclusion widens the base of institutional collaboration behind the Network's research, capacity building, and policy advocacy programs.",
     publishedAt: "2026-06-12",
+    isPinned: false,
   },
   {
     id: "6",
@@ -54,6 +57,7 @@ const MOCK_ANNOUNCEMENTS: Announcement[] = [
     description:
       "A four part capacity building series for institutional GAD focal persons begins this September, covering gender mainstreaming, GAD planning and budgeting, and monitoring and evaluation. The series is designed to strengthen institutional capacities in line with the Network's Capacity Development program and CHED policies on Gender and Development. Focal persons from member institutions are encouraged to register early, as slots per institution are limited to ensure a participatory, workshop style format.",
     publishedAt: "2026-05-20",
+    isPinned: false,
   },
   {
     id: "7",
@@ -62,6 +66,7 @@ const MOCK_ANNOUNCEMENTS: Announcement[] = [
     description:
       "The editorial board has revised the journal's peer review policy to clarify review timelines, conflict of interest disclosures, and the double blind review process. The update responds to feedback gathered from reviewers and authors since the journal's launch at the 2025 Regional GAD Summit. Authors currently preparing manuscripts are advised to consult the revised policy on the journal's website before submission. The editorial board thanks the reviewer community for its continued contributions to the journal's quality.",
     publishedAt: "2026-04-18",
+    isPinned: false,
   },
 ];
 
