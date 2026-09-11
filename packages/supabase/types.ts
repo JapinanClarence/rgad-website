@@ -144,9 +144,75 @@ export interface Database {
         >;
         Relationships: [];
       };
+      article_metrics: {
+        Row: {
+          article_id: string;
+          total_views: number;
+          total_downloads: number;
+          updated_at: string;
+        };
+        Insert: Partial<
+          Omit<
+            Database["public"]["Tables"]["article_metrics"]["Row"],
+            "article_id"
+          >
+        > & {
+          article_id: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["article_metrics"]["Row"]>;
+        Relationships: [
+          {
+            foreignKeyName: "article_metrics_article_id_fkey";
+            columns: ["article_id"];
+            isOneToOne: true;
+            referencedRelation: "articles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      article_metric_events: {
+        Row: {
+          id: string;
+          article_id: string;
+          event_type: "view" | "download";
+          visitor_hash: string | null;
+          created_at: string;
+        };
+        Insert: Omit<
+          Database["public"]["Tables"]["article_metric_events"]["Row"],
+          "id" | "created_at"
+        >;
+        Update: Partial<
+          Database["public"]["Tables"]["article_metric_events"]["Insert"]
+        >;
+        Relationships: [
+          {
+            foreignKeyName: "article_metric_events_article_id_fkey";
+            columns: ["article_id"];
+            isOneToOne: false;
+            referencedRelation: "articles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {};
-    Functions: {};
+    Functions: {
+      record_article_view: {
+        Args: {
+          p_article_id: string;
+          p_visitor_hash?: string | null;
+        };
+        Returns: void;
+      };
+      record_article_download: {
+        Args: {
+          p_article_id: string;
+          p_visitor_hash?: string | null;
+        };
+        Returns: void;
+      };
+    };
     Enums: {};
   };
 }
