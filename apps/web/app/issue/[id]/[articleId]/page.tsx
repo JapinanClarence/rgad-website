@@ -1,15 +1,17 @@
-import React from "react";
+import React, { cache } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getIssueById } from "@/services/issue";
+import { getArticleMetrics, recordArticleView } from "@/services/article-metrics";
 import { type Issue, IssueArticle, ArticleAuthor } from "@gad/types/issue";
+import type { ArticleMetrics } from "@gad/types/article-metrics";
 import { IssueCover } from "@/components/journal/issue-cover";
 import { IssueQuickLinks } from "@/components/journal/issue-quick-links";
 import { CiteButton } from "@/components/journal/cite-button";
 import { AltmetricBadge } from "@/components/journal/altmetric-badge";
-import { Button } from "@gad/components/ui/button";
+import { PdfDownloadButton } from "@/components/journal/pdf-download-button";
 import { Badge } from "@gad/components/ui/badge";
 import { formatDateShort } from "@/lib/utils";
 import { formatAuthorName } from "@/lib/authors";
@@ -18,7 +20,6 @@ import {
   ArrowLeft,
   Calendar,
   Users,
-  FileText,
   Mail,
   Eye,
   Download,
@@ -39,13 +40,27 @@ function plainText(html?: string) {
     : "";
 }
 
-async function getArticle(issueId: string, articleId: string) {
+// Wrapped in React's cache() so generateMetadata and the page body, which
+// both call this per request, share one execution instead of fetching the
+// article (and recording the view) twice.
+const getArticle = cache(async (issueId: string, articleId: string) => {
   const result = await getIssueById(issueId);
   if (!result) return null;
   const article = result.articles.find((a) => a.id === articleId);
   if (!article) return null;
-  return { issue: result.issue, article };
-}
+
+  // Metrics are best-effort: a read/write hiccup here should never keep
+  // the article itself from rendering.
+  let metrics: ArticleMetrics | null = null;
+  try {
+    metrics = await getArticleMetrics(article.id);
+    await recordArticleView(article.id);
+  } catch {
+    // Ignore; metrics will simply show as unavailable for this request.
+  }
+
+  return { issue: result.issue, article, metrics };
+});
 
 function toApaAuthorName(author: ArticleAuthor): string {
   const initials = [author.firstname, author.middlename]
@@ -100,7 +115,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ArticleDetailPage({ params }: Props) {
   const result = await getArticle(params.id, params.articleId);
   if (!result) notFound();
-  const { issue, article } = result;
+  const { issue, article, metrics } = result;
   const citation = buildCitation(issue, article);
 
   return (
@@ -128,16 +143,10 @@ export default async function ArticleDetailPage({ params }: Props) {
                 />
                 <div className="space-y-2">
                   {article.pdfUrl && (
-                    <Button variant="gad" size="sm" asChild className="w-full">
-                      <a
-                        href={article.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FileText className="h-4 w-4 mr-2" />
-                        View PDF
-                      </a>
-                    </Button>
+                    <PdfDownloadButton
+                      articleId={article.id}
+                      pdfUrl={article.pdfUrl}
+                    />
                   )}
                   <CiteButton
                     citation={citation.citation}
@@ -267,7 +276,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                   <div className="flex flex-col items-center text-center px-2">
                     <Eye className="h-4 w-4 text-muted-foreground mb-2" />
                     <span className="font-display font-semibold text-lg text-foreground">
-                      0
+                      {metrics?.totalViews ?? 0}
                     </span>
                     <span className="mt-0.5 text-[11px] text-muted-foreground">
                       Views
@@ -277,7 +286,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                   <div className="flex flex-col items-center text-center px-2">
                     <Download className="h-4 w-4 text-muted-foreground mb-2" />
                     <span className="font-display font-semibold text-lg text-foreground">
-                      0
+                      {metrics?.totalDownloads ?? 0}
                     </span>
                     <span className="mt-0.5 text-[11px] text-muted-foreground">
                       Downloads

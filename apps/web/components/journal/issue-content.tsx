@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "@gad/components/ui/button";
 import { IssueCover } from "@/components/journal/issue-cover";
+import { PdfDownloadButton } from "@/components/journal/pdf-download-button";
 import { formatDateShort, formatYear } from "@/lib/utils";
 import { formatAuthorName } from "@/lib/authors";
-import { Calendar, FileText, Users } from "lucide-react";
+import { Calendar, Users } from "lucide-react";
 import type { Issue, IssueArticle } from "@gad/types/issue";
 
 function plainText(html?: string) {
@@ -98,27 +98,13 @@ export function IssueContent({ issue, articles }: IssueContentProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  {/* <Button variant="outline" size="sm" asChild className="w-fit">
-                    <Link href={`/issue/${issue.id}/${article.id}`}>
-                      View Article
-                    </Link>
-                  </Button> */}
                   {article.pdfUrl && (
-                    <Button
+                    <PdfDownloadButton
+                      articleId={article.id}
+                      pdfUrl={article.pdfUrl}
                       variant="outline"
-                      size="sm"
-                      asChild
                       className="w-fit"
-                    >
-                      <a
-                        href={article.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FileText className="h-4 w-4 mr-2" />
-                        View PDF
-                      </a>
-                    </Button>
+                    />
                   )}
                 </div>
               </div>
