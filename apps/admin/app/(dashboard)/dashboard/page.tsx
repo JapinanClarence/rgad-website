@@ -10,6 +10,7 @@ import {
   ArrowRight,
   Users,
   BadgeCheck,
+  FilePlus,
 } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -253,7 +254,7 @@ export default async function DashboardPage() {
                 {
                   label: "Write New Article",
                   href: "/articles/new",
-                  icon: PlusCircle,
+                  icon: FilePlus,
                   color: "text-purple-600",
                 },
                 {
