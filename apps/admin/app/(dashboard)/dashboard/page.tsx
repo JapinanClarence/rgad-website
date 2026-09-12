@@ -1,18 +1,59 @@
 import React from 'react'
 import { createClient } from '@gad/supabase/server'
-import { formatDate } from '@/lib/utils'
-import { FileText, Users, Eye, TrendingUp, PlusCircle, ArrowRight } from 'lucide-react'
+import { formatDate, formatCompactNumber } from '@/lib/utils'
+import { BookMarked, FileText, Eye, Download, PlusCircle, ArrowRight, Users } from 'lucide-react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { getDashboardStats } from '@/services/stats'
+import type { DashboardStats } from '@gad/types'
 
 export const metadata: Metadata = { title: 'Dashboard' }
 
-const SAMPLE_STATS = [
-  { label: 'Total Articles', value: '47', icon: FileText, change: '+3 this month', color: 'text-purple-600 bg-purple-100' },
-  { label: 'Published', value: '38', icon: Eye, change: '81% published', color: 'text-green-600 bg-green-100' },
-  { label: 'Team Members', value: '12', icon: Users, change: '3 departments', color: 'text-blue-600 bg-blue-100' },
-  { label: 'Total Views', value: '8.4k', icon: TrendingUp, change: '+22% this month', color: 'text-rose-600 bg-rose-100' },
-]
+const SAMPLE_DASHBOARD_STATS: DashboardStats = {
+  totalIssues: { value: 12, change: 1, changeType: 'count', trend: 'up' },
+  totalArticles: { value: 47, change: 3, changeType: 'count', trend: 'up' },
+  totalViews: { value: 8400, change: 22, changeType: 'percentage', trend: 'up' },
+  totalDownloads: { value: 3150, change: -5, changeType: 'percentage', trend: 'down' },
+}
+
+function formatChange(stat: DashboardStats[keyof DashboardStats]) {
+  const sign = stat.change > 0 ? '+' : ''
+  const suffix = stat.changeType === 'percentage' ? '%' : ''
+  return `${sign}${stat.change}${suffix} this month`
+}
+
+function buildStatCards(stats: DashboardStats) {
+  return [
+    {
+      label: 'Total Issues',
+      value: formatCompactNumber(stats.totalIssues.value),
+      icon: BookMarked,
+      change: formatChange(stats.totalIssues),
+      color: 'text-blue-600 bg-blue-100',
+    },
+    {
+      label: 'Total Articles',
+      value: formatCompactNumber(stats.totalArticles.value),
+      icon: FileText,
+      change: formatChange(stats.totalArticles),
+      color: 'text-purple-600 bg-purple-100',
+    },
+    {
+      label: 'Total Article Views',
+      value: formatCompactNumber(stats.totalViews.value),
+      icon: Eye,
+      change: formatChange(stats.totalViews),
+      color: 'text-rose-600 bg-rose-100',
+    },
+    {
+      label: 'Total Article Downloads',
+      value: formatCompactNumber(stats.totalDownloads.value),
+      icon: Download,
+      change: formatChange(stats.totalDownloads),
+      color: 'text-green-600 bg-green-100',
+    },
+  ]
+}
 
 const RECENT_ARTICLES = [
   { id: '1', title: 'Intersectionality in Philippine Gender Policy', category: 'Gender Policy', published: true, published_at: '2024-05-15' },
@@ -36,6 +77,13 @@ export default async function DashboardPage() {
     if (data && data.length > 0) articles = data
   } catch {}
 
+  let dashboardStats = SAMPLE_DASHBOARD_STATS
+  try {
+    dashboardStats = await getDashboardStats()
+  } catch {}
+
+  const statCards = buildStatCards(dashboardStats)
+
   return (
     <div className="p-8 max-w-6xl mx-auto">
       {/* Header */}
@@ -57,7 +105,7 @@ export default async function DashboardPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-        {SAMPLE_STATS.map((stat) => (
+        {statCards.map((stat) => (
           <div key={stat.label} className="bg-white rounded-2xl border border-border p-5 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex items-start justify-between mb-4">
               <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center`}>

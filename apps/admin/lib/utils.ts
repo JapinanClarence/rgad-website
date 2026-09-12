@@ -10,3 +10,10 @@ export function formatDate(date: string | Date) {
     year: 'numeric', month: 'short', day: 'numeric',
   }).format(new Date(date))
 }
+
+export function formatCompactNumber(value: number) {
+  return new Intl.NumberFormat('en-PH', {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(value)
+}
