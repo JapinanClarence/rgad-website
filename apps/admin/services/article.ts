@@ -30,6 +30,7 @@ function toArticleAuthor(row: {
   school: string;
   city: string | null;
   country: string | null;
+  orcid_no: string | null;
 }): ArticleAuthor {
   return {
     firstname: row.firstname,
@@ -39,7 +40,7 @@ function toArticleAuthor(row: {
     department: row.department,
     city: row.city,
     country: row.country,
-    orcid_no: null,
+    orcid_no: row.orcid_no,
   };
 }
 
@@ -120,10 +121,11 @@ export async function createArticle(
         school: author.school,
         city: author.city || null,
         country: author.country || null,
+        orcid_no: author.orcid || null,
       })),
     )
     .select(
-      "firstname, middlename, lastname, department, school, city, country",
+      "firstname, middlename, lastname, department, school, city, country, orcid_no",
     );
 
   if (authorsError) {
@@ -201,6 +203,7 @@ export async function updateArticle(
         school: author.school,
         city: author.city || null,
         country: author.country || null,
+        orcid_no: author.orcid || null,
       })),
     );
 
@@ -212,7 +215,7 @@ export async function updateArticle(
   const { data: currentAuthors, error: authorsFetchError } = await supabase
     .from("authors")
     .select(
-      "firstname, middlename, lastname, department, school, city, country",
+      "firstname, middlename, lastname, department, school, city, country, orcid_no",
     )
     .eq("article_id", id);
 
@@ -323,7 +326,7 @@ export async function getArticleById(
   const { data: authors, error: authorsError } = await supabase
     .from("authors")
     .select(
-      "firstname, middlename, lastname, department, school, city, country",
+      "firstname, middlename, lastname, department, school, city, country, orcid_no",
     )
     .eq("article_id", id);
 
@@ -356,7 +359,7 @@ export async function listArticlesByIssue(
     const { data: authors, error: authorsError } = await supabase
       .from("authors")
       .select(
-        "firstname, middlename, lastname, department, school, city, country",
+        "firstname, middlename, lastname, department, school, city, country, orcid_no",
       )
       .eq("article_id", article.id);
 

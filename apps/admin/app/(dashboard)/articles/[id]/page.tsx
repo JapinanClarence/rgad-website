@@ -39,6 +39,7 @@ export default async function EditArticlePage({ params }: Props) {
             school: author.school ?? "",
             city: author.city ?? "",
             country: author.country ?? "",
+            orcid: author.orcid_no ?? "",
           }))
         : [
             {
@@ -49,6 +50,7 @@ export default async function EditArticlePage({ params }: Props) {
               school: "",
               city: "",
               country: "",
+              orcid: "",
             },
           ],
   };

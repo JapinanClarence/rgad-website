@@ -44,6 +44,7 @@ export const EMPTY_AUTHOR = {
   school: "",
   city: "",
   country: "",
+  orcid: "",
 };
 
 const ARTICLE_PDF_MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
@@ -422,7 +423,7 @@ export function ArticleForm({
                         )}
                       />
                     </div>
-                    <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="grid sm:grid-cols-2 gap-3 mb-3">
                       <FormField
                         control={control}
                         name={`authors.${index}.city`}
@@ -448,6 +449,21 @@ export function ArticleForm({
                         )}
                       />
                     </div>
+                    <FormField
+                      control={control}
+                      name={`authors.${index}.orcid`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              placeholder="ORCID iD, e.g. 0000-0000-0000-0000"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 ))}
               </div>

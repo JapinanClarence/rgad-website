@@ -68,6 +68,7 @@ export interface Database {
           school: string;
           city: string | null;
           country: string | null;
+          orcid_no: string | null;
           article_id: string;
         };
         Insert: Omit<

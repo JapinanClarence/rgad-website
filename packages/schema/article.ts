@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const ORCID_PATTERN = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/;
+
 export const authorFormSchema = z.object({
   firstname: z
     .string()
@@ -38,6 +40,12 @@ export const authorFormSchema = z.object({
     .string()
     .trim()
     .max(100, "Country must be at most 100 characters")
+    .optional()
+    .or(z.literal("")),
+  orcid: z
+    .string()
+    .trim()
+    .regex(ORCID_PATTERN, "Enter a valid ORCID iD, e.g. 0000-0000-0000-0000")
     .optional()
     .or(z.literal("")),
 });
