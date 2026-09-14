@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CalendarDays, Pin } from "lucide-react";
+import { ArrowLeft, CalendarDays, ExternalLink, Pin } from "lucide-react";
+import { Button } from "@gad/components/ui/button";
 import { formatDate, truncateWords } from "@/lib/utils";
 import { getAnnouncementBySlug } from "@/services/announcement";
 
@@ -60,6 +61,21 @@ export default async function AnnouncementDetailPage({ params }: Props) {
             <p className="text-foreground/85 leading-relaxed whitespace-pre-line">
               {announcement.description}
             </p>
+
+            {announcement.externalUrl && (
+              <div className="mt-8 pt-6 border-t border-border">
+                <Button variant="gad" asChild className="group">
+                  <a
+                    href={announcement.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Visit External Link
+                    <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </a>
+                </Button>
+              </div>
+            )}
           </div>
 
           <div className="mt-10">

@@ -20,6 +20,7 @@ export async function getAnnouncements(): Promise<Announcement[]> {
     description: item.description,
     publishedAt: item.published_at,
     isPinned: item.is_pinned,
+    externalUrl: item.external_url ?? undefined,
   }));
 }
 
@@ -43,5 +44,6 @@ export async function getAnnouncementBySlug(
     description: data.description,
     publishedAt: data.published_at,
     isPinned: data.is_pinned,
+    externalUrl: data.external_url ?? undefined,
   };
 }
