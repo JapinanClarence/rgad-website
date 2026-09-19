@@ -153,6 +153,7 @@ export interface Database {
           published_at: string;
           external_url: string | null;
           is_pinned: boolean;
+          cover_image: string | null;
         };
         Insert: Omit<
           Database["public"]["Tables"]["announcements"]["Row"],

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, Megaphone, Pin } from "lucide-react";
 import { formatDate, truncateWords } from "@/lib/utils";
@@ -60,23 +61,36 @@ export default async function Announcements() {
                       <Link
                         key={announcement.id}
                         href={`/announcements/${announcement.slug}`}
-                        className="bg-white rounded-2xl border border-border p-7 hover:shadow-md transition-shadow"
+                        className="bg-white rounded-2xl border border-border overflow-hidden hover:shadow-md transition-shadow"
                       >
-                        <div className="flex items-center gap-3 mb-4">
-                          <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <CalendarDays className="h-3.5 w-3.5" />
-                            {formatDate(announcement.publishedAt)}
-                          </span>
+                        {announcement.coverImage && (
+                          <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
+                            <Image
+                              src={announcement.coverImage}
+                              alt={announcement.title}
+                              fill
+                              className="object-cover"
+                              sizes="(min-width: 768px) 50vw, 100vw"
+                            />
+                          </div>
+                        )}
+                        <div className="p-7">
+                          <div className="flex items-center gap-3 mb-4">
+                            <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                              <CalendarDays className="h-3.5 w-3.5" />
+                              {formatDate(announcement.publishedAt)}
+                            </span>
+                          </div>
+                          <h2 className="font-display text-xl font-bold leading-snug mb-3">
+                            {announcement.title}
+                          </h2>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            {truncateWords(
+                              announcement.description,
+                              DESCRIPTION_WORD_LIMIT,
+                            )}
+                          </p>
                         </div>
-                        <h2 className="font-display text-xl font-bold leading-snug mb-3">
-                          {announcement.title}
-                        </h2>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          {truncateWords(
-                            announcement.description,
-                            DESCRIPTION_WORD_LIMIT,
-                          )}
-                        </p>
                       </Link>
                     ))}
                   </div>
@@ -95,21 +109,34 @@ export default async function Announcements() {
                   <Link
                     key={announcement.id}
                     href={`/announcements/${announcement.slug}`}
-                    className="bg-white rounded-2xl border border-border p-6 hover:shadow-md transition-shadow flex flex-col"
+                    className="bg-white rounded-2xl border border-border overflow-hidden hover:shadow-md transition-shadow flex flex-col"
                   >
-                    <h2 className="font-display text-base font-bold leading-snug mb-2.5">
-                      {announcement.title}
-                    </h2>
-                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                      {truncateWords(
-                        announcement.description,
-                        DESCRIPTION_WORD_LIMIT,
-                      )}
-                    </p>
-                    <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground mt-5 pt-4 border-t border-border">
-                      <CalendarDays className="h-3.5 w-3.5" />
-                      {formatDate(announcement.publishedAt)}
-                    </span>
+                    {announcement.coverImage && (
+                      <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
+                        <Image
+                          src={announcement.coverImage}
+                          alt={announcement.title}
+                          fill
+                          className="object-cover"
+                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                        />
+                      </div>
+                    )}
+                    <div className="p-6 flex flex-col flex-1">
+                      <h2 className="font-display text-base font-bold leading-snug mb-2.5">
+                        {announcement.title}
+                      </h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                        {truncateWords(
+                          announcement.description,
+                          DESCRIPTION_WORD_LIMIT,
+                        )}
+                      </p>
+                      <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground mt-5 pt-4 border-t border-border">
+                        <CalendarDays className="h-3.5 w-3.5" />
+                        {formatDate(announcement.publishedAt)}
+                      </span>
+                    </div>
                   </Link>
                 ))}
               </div>

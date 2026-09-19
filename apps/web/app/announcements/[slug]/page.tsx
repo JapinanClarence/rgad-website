@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays, ExternalLink, Pin } from "lucide-react";
@@ -17,6 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: announcement.title,
     description: truncateWords(announcement.description, 30),
+    openGraph: announcement.coverImage
+      ? { images: [{ url: announcement.coverImage }] }
+      : undefined,
   };
 }
 
@@ -54,6 +58,23 @@ export default async function AnnouncementDetailPage({ params }: Props) {
           </h1>
         </div>
       </section>
+
+      {announcement.coverImage && (
+        <section className="py-4">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border bg-muted">
+              <Image
+                src={announcement.coverImage}
+                alt={announcement.title}
+                fill
+                priority
+                className="object-cover"
+                sizes="(min-width: 1024px) 896px, 100vw"
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

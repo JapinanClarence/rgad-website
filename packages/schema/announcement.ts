@@ -23,6 +23,13 @@ export const announcementFormSchema = z.object({
   publishedAt: z.coerce.date({
     errorMap: () => ({ message: "Enter a valid publish date" }),
   }),
+  coverImage: z
+    .string()
+    .trim()
+    .url("Enter a valid image URL")
+    .nullable()
+    .optional()
+    .or(z.literal("")),
   externalUrl: z
     .string()
     .trim()

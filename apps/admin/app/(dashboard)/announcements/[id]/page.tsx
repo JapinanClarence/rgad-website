@@ -25,6 +25,7 @@ export default async function EditAnnouncementPage({ params }: Props) {
     slug: announcement.slug,
     description: announcement.description,
     publishedAt: new Date(announcement.publishedAt),
+    coverImage: announcement.coverImage ?? "",
     externalUrl: announcement.externalUrl ?? "",
     isPinned: announcement.isPinned,
   };

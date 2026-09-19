@@ -7,12 +7,14 @@ import {
   announcementFormSchema,
   type AnnouncementFormInput,
 } from "@gad/schema";
-import { Save, ArrowLeft } from "lucide-react";
+import { Save, ArrowLeft, X, ImagePlus, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { createAnnouncementAction, updateAnnouncementAction } from "@/app/(dashboard)/announcements/actions";
+import { uploadImage } from "@/services/storage";
 import { cn } from "@/lib/utils";
 import { Button } from "@gad/components/ui/button";
 import { Input } from "@gad/components/ui/input";
+import { Label } from "@gad/components/ui/label";
 import {
   Form,
   FormField,
@@ -22,11 +24,14 @@ import {
   FormMessage,
 } from "@gad/components/ui/form";
 
+const ANNOUNCEMENT_COVER_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+
 export const DEFAULT_ANNOUNCEMENT_VALUES: AnnouncementFormInput = {
   title: "",
   slug: "",
   description: "",
   publishedAt: new Date(),
+  coverImage: "",
   externalUrl: "",
   isPinned: false,
 };
@@ -61,6 +66,9 @@ export function AnnouncementForm({
 
   const [saving, setSaving] = React.useState(false);
   const [submitError, setSubmitError] = React.useState("");
+  const [uploadingCover, setUploadingCover] = React.useState(false);
+  const [coverUploadError, setCoverUploadError] = React.useState("");
+  const coverInputRef = React.useRef<HTMLInputElement>(null);
   // Only auto-derive the slug from the title for new announcements. In
   // edit mode the slug already reflects the saved announcement, so
   // editing the title should not silently change the URL.
@@ -85,6 +93,34 @@ export function AnnouncementForm({
     if (autoSlug) {
       setValue("slug", slugify(value), { shouldValidate: true });
     }
+  };
+
+  const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    setCoverUploadError("");
+    setUploadingCover(true);
+
+    const result = await uploadImage(file, {
+      folder: "announcements",
+      maxSizeBytes: ANNOUNCEMENT_COVER_MAX_SIZE_BYTES,
+    });
+
+    setUploadingCover(false);
+
+    if (!result.success) {
+      setCoverUploadError(result.error);
+      return;
+    }
+
+    setValue("coverImage", result.url, { shouldValidate: true });
+  };
+
+  const handleRemoveCover = () => {
+    setCoverUploadError("");
+    setValue("coverImage", "", { shouldValidate: true });
   };
 
   const onSubmit: SubmitHandler<AnnouncementFormInput> = async (values) => {
@@ -179,6 +215,102 @@ export function AnnouncementForm({
               </FormItem>
             )}
           />
+
+          <div>
+            <Label className="block text-sm mb-3">Cover Image</Label>
+            <FormField
+              control={control}
+              name="coverImage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div>
+                      <input
+                        ref={coverInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        className="hidden"
+                        onChange={handleCoverChange}
+                      />
+                      <input
+                        type="hidden"
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+
+                      {field.value ? (
+                        <div className="space-y-2">
+                          <div className="relative overflow-hidden rounded-lg border border-input aspect-[16/9] bg-muted">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={field.value}
+                              alt="Announcement cover preview"
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => coverInputRef.current?.click()}
+                              disabled={uploadingCover}
+                              className="h-8 flex-1 text-xs"
+                            >
+                              Replace
+                            </Button>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              onClick={handleRemoveCover}
+                              disabled={uploadingCover}
+                              className="h-8 w-8 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                              title="Remove cover image"
+                            >
+                              <X className="h-3.5 w-3.5" />
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => coverInputRef.current?.click()}
+                          disabled={uploadingCover}
+                          className="flex w-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-input py-8 text-center transition-colors hover:border-primary/50 hover:bg-muted/50 disabled:opacity-50"
+                        >
+                          {uploadingCover ? (
+                            <>
+                              <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                              <span className="text-sm text-muted-foreground">
+                                Uploading...
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <ImagePlus className="h-5 w-5 text-muted-foreground" />
+                              <span className="text-sm text-muted-foreground">
+                                Click to upload a cover image
+                              </span>
+                              <span className="text-xs text-muted-foreground/70">
+                                JPEG, PNG, WEBP or GIF, up to 5MB
+                              </span>
+                            </>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </FormControl>
+                  {coverUploadError && (
+                    <p className="text-sm font-medium text-destructive">
+                      {coverUploadError}
+                    </p>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={control}

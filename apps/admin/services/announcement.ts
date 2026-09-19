@@ -24,6 +24,7 @@ function toAnnouncement(row: {
   published_at: string;
   external_url: string | null;
   is_pinned: boolean;
+  cover_image: string | null;
 }): Announcement {
   return {
     id: row.id,
@@ -33,6 +34,7 @@ function toAnnouncement(row: {
     publishedAt: row.published_at,
     externalUrl: row.external_url ?? undefined,
     isPinned: row.is_pinned,
+    coverImage: row.cover_image ?? null,
   };
 }
 
@@ -60,9 +62,10 @@ export async function createAnnouncement(
       published_at: fields.publishedAt.toISOString(),
       external_url: fields.externalUrl || null,
       is_pinned: fields.isPinned,
+      cover_image: fields.coverImage || null,
     })
     .select(
-      "id, title, slug, description, published_at, external_url, is_pinned",
+      "id, title, slug, description, published_at, external_url, is_pinned, cover_image",
     )
     .single();
 
@@ -103,13 +106,15 @@ export async function updateAnnouncement(
   if (fields.externalUrl !== undefined)
     updatePayload.external_url = fields.externalUrl || null;
   if (fields.isPinned !== undefined) updatePayload.is_pinned = fields.isPinned;
+  if (fields.coverImage !== undefined)
+    updatePayload.cover_image = fields.coverImage || null;
 
   const { data, error } = await supabase
     .from("announcements")
     .update(updatePayload)
     .eq("id", id)
     .select(
-      "id, title, slug, description, published_at, external_url, is_pinned",
+      "id, title, slug, description, published_at, external_url, is_pinned, cover_image",
     )
     .single();
 
@@ -143,7 +148,7 @@ export async function getAnnouncementById(
   const { data, error } = await supabase
     .from("announcements")
     .select(
-      "id, title, slug, description, published_at, external_url, is_pinned",
+      "id, title, slug, description, published_at, external_url, is_pinned, cover_image",
     )
     .eq("id", id)
     .maybeSingle();
@@ -182,7 +187,7 @@ export async function listAnnouncements(
   const { data, error, count } = await supabase
     .from("announcements")
     .select(
-      "id, title, slug, description, published_at, external_url, is_pinned",
+      "id, title, slug, description, published_at, external_url, is_pinned, cover_image",
       {
         count: "exact",
       },

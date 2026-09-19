@@ -6,4 +6,5 @@ export type Announcement = {
   publishedAt: string;
   isPinned: boolean;
   externalUrl?: string;
+  coverImage?: string | null;
 };

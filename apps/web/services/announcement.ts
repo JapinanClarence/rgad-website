@@ -21,6 +21,7 @@ export async function getAnnouncements(): Promise<Announcement[]> {
     publishedAt: item.published_at,
     isPinned: item.is_pinned,
     externalUrl: item.external_url ?? undefined,
+    coverImage: item.cover_image ?? null,
   }));
 }
 
@@ -45,5 +46,6 @@ export async function getAnnouncementBySlug(
     publishedAt: data.published_at,
     isPinned: data.is_pinned,
     externalUrl: data.external_url ?? undefined,
+    coverImage: data.cover_image ?? null,
   };
 }
