@@ -1,7 +1,7 @@
 import { createClient } from "@gad/supabase/server";
 import type { Database } from "@gad/supabase/types";
 import { officerFormSchema, type OfficerFormInput } from "@gad/schema";
-import { compareOfficersByPosition, type Officer } from "@gad/types";
+import type { Officer } from "@gad/types";
 
 type ServiceResult<T> =
   | { success: true; data: T; error?: never; fieldErrors?: never }
@@ -176,19 +176,22 @@ export async function listOfficers(
   const pageSize =
     params.pageSize && params.pageSize > 0 ? Math.floor(params.pageSize) : 6;
   const supabase = createClient();
+
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
   const { data, error, count } = await supabase
     .from("officers")
-    .select(OFFICER_FIELDS, { count: "exact" });
+    .select(OFFICER_FIELDS, { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   if (error) return { success: false, error: error.message };
 
   return {
     success: true,
     data: {
-      items: (data ?? [])
-        .map(toOfficer)
-        .sort(compareOfficersByPosition)
-        .slice((page - 1) * pageSize, page * pageSize),
+      items: (data ?? []).map(toOfficer),
       totalCount: count ?? 0,
       page,
       pageSize,
