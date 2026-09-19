@@ -507,7 +507,7 @@ export default async function AboutPage() {
             </p>
             <h2 className="font-display text-4xl font-bold">Our Team</h2>
             <p className="mt-3 text-muted-foreground">
-              Meet the officers and founding officers of RGAN XI.
+              Meet the founding officers, Board of Directors, and Adviser of RGAN XI.
             </p>
           </div>
 
@@ -553,9 +553,11 @@ export default async function AboutPage() {
 
           {foundingOfficers.length > 0 && (
             <div>
-              <h3 className="font-display text-2xl font-bold mb-6">
-                Founding Officers
-              </h3>
+              {currentOfficers.length > 0 && (
+                <h3 className="font-display text-2xl font-bold mb-6">
+                  Founding Officers
+                </h3>
+              )}
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {foundingOfficers.map((officer, i) => (
                   <div
