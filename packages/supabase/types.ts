@@ -143,6 +143,29 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["experts"]["Insert"]>;
         Relationships: [];
       };
+      officers: {
+        Row: {
+          id: string;
+          created_at: string;
+          firstname: string;
+          middlename: string | null;
+          lastname: string;
+          position: string;
+          school: string;
+          extension: string | null;
+          profile: string | null;
+          is_officer: boolean;
+          is_founding_officer: boolean;
+          is_current: boolean;
+          display_order: number;
+        };
+        Insert: Omit<
+          Database["public"]["Tables"]["officers"]["Row"],
+          "id" | "created_at"
+        >;
+        Update: Partial<Database["public"]["Tables"]["officers"]["Insert"]>;
+        Relationships: [];
+      };
       announcements: {
         Row: {
           id: string;
