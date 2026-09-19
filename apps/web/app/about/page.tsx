@@ -15,6 +15,9 @@ import {
   FileSearch,
   Settings2,
   Mail,
+  Send,
+  ListChecks,
+  UserCheck,
 } from "lucide-react";
 import { images } from "@/constants/images";
 import Image from "next/image";
@@ -192,6 +195,27 @@ const services = [
     icon: Settings2,
     title: "Customized Institutional Services",
     desc: "Tailored capacity building and technical assistance based on the needs of partner organizations.",
+  },
+];
+
+const speakersPoolDescription =
+  "This directory presents the qualified speakers and trainers registered with RGAN XI. Each member has demonstrated relevant knowledge, professional competence, and practical experience in their respective field of expertise, serving as a reliable resource for organizations seeking competent facilitators for seminars, training programs, workshops, and other capacity-building activities on gender and development.";
+
+const engagementSteps = [
+  {
+    icon: Send,
+    title: "Send your inquiry",
+    desc: "Direct your official correspondence to rganxi2023@gmail.com to begin coordination with RGAN XI.",
+  },
+  {
+    icon: ListChecks,
+    title: "Share your activity details",
+    desc: "Include the proposed activity title, objectives, preferred date and venue, and target participants.",
+  },
+  {
+    icon: UserCheck,
+    title: "Specify the expertise you need",
+    desc: "State the specific area of expertise required so RGAN XI can match you with the most suitable speaker or trainer.",
   },
 ];
 
@@ -465,10 +489,9 @@ export default async function AboutPage() {
             <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
               Resource Persons
             </p>
-            <h2 className="font-display text-4xl font-bold">Our Experts</h2>
+            <h2 className="font-display text-4xl font-bold">RGAN XI Speakers and Trainers</h2>
             <p className="mt-3 text-muted-foreground">
-              GAD advocates and resource persons available for training,
-              speakership, and technical assistance engagements.
+              {speakersPoolDescription}
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -500,6 +523,62 @@ export default async function AboutPage() {
                 </a>
               </div>
             ))}
+          </div>
+
+          {/* How to engage a speaker or trainer */}
+          <div className="mt-16">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <h3 className="font-display text-2xl font-bold mb-3">
+                How to Engage a Speaker or Trainer
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Organizations and institutions may invite members of the Pool
+                of Speakers and Trainers to facilitate seminars, training
+                programs, workshops, and other capacity-building activities
+                on gender and development.
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-6 mb-10">
+              {engagementSteps.map((step, i) => (
+                <div
+                  key={step.title}
+                  className="p-6 bg-white rounded-2xl border border-border"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center font-display font-bold text-sm shrink-0">
+                      {i + 1}
+                    </div>
+                    <step.icon className="h-5 w-5 text-primary" />
+                  </div>
+                  <h4 className="font-display font-bold mb-2">
+                    {step.title}
+                  </h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-foreground text-background rounded-3xl p-10 lg:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div>
+                <h2 className="font-display text-2xl font-bold mb-2">
+                  Ready to Book a Speaker or Trainer?
+                </h2>
+                <p className="text-background/70 leading-relaxed text-sm max-w-xl">
+                  Reach out to RGAN XI with your activity details, and we
+                  will help identify the most suitable resource speaker or
+                  trainer for your organization.
+                </p>
+              </div>
+              <a
+                href="mailto:rganxi2023@gmail.com"
+                className="inline-flex items-center gap-2 gad-gradient text-white font-medium text-sm px-5 py-3 rounded-full shrink-0 hover:opacity-90 transition-opacity"
+              >
+                <Mail className="h-4 w-4" />
+                rganxi2023@gmail.com
+              </a>
+            </div>
           </div>
         </div>
       </section>
