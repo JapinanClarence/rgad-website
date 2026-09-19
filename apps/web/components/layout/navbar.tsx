@@ -17,6 +17,8 @@ const navLinks = [
       { label: "Our Organization", href: "/about" },
       { label: "Mission & Vision", href: "/about#mission" },
       { label: "Strategic Programs", href: "/about#strategic-programs" },
+      {label: "Our Services", href: "/about#services"},
+      {label: "Speakers & Trainers", href: "/about#speakers-trainers"},
       { label: "Our Team", href: "/about#team" },
     ],
   },

@@ -1,9 +1,26 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Target, Eye, BookOpen, Users, Award, Globe } from "lucide-react";
+import {
+  Target,
+  Eye,
+  BookOpen,
+  Users,
+  Award,
+  Globe,
+  GraduationCap,
+  Presentation,
+  Mic,
+  ClipboardList,
+  CalendarDays,
+  FileSearch,
+  Settings2,
+  Mail,
+} from "lucide-react";
 import { images } from "@/constants/images";
 import Image from "next/image";
 import { profile } from "console";
+import { getExperts } from "@/services/expert";
+import type { Expert } from "@gad/types";
 
 export const metadata: Metadata = {
   title: "About",
@@ -140,7 +157,55 @@ const gradients = [
   "from-rose-500 to-fuchsia-500",
 ];
 
-export default function AboutPage() {
+const services = [
+  {
+    icon: GraduationCap,
+    title: "Training and Capacity Building",
+    desc: "Specialized training on GAD, gender research, policy, and related fields.",
+  },
+  {
+    icon: Presentation,
+    title: "Workshops and Technical Sessions",
+    desc: "Practical learning sessions on gender analysis, research, policy development, planning, and monitoring.",
+  },
+  {
+    icon: Mic,
+    title: "Speakership and Resource Persons",
+    desc: "Speakers, lecturers, panelists, and moderators for conferences, seminars, and institutional events.",
+  },
+  {
+    icon: ClipboardList,
+    title: "GAD Planning and Budgeting Assistance",
+    desc: "Technical support in gender analysis, GAD planning and budgeting, program development, and documentation.",
+  },
+  {
+    icon: CalendarDays,
+    title: "Annual Conferences and Scholarly Events",
+    desc: "Research conferences, forums, symposia, and knowledge-sharing activities that foster collaboration and scholarly exchange.",
+  },
+  {
+    icon: FileSearch,
+    title: "Research and Policy Engagement",
+    desc: "Support for translating research evidence into policies, programs, and institutional action.",
+  },
+  {
+    icon: Settings2,
+    title: "Customized Institutional Services",
+    desc: "Tailored capacity building and technical assistance based on the needs of partner organizations.",
+  },
+];
+
+function expertInitials(expert: Expert) {
+  return `${expert.firstname[0] ?? ""}${expert.lastname[0] ?? ""}`.toUpperCase();
+}
+
+function expertName(expert: Expert) {
+  const middle = expert.middlename ? ` ${expert.middlename}` : "";
+  return `${expert.firstname}${middle} ${expert.lastname}`.trim();
+}
+
+export default async function AboutPage() {
+  const experts = await getExperts();
   return (
     <div className="pt-20">
       {/* Hero */}
@@ -364,6 +429,80 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+      
+      {/* Services */}
+      <section id="services" className="py-20 bg-muted/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
+              What We Offer
+            </p>
+            <h2 className="font-display text-4xl font-bold">Our Services</h2>
+            <p className="mt-3 text-muted-foreground">
+              We provide professional services that connect gender research,
+              policy, education, and practice.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((item) => (
+              <div
+                key={item.title}
+                className="p-6 bg-white rounded-2xl border border-border hover:shadow-md transition-shadow"
+              >
+                <item.icon className="h-7 w-7 text-primary mb-3" />
+                <h3 className="font-display font-bold mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Speakers and Trainers */}
+      <section id="speakers-trainers" className="py-20 bg-muted/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
+              Resource Persons
+            </p>
+            <h2 className="font-display text-4xl font-bold">Our Experts</h2>
+            <p className="mt-3 text-muted-foreground">
+              GAD advocates and resource persons available for training,
+              speakership, and technical assistance engagements.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {experts.map((expert, i) => (
+              <div
+                key={expert.id}
+                className="group bg-white rounded-2xl border border-border p-6 hover:shadow-md transition-all hover:-translate-y-0.5 duration-200"
+              >
+                <div
+                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold text-lg mb-4 group-hover:scale-105 transition-transform`}
+                >
+                  {expertInitials(expert)}
+                </div>
+                <h3 className="font-display font-bold text-lg">
+                  {expertName(expert)}
+                </h3>
+                <p className="text-primary text-sm font-medium">
+                  {expert.school}
+                </p>
+                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                  {expert.expertise}
+                </p>
+                <a
+                  href={`mailto:${expert.email}`}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline mt-3"
+                >
+                  <Mail className="h-3.5 w-3.5" />
+                  {expert.email}
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Team */}
       <section id="team" className="py-20">
@@ -409,7 +548,7 @@ export default function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section>      
     </div>
   );
 }

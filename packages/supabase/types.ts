@@ -125,6 +125,24 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["reviewers"]["Insert"]>;
         Relationships: [];
       };
+      experts: {
+        Row: {
+          id: string;
+          created_at: string;
+          firstname: string;
+          middlename: string | null;
+          lastname: string;
+          email: string;
+          school: string;
+          expertise: string;
+        };
+        Insert: Omit<
+          Database["public"]["Tables"]["experts"]["Row"],
+          "id" | "created_at"
+        >;
+        Update: Partial<Database["public"]["Tables"]["experts"]["Insert"]>;
+        Relationships: [];
+      };
       announcements: {
         Row: {
           id: string;

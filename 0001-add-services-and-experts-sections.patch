@@ -1,0 +1,378 @@
+From 56d3514932204c6d695f189a84269a2f401a1d67 Mon Sep 17 00:00:00 2001
+From: Claude <claude@anthropic.com>
+Date: Sat, 19 Sep 2026 05:32:39 +0000
+Subject: [PATCH] :sparkles: feat: add Services and Experts sections to About
+ page
+
+- Add Services section listing RGAN XI's professional services
+- Add Experts section sourced from a new Supabase-backed experts service
+- Add Expert type, experts table type, and migration
+- Add mock expert data as placeholder until the experts table is seeded
+---
+ apps/web/app/about/page.tsx                   | 143 +++++++++++++++++-
+ apps/web/services/expert.ts                   |  79 ++++++++++
+ .../20260919_create_experts_table.sql         |  29 ++++
+ packages/supabase/types.ts                    |  18 +++
+ packages/types/expert.ts                      |   9 ++
+ packages/types/index.ts                       |   1 +
+ 6 files changed, 277 insertions(+), 2 deletions(-)
+ create mode 100644 apps/web/services/expert.ts
+ create mode 100644 packages/supabase/migrations/20260919_create_experts_table.sql
+ create mode 100644 packages/types/expert.ts
+
+diff --git a/apps/web/app/about/page.tsx b/apps/web/app/about/page.tsx
+index 98158bc..17f9ec7 100644
+--- a/apps/web/app/about/page.tsx
++++ b/apps/web/app/about/page.tsx
+@@ -1,9 +1,26 @@
+ import React from "react";
+ import type { Metadata } from "next";
+-import { Target, Eye, BookOpen, Users, Award, Globe } from "lucide-react";
++import {
++  Target,
++  Eye,
++  BookOpen,
++  Users,
++  Award,
++  Globe,
++  GraduationCap,
++  Presentation,
++  Mic,
++  ClipboardList,
++  CalendarDays,
++  FileSearch,
++  Settings2,
++  Mail,
++} from "lucide-react";
+ import { images } from "@/constants/images";
+ import Image from "next/image";
+ import { profile } from "console";
++import { getExperts } from "@/services/expert";
++import type { Expert } from "@gad/types";
+ 
+ export const metadata: Metadata = {
+   title: "About",
+@@ -140,7 +157,55 @@ const gradients = [
+   "from-rose-500 to-fuchsia-500",
+ ];
+ 
+-export default function AboutPage() {
++const services = [
++  {
++    icon: GraduationCap,
++    title: "Training and Capacity Building",
++    desc: "Specialized training on GAD, gender research, policy, and related fields.",
++  },
++  {
++    icon: Presentation,
++    title: "Workshops and Technical Sessions",
++    desc: "Practical learning sessions on gender analysis, research, policy development, planning, and monitoring.",
++  },
++  {
++    icon: Mic,
++    title: "Speakership and Resource Persons",
++    desc: "Speakers, lecturers, panelists, and moderators for conferences, seminars, and institutional events.",
++  },
++  {
++    icon: ClipboardList,
++    title: "GAD Planning and Budgeting Assistance",
++    desc: "Technical support in gender analysis, GAD planning and budgeting, program development, and documentation.",
++  },
++  {
++    icon: CalendarDays,
++    title: "Annual Conferences and Scholarly Events",
++    desc: "Research conferences, forums, symposia, and knowledge-sharing activities that foster collaboration and scholarly exchange.",
++  },
++  {
++    icon: FileSearch,
++    title: "Research and Policy Engagement",
++    desc: "Support for translating research evidence into policies, programs, and institutional action.",
++  },
++  {
++    icon: Settings2,
++    title: "Customized Institutional Services",
++    desc: "Tailored capacity building and technical assistance based on the needs of partner organizations.",
++  },
++];
++
++function expertInitials(expert: Expert) {
++  return `${expert.firstname[0] ?? ""}${expert.lastname[0] ?? ""}`.toUpperCase();
++}
++
++function expertName(expert: Expert) {
++  const middle = expert.middlename ? ` ${expert.middlename}` : "";
++  return `${expert.firstname}${middle} ${expert.lastname}`.trim();
++}
++
++export default async function AboutPage() {
++  const experts = await getExperts();
+   return (
+     <div className="pt-20">
+       {/* Hero */}
+@@ -312,6 +377,34 @@ export default function AboutPage() {
+         </div>
+       </section>
+ 
++      {/* Services */}
++      <section id="services" className="py-20 bg-muted/20">
++        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
++          <div className="text-center max-w-2xl mx-auto mb-12">
++            <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
++              What We Offer
++            </p>
++            <h2 className="font-display text-4xl font-bold">Our Services</h2>
++            <p className="mt-3 text-muted-foreground">
++              We provide professional services that connect gender research,
++              policy, education, and practice.
++            </p>
++          </div>
++          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
++            {services.map((item) => (
++              <div
++                key={item.title}
++                className="p-6 bg-white rounded-2xl border border-border hover:shadow-md transition-shadow"
++              >
++                <item.icon className="h-7 w-7 text-primary mb-3" />
++                <h3 className="font-display font-bold mb-2">{item.title}</h3>
++                <p className="text-sm text-muted-foreground">{item.desc}</p>
++              </div>
++            ))}
++          </div>
++        </div>
++      </section>
++
+       {/* Herstory */}
+       <section id="herstory" className="py-20 bg-muted/20">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+@@ -410,6 +503,52 @@ export default function AboutPage() {
+           </div>
+         </div>
+       </section>
++
++      {/* Experts */}
++      <section id="experts" className="py-20 bg-muted/20">
++        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
++          <div className="text-center max-w-2xl mx-auto mb-12">
++            <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
++              Resource Persons
++            </p>
++            <h2 className="font-display text-4xl font-bold">Our Experts</h2>
++            <p className="mt-3 text-muted-foreground">
++              GAD advocates and resource persons available for training,
++              speakership, and technical assistance engagements.
++            </p>
++          </div>
++          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
++            {experts.map((expert, i) => (
++              <div
++                key={expert.id}
++                className="group bg-white rounded-2xl border border-border p-6 hover:shadow-md transition-all hover:-translate-y-0.5 duration-200"
++              >
++                <div
++                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold text-lg mb-4 group-hover:scale-105 transition-transform`}
++                >
++                  {expertInitials(expert)}
++                </div>
++                <h3 className="font-display font-bold text-lg">
++                  {expertName(expert)}
++                </h3>
++                <p className="text-primary text-sm font-medium">
++                  {expert.school}
++                </p>
++                <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
++                  {expert.expertise}
++                </p>
++                <a
++                  href={`mailto:${expert.email}`}
++                  className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline mt-3"
++                >
++                  <Mail className="h-3.5 w-3.5" />
++                  {expert.email}
++                </a>
++              </div>
++            ))}
++          </div>
++        </div>
++      </section>
+     </div>
+   );
+ }
+diff --git a/apps/web/services/expert.ts b/apps/web/services/expert.ts
+new file mode 100644
+index 0000000..347f59f
+--- /dev/null
++++ b/apps/web/services/expert.ts
+@@ -0,0 +1,79 @@
++import { createClient } from "@gad/supabase/server";
++import type { Database } from "@gad/supabase/types";
++import type { Expert } from "@gad/types";
++
++// Placeholder records shown on the About page until the "experts" table in
++// Supabase is populated with real entries. Remove this once real data has
++// been seeded.
++const MOCK_EXPERTS: Expert[] = [
++  {
++    id: "mock-1",
++    firstname: "Ana",
++    middlename: "R.",
++    lastname: "Domingo",
++    email: "ana.domingo@example.edu.ph",
++    school: "Davao Oriental State University",
++    expertise: "Gender Mainstreaming, Policy Advocacy",
++  },
++  {
++    id: "mock-2",
++    firstname: "Ramil",
++    middlename: "S.",
++    lastname: "Enriquez",
++    email: "ramil.enriquez@example.edu.ph",
++    school: "University of Southeastern Philippines",
++    expertise: "Gender Research, Development Studies",
++  },
++  {
++    id: "mock-3",
++    firstname: "Liza",
++    middlename: "M.",
++    lastname: "Torrefiel",
++    email: "liza.torrefiel@example.edu.ph",
++    school: "Davao del Norte State College",
++    expertise: "GAD Planning and Budgeting, Institutional Capacity Building",
++  },
++  {
++    id: "mock-4",
++    firstname: "Noel",
++    middlename: "P.",
++    lastname: "Ariola",
++    email: "noel.ariola@example.edu.ph",
++    school: "Davao de Oro State College",
++    expertise: "Community Engagement, Social Inclusion",
++  },
++  {
++    id: "mock-5",
++    firstname: "Grace",
++    middlename: "T.",
++    lastname: "Ubarra",
++    email: "grace.ubarra@example.edu.ph",
++    school: "San Pedro College",
++    expertise: "Women's Empowerment, Psychosocial Support",
++  },
++];
++
++export async function getExperts(): Promise<Expert[]> {
++  const { data, error } = await createClient()
++    .from("experts")
++    .select("*")
++    .order("created_at", { ascending: false, nullsFirst: false });
++
++  if (error) throw error;
++
++  const rows = (data ?? []) as Database["public"]["Tables"]["experts"]["Row"][];
++
++  if (rows.length === 0) {
++    return MOCK_EXPERTS;
++  }
++
++  return rows.map((item) => ({
++    id: item.id,
++    firstname: item.firstname,
++    middlename: item.middlename,
++    lastname: item.lastname,
++    email: item.email,
++    school: item.school,
++    expertise: item.expertise,
++  }));
++}
+diff --git a/packages/supabase/migrations/20260919_create_experts_table.sql b/packages/supabase/migrations/20260919_create_experts_table.sql
+new file mode 100644
+index 0000000..57a51c1
+--- /dev/null
++++ b/packages/supabase/migrations/20260919_create_experts_table.sql
+@@ -0,0 +1,29 @@
++-- Creates the "experts" table used by the public website's About page to
++-- list RGAN XI's gender and development experts and resource persons.
++-- Run this against the Supabase project's Postgres database (SQL editor or
++-- `supabase db push`, depending on how this project manages migrations).
++
++create table if not exists public.experts (
++  id uuid primary key default gen_random_uuid(),
++  created_at timestamptz not null default now(),
++  firstname text not null,
++  middlename text,
++  lastname text not null,
++  email text not null,
++  school text not null,
++  expertise text not null
++);
++
++comment on table public.experts is
++  'GAD experts and resource persons featured on the public About page.';
++
++alter table public.experts enable row level security;
++
++-- Public read access, matching the existing "reviewers" table policy.
++-- Review against the project's actual reviewers policy before applying,
++-- since this repository does not contain the reviewers table's own
++-- creation migration.
++create policy if not exists "Experts are viewable by everyone"
++  on public.experts
++  for select
++  using (true);
+diff --git a/packages/supabase/types.ts b/packages/supabase/types.ts
+index 420f55e..c71a059 100644
+--- a/packages/supabase/types.ts
++++ b/packages/supabase/types.ts
+@@ -125,6 +125,24 @@ export interface Database {
+         Update: Partial<Database["public"]["Tables"]["reviewers"]["Insert"]>;
+         Relationships: [];
+       };
++      experts: {
++        Row: {
++          id: string;
++          created_at: string;
++          firstname: string;
++          middlename: string | null;
++          lastname: string;
++          email: string;
++          school: string;
++          expertise: string;
++        };
++        Insert: Omit<
++          Database["public"]["Tables"]["experts"]["Row"],
++          "id" | "created_at"
++        >;
++        Update: Partial<Database["public"]["Tables"]["experts"]["Insert"]>;
++        Relationships: [];
++      };
+       announcements: {
+         Row: {
+           id: string;
+diff --git a/packages/types/expert.ts b/packages/types/expert.ts
+new file mode 100644
+index 0000000..c44ee73
+--- /dev/null
++++ b/packages/types/expert.ts
+@@ -0,0 +1,9 @@
++export type Expert = {
++  id: string;
++  firstname: string;
++  middlename?: string | null;
++  lastname: string;
++  email: string;
++  school: string;
++  expertise: string;
++};
+diff --git a/packages/types/index.ts b/packages/types/index.ts
+index be5d8d1..f6fe3d0 100644
+--- a/packages/types/index.ts
++++ b/packages/types/index.ts
+@@ -1,6 +1,7 @@
+ export { type Summit } from "./summit";
+ export type { Issue, IssueArticle, ArticleAuthor } from "./issue";
+ export type { Reviewer } from "./reviewer";
++export type { Expert } from "./expert";
+ export type { Announcement } from "./announcement";
+ export type { ArticleMetrics } from "./article-metrics";
+ export type {
+-- 
+2.43.0
+
