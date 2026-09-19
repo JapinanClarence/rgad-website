@@ -174,7 +174,7 @@ export async function listExperts(
 	.select("id, firstname, middlename, lastname, school, email, expertise", {
 	  count: "exact",
 	})
-	.order("lastname", { ascending: true })
+	.order("created_at", { ascending: false })
 	.range(from, to);
 
   if (error) {

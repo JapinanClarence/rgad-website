@@ -168,7 +168,7 @@ export async function listReviewers(
     .select("id, firstname, middlename, lastname, school, country", {
       count: "exact",
     })
-    .order("lastname", { ascending: true })
+    .order("created_at", { ascending: false })
     .range(from, to);
 
   if (error) {
