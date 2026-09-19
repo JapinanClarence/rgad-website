@@ -1,12 +1,11 @@
 import { createClient } from "@gad/supabase/server";
 import type { Database } from "@gad/supabase/types";
-import type { Officer } from "@gad/types";
+import { compareOfficersByPosition, type Officer } from "@gad/types";
 
 export async function getOfficers(): Promise<Officer[]> {
   const { data, error } = await createClient()
 	.from("officers")
-	.select("*")
-	.order("display_order", { ascending: true, nullsFirst: false });
+	.select("*");
 
   if (error) throw error;
 
@@ -25,6 +24,5 @@ export async function getOfficers(): Promise<Officer[]> {
 	isOfficer: item.is_officer,
 	isFoundingOfficer: item.is_founding_officer,
 	isCurrent: item.is_current,
-	displayOrder: item.display_order,
-  }));
+  })).sort(compareOfficersByPosition);
 }

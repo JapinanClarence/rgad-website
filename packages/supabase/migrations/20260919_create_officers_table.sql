@@ -16,7 +16,6 @@ create table if not exists public.officers (
   is_officer boolean not null default false,
   is_founding_officer boolean not null default false,
   is_current boolean not null default false,
-  display_order smallint not null,
   constraint officers_pkey primary key (id)
 ) tablespace pg_default;
 

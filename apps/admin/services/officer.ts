@@ -1,7 +1,7 @@
 import { createClient } from "@gad/supabase/server";
 import type { Database } from "@gad/supabase/types";
 import { officerFormSchema, type OfficerFormInput } from "@gad/schema";
-import type { Officer } from "@gad/types";
+import { compareOfficersByPosition, type Officer } from "@gad/types";
 
 type ServiceResult<T> =
   | { success: true; data: T; error?: never; fieldErrors?: never }
@@ -13,7 +13,7 @@ type ServiceResult<T> =
     };
 
 const OFFICER_FIELDS =
-  "id, firstname, middlename, lastname, position, school, extension, profile, is_officer, is_founding_officer, is_current, display_order";
+  "id, firstname, middlename, lastname, position, school, extension, profile, is_officer, is_founding_officer, is_current";
 
 function toOfficer(row: {
   id: string;
@@ -27,7 +27,6 @@ function toOfficer(row: {
   is_officer: boolean;
   is_founding_officer: boolean;
   is_current: boolean;
-  display_order: number;
 }): Officer {
   return {
     id: row.id,
@@ -41,7 +40,6 @@ function toOfficer(row: {
     isOfficer: row.is_officer,
     isFoundingOfficer: row.is_founding_officer,
     isCurrent: row.is_current,
-    displayOrder: row.display_order,
   };
 }
 
@@ -72,7 +70,6 @@ export async function createOfficer(
       is_officer: fields.isOfficer,
       is_founding_officer: fields.isFoundingOfficer,
       is_current: fields.isCurrent,
-      display_order: fields.displayOrder,
     })
     .select(OFFICER_FIELDS)
     .single();
@@ -117,8 +114,6 @@ export async function updateOfficer(
   if (fields.isFoundingOfficer !== undefined)
     updatePayload.is_founding_officer = fields.isFoundingOfficer;
   if (fields.isCurrent !== undefined) updatePayload.is_current = fields.isCurrent;
-  if (fields.displayOrder !== undefined)
-    updatePayload.display_order = fields.displayOrder;
 
   const supabase = createClient();
   const { data, error } = await supabase
@@ -180,22 +175,20 @@ export async function listOfficers(
   const page = params.page && params.page > 0 ? Math.floor(params.page) : 1;
   const pageSize =
     params.pageSize && params.pageSize > 0 ? Math.floor(params.pageSize) : 6;
-  const from = (page - 1) * pageSize;
-  const to = from + pageSize - 1;
-
   const supabase = createClient();
   const { data, error, count } = await supabase
     .from("officers")
-    .select(OFFICER_FIELDS, { count: "exact" })
-    .order("display_order", { ascending: true, nullsFirst: false })
-    .range(from, to);
+    .select(OFFICER_FIELDS, { count: "exact" });
 
   if (error) return { success: false, error: error.message };
 
   return {
     success: true,
     data: {
-      items: (data ?? []).map(toOfficer),
+      items: (data ?? [])
+        .map(toOfficer)
+        .sort(compareOfficersByPosition)
+        .slice((page - 1) * pageSize, page * pageSize),
       totalCount: count ?? 0,
       page,
       pageSize,

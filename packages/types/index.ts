@@ -2,7 +2,11 @@ export { type Summit } from "./summit";
 export type { Issue, IssueArticle, ArticleAuthor } from "./issue";
 export type { Reviewer } from "./reviewer";
 export type { Expert } from "./expert";
-export type { Officer } from "./officer";
+export {
+  compareOfficersByPosition,
+  officerPositionPriority,
+  type Officer,
+} from "./officer";
 export type { Announcement } from "./announcement";
 export type { ArticleMetrics } from "./article-metrics";
 export type {

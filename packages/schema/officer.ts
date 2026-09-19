@@ -42,10 +42,6 @@ export const officerFormSchema = z.object({
   isOfficer: z.boolean().optional().default(false),
   isFoundingOfficer: z.boolean().optional().default(false),
   isCurrent: z.boolean().optional().default(false),
-  displayOrder: z.coerce
-    .number()
-    .int("Display order must be a whole number")
-    .min(0, "Display order must be zero or greater"),
 });
 
 export type OfficerFormInput = z.infer<typeof officerFormSchema>;

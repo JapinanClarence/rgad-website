@@ -157,7 +157,6 @@ export interface Database {
           is_officer: boolean;
           is_founding_officer: boolean;
           is_current: boolean;
-          display_order: number;
         };
         Insert: Omit<
           Database["public"]["Tables"]["officers"]["Row"],

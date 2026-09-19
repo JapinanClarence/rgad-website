@@ -71,6 +71,14 @@ const navItems = [
       { label: "New Expert", href: "/experts/new", icon: PlusCircle },
     ],
   },
+  {
+    label: "Officers",
+    href: "/officers",
+    icon: UserCheck,
+    children: [
+      { label: "New Officer", href: "/officers/new", icon: PlusCircle },
+    ],
+  },
   // { label: "Settings", href: "/settings", icon: Settings },
 ];
 
