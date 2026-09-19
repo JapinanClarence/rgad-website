@@ -19,118 +19,16 @@ import {
   ListChecks,
   UserCheck,
 } from "lucide-react";
-import { images } from "@/constants/images";
 import Image from "next/image";
-import { profile } from "console";
 import { getExperts } from "@/services/expert";
-import type { Expert } from "@gad/types";
+import { getOfficers } from "@/services/officer";
+import type { Expert, Officer } from "@gad/types";
 
 export const metadata: Metadata = {
   title: "About",
   description:
     "Learn about RGAN XI — the Region XI Gender and Development Advocates Network — our mission, vision, founding officers, and advocacy.",
 };
-
-const team = [
-  {
-    profile: images.bauyot,
-    name: "Mary Fil M. Bauyot, PhD",
-    role: "President",
-    dept: "Davao Oriental State University",
-    initials: "MB",
-  },
-  {
-    profile: images.tahoy,
-    name: "Genesesly Tahoy, MAEd",
-    role: "Vice-President for Operations",
-    dept: "University of Southeastern Philippines ",
-    initials: "GT",
-  },
-  {
-    profile: images.orencita,
-    name: "Orencita Aireen V. Lozada, PhD",
-    role: "Vice-President for Partnerships",
-    dept: "San Pedro College",
-    initials: "OL",
-  },
-  {
-    profile: images.sadie,
-    name: "Sadie D. Law-ay, MA",
-    role: "Secretary",
-    dept: "Davao del Norte State College",
-    initials: "SL",
-  },
-  {
-    profile: images.cecile,
-    name: "Cecile C. Lofranco, MBA",
-    role: "Treasurer",
-    dept: "Davao del Sur State College",
-    initials: "CL",
-  },
-  {
-    profile: images.vaneza,
-    name: "Vaneza C. Paquiao, MAEm",
-    role: "Auditor",
-    dept: "Samal City Island College",
-    initials: "VP",
-  },
-  {
-    profile: images.sarah,
-    name: "Sarah C. Aranges, MBA",
-    role: "Business Manager",
-    dept: "Davao de Oro State College",
-    initials: "SA",
-  },
-  {
-    profile: images.corazon,
-    name: "Corazon Mamon-Umblero",
-    role: "Board of Directors",
-    dept: "University of Immaculate Conception",
-    initials: "CM",
-  },
-  {
-    profile: images.jeralyn,
-    name: "Jeralyn N. Hemillan, PhD",
-    role: "Board of Directors",
-    dept: "Davao Oriental State University",
-    initials: "JH",
-  },
-  {
-    profile: images.helina,
-    name: "Helina Jean P. Dupa, PhD",
-    role: "Board of Directors",
-    dept: "Davao Oriental State University",
-    initials: "HD",
-  },
-  {
-    profile: images.joyce,
-    name: "Joyce C. Jasa, MAEd",
-    role: "Board of Directors",
-    dept: "Brokenshire College",
-    initials: "JJ",
-  },
-  {
-    profile: images.imelda,
-    name: "Imelda T. Lauron, MA",
-    role: "Board of Directors",
-    dept: "Southern Philippines Agri-Business and Marine and Aquatic School of Technology",
-    initials: "IL",
-  },
-  {
-    profile: images.villegas,
-    name: "Jhonnel P. Villegas, MSc",
-    role: "Board of Directors",
-    dept: "Davao Oriental State University",
-    initials: "JV",
-  },
-  {
-    profile: images.evelyn,
-    name: "Evelyn S. Ecle",
-    role: "Adviser",
-    dept: "Commission on Higher Education - Regional Office XI",
-    initials: "EE",
-  },
-];
 
 // const milestones = [
 //   { year: "2009", event: "GAD Research Center established in Davao City" },
@@ -228,8 +126,25 @@ function expertName(expert: Expert) {
   return `${expert.firstname}${middle} ${expert.lastname}`.trim();
 }
 
+function officerInitials(officer: Officer) {
+  return `${officer.firstname[0] ?? ""}${officer.lastname[0] ?? ""}`.toUpperCase();
+}
+
+function officerName(officer: Officer) {
+  const middle = officer.middlename ? ` ${officer.middlename}` : "";
+  const extension = officer.extension ? `, ${officer.extension}` : "";
+  return `${officer.firstname}${middle} ${officer.lastname}${extension}`.trim();
+}
+
 export default async function AboutPage() {
   const experts = await getExperts();
+  const officers = await getOfficers();
+  const currentOfficers = officers.filter(
+    (officer) => officer.isOfficer && officer.isCurrent,
+  );
+  const foundingOfficers = officers.filter(
+    (officer) => officer.isFoundingOfficer,
+  );
   return (
     <div className="pt-20">
       {/* Hero */}
@@ -592,42 +507,87 @@ export default async function AboutPage() {
             </p>
             <h2 className="font-display text-4xl font-bold">Our Team</h2>
             <p className="mt-3 text-muted-foreground">
-              Meet the founding officers, Board of Directors, and adviser of
-              RGAN XI.
+              Meet the officers and founding officers of RGAN XI.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {team.map((member, i) => (
-              <div
-                key={member.name}
-                className="group bg-white rounded-2xl border border-border p-6 hover:shadow-md transition-all hover:-translate-y-0.5 duration-200"
-              >
-                <div
-                  className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold text-lg mb-4 group-hover:scale-105 transition-transform`}
-                >
-                  {member.initials}
-                  {member.profile && (
-                    <Image
-                      src={member.profile}
-                      alt={member.name}
-                      className="w-14 h-14 rounded-2xl object-cover absolute "
-                    />
-                  )}
-                </div>
-                <h3 className="font-display font-bold text-lg">
-                  {member.name}
-                </h3>
-                <p className="text-primary text-sm font-medium">
-                  {member.role}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {member.dept}
-                </p>
+
+          {currentOfficers.length > 0 && (
+            <div className="mb-16">
+              <h3 className="font-display text-2xl font-bold mb-6">
+                Officers
+              </h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {currentOfficers.map((officer, i) => (
+                  <div
+                    key={officer.id}
+                    className="group bg-white rounded-2xl border border-border p-6 hover:shadow-md transition-all hover:-translate-y-0.5 duration-200"
+                  >
+                    <div
+                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold text-lg mb-4 group-hover:scale-105 transition-transform`}
+                    >
+                      {officerInitials(officer)}
+                      {officer.profile && (
+                        <Image
+                          src={officer.profile}
+                          alt={officerName(officer)}
+                          className="w-14 h-14 rounded-2xl object-cover absolute "
+                        />
+                      )}
+                    </div>
+                    <h3 className="font-display font-bold text-lg">
+                      {officerName(officer)}
+                    </h3>
+                    <p className="text-primary text-sm font-medium">
+                      {officer.position}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {officer.school}
+                    </p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
+
+          {foundingOfficers.length > 0 && (
+            <div>
+              <h3 className="font-display text-2xl font-bold mb-6">
+                Founding Officers
+              </h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {foundingOfficers.map((officer, i) => (
+                  <div
+                    key={officer.id}
+                    className="group bg-white rounded-2xl border border-border p-6 hover:shadow-md transition-all hover:-translate-y-0.5 duration-200"
+                  >
+                    <div
+                      className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-white font-display font-bold text-lg mb-4 group-hover:scale-105 transition-transform`}
+                    >
+                      {officerInitials(officer)}
+                      {officer.profile && (
+                        <Image
+                          src={officer.profile}
+                          alt={officerName(officer)}
+                          className="w-14 h-14 rounded-2xl object-cover absolute "
+                        />
+                      )}
+                    </div>
+                    <h3 className="font-display font-bold text-lg">
+                      {officerName(officer)}
+                    </h3>
+                    <p className="text-primary text-sm font-medium">
+                      {officer.position}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {officer.school}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      </section>      
+      </section>
     </div>
   );
 }
