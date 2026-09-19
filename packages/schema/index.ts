@@ -5,3 +5,4 @@ export * from "./announcement";
 export * from "./summit";
 export * from "./reviewer";
 export * from "./issue";
+export * from "./experts";
