@@ -24,7 +24,7 @@ import {
   FormMessage,
 } from "@gad/components/ui/form";
 
-const ANNOUNCEMENT_COVER_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const ANNOUNCEMENT_COVER_MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
 
 export const DEFAULT_ANNOUNCEMENT_VALUES: AnnouncementFormInput = {
   title: "",
@@ -293,7 +293,7 @@ export function AnnouncementForm({
                                 Click to upload a cover image
                               </span>
                               <span className="text-xs text-muted-foreground/70">
-                                JPEG, PNG, WEBP or GIF, up to 5MB
+                                JPEG, PNG, WEBP or GIF, up to 30MB
                               </span>
                             </>
                           )}

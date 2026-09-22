@@ -47,7 +47,7 @@ export const EMPTY_AUTHOR = {
   orcid: "",
 };
 
-const ARTICLE_PDF_MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+const ARTICLE_PDF_MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
 
 export const DEFAULT_ARTICLE_VALUES: ArticleFormInput = {
   title: "",
@@ -639,7 +639,7 @@ export function ArticleForm({
                                   Click to upload the article PDF
                                 </span>
                                 <span className="text-xs text-muted-foreground/70">
-                                  PDF only, up to 10MB
+                                  PDF only, up to 30MB
                                 </span>
                               </>
                             )}

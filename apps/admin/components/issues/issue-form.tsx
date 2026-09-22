@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@gad/components/ui/form";
 
-const ISSUE_COVER_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const ISSUE_COVER_MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
 
 export const DEFAULT_ISSUE_VALUES: IssueFormInput = {
   volume: 1,
@@ -385,7 +385,7 @@ export function IssueForm({
                                   Click to upload a cover image
                                 </span>
                                 <span className="text-xs text-muted-foreground/70">
-                                  JPEG, PNG, WEBP or GIF, up to 5MB
+                                  JPEG, PNG, WEBP or GIF, up to 30MB
                                 </span>
                               </>
                             )}

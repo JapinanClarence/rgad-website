@@ -27,7 +27,7 @@ import {
   FormMessage,
 } from "@gad/components/ui/form";
 
-const SUMMIT_IMAGE_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const SUMMIT_IMAGE_MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
 
 export const DEFAULT_SUMMIT_VALUES: SummitFormInput = {
   theme: "",
@@ -472,7 +472,7 @@ export function SummitForm({
                               </span>
                               <span className="text-xs text-muted-foreground/70">
                                 Select multiple files at once. JPEG, PNG, WEBP
-                                or GIF, up to 5MB each.
+                                or GIF, up to 30MB each.
                               </span>
                             </>
                           )}

@@ -23,7 +23,7 @@ import {
   FormMessage,
 } from "@gad/components/ui/form";
 
-const OFFICER_PROFILE_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const OFFICER_PROFILE_MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
 
 export const DEFAULT_OFFICER_VALUES: OfficerFormInput = {
   firstname: "",
