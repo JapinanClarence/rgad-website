@@ -32,7 +32,7 @@ type UploadOptions = {
 };
 
 const IMAGE_BUCKET = "images";
-const IMAGE_MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const IMAGE_MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
 const IMAGE_ALLOWED_TYPES = [
   "image/jpeg",
   "image/png",
@@ -41,7 +41,7 @@ const IMAGE_ALLOWED_TYPES = [
 ];
 
 const PDF_BUCKET = "file";
-const PDF_MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20MB
+const PDF_MAX_SIZE_BYTES = 30 * 1024 * 1024; // 30MB
 const PDF_ALLOWED_TYPES = ["application/pdf"];
 
 export { IMAGE_MAX_SIZE_BYTES, PDF_MAX_SIZE_BYTES };
