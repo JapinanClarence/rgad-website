@@ -10,11 +10,11 @@ import { getIssueById, getIssues } from "@/services/issue";
 export default async function HomePage() {
   const issues = await getIssues();
   const currentIssue = issues.find((i) => i.isCurrent) ?? issues[0];
-  const result = await getIssueById(currentIssue.id);
+  const result = currentIssue ? await getIssueById(currentIssue.id) : null;
 
   return (
     <>
-      <HeroSection issue={result.issue} articles={result.articles} />
+      <HeroSection issue={result?.issue} articles={result?.articles} />
       <ResearchAreasSection />
       <FeaturedArticlesSection issues={issues} currentIssue={currentIssue} />
       <MissionSection />

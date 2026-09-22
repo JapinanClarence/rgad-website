@@ -26,12 +26,12 @@ function stripHtml(html: string) {
 }
 
 interface HeroSectionProps {
-  issue: Issue;
+  issue?: Issue;
   articles?: IssueArticle[];
 }
 
 export function HeroSection({ issue, articles }: HeroSectionProps) {
-  const articleCount = articles?.length;
+  const articleCount = articles?.length ?? 0;
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden hero-pattern">
@@ -118,52 +118,54 @@ export function HeroSection({ issue, articles }: HeroSectionProps) {
 
           {/* Visual */}
           <div className="relative hidden lg:block">
-            {/* Main card */}
-            <Link
-              href={`/issue/${issue.id}`}
-              className="relative block bg-white rounded-3xl shadow-2xl border border-border/50 p-8 overflow-hidden hover:shadow-primary/10 transition-shadow"
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 gad-gradient" />
+            {issue ? (
+              <>
+                {/* Main card */}
+                <Link
+                  href={`/issue/${issue.id}`}
+                  className="relative block bg-white rounded-3xl shadow-2xl border border-border/50 p-8 overflow-hidden hover:shadow-primary/10 transition-shadow"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1 gad-gradient" />
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
-                    Current Issue
-                  </span>
-                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+                        Current Issue
+                      </span>
+                      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    </div>
 
-                <h3 className="font-display text-xl font-bold leading-snug">
-                  {`Vol. ${issue.volume} No. ${issue.issueNo} (${formatYear(issue.publishedAt)}) Gender Research and Policy Journal`}
-                </h3>
+                    <h3 className="font-display text-xl font-bold leading-snug">
+                      {`Vol. ${issue.volume} No. ${issue.issueNo} (${formatYear(issue.publishedAt)}) Gender Research and Policy Journal`}
+                    </h3>
 
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                    Vol. {issue.volume}
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                    Issue {issue.issueNo}
-                  </span>
-                  <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                    ISSN {issue.issn}
-                  </span>
-                </div>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                        Vol. {issue.volume}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                        Issue {issue.issueNo}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                        ISSN {issue.issn}
+                      </span>
+                    </div>
 
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Published Biannually by the Region XI Gender and Development
-                  Network (RGAN XI)
-                </p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Published Biannually by the Region XI Gender and
+                      Development Network (RGAN XI)
+                    </p>
 
-                <div className="flex items-center justify-between pt-2 border-t border-border">
-                  <span className="text-xs text-muted-foreground">
-                    {formatDateShort(issue.publishedAt)}
-                  </span>
-                </div>
-              </div>
-            </Link>
+                    <div className="flex items-center justify-between pt-2 border-t border-border">
+                      <span className="text-xs text-muted-foreground">
+                        {formatDateShort(issue.publishedAt)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
 
-            {/* Floating accent cards */}
-            {/* <div
+                {/* Floating accent cards */}
+                {/* <div
               className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-border/50 p-4 w-44 animate-fade-up"
               style={{ animationDelay: "0.3s" }}
             >
@@ -176,16 +178,57 @@ export function HeroSection({ issue, articles }: HeroSectionProps) {
               </p>
             </div> */}
 
-            <div
-              className="absolute -top-4 -right-4 bg-primary rounded-2xl shadow-xl p-4 w-36 text-white animate-fade-up"
-              style={{ animationDelay: "0.6s" }}
-            >
-              <p className="text-3xl font-display font-bold">{articleCount}</p>
-              <p className="text-xs text-white/80 flex items-center gap-1">
-                {/* <Calendar className="h-3 w-3" /> */}
-                {articleCount > 1 ? `articles` : "article"} in this issue
-              </p>
-            </div>
+                <div
+                  className="absolute -top-4 -right-4 bg-primary rounded-2xl shadow-xl p-4 w-36 text-white animate-fade-up"
+                  style={{ animationDelay: "0.6s" }}
+                >
+                  <p className="text-3xl font-display font-bold">
+                    {articleCount}
+                  </p>
+                  <p className="text-xs text-white/80 flex items-center gap-1">
+                    {/* <Calendar className="h-3 w-3" /> */}
+                    {articleCount > 1 ? `articles` : "article"} in this issue
+                  </p>
+                </div>
+              </>
+            ) : (
+              /* Fallback card when no current issue has been published yet */
+              <div className="relative block bg-white rounded-3xl shadow-2xl border border-border/50 p-8 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 gad-gradient" />
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-widest">
+                      Current Issue
+                    </span>
+                  </div>
+
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <BookOpen className="h-6 w-6 text-primary" />
+                  </div>
+
+                  <h3 className="font-display text-xl font-bold leading-snug">
+                    No issue published yet
+                  </h3>
+
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    The Gender Research and Policy Journal's first issue is in
+                    preparation. Check back soon or browse the journal for
+                    updates.
+                  </p>
+
+                  <div className="pt-2 border-t border-border">
+                    <Link
+                      href="/journal"
+                      className="text-sm font-medium text-primary inline-flex items-center gap-1.5 hover:gap-2.5 transition-all"
+                    >
+                      Visit the Journal
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

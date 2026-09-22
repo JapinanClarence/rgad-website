@@ -16,13 +16,42 @@ export function FeaturedArticlesSection({
   issues,
   currentIssue,
 }: FeaturedArticlesSectionProps) {
-  const otherIssues = issues
-    .filter((issue) => issue.id !== currentIssue.id)
-    .sort(
-      (a, b) =>
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-    )
-    .slice(0, 2);
+  const otherIssues = currentIssue
+    ? (issues ?? [])
+        .filter((issue) => issue.id !== currentIssue.id)
+        .sort(
+          (a, b) =>
+            new Date(b.publishedAt).getTime() -
+            new Date(a.publishedAt).getTime(),
+        )
+        .slice(0, 2)
+    : [];
+
+  if (!currentIssue) {
+    return (
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <p className="text-primary font-medium text-sm uppercase tracking-widest mb-3">
+                Gender Research and Policy Journal
+              </p>
+              <h2 className="font-display text-4xl lg:text-5xl font-bold">
+                Featured Issues
+              </h2>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-3xl border border-border p-10 text-center">
+            <p className="text-muted-foreground">
+              No issues have been published yet. Once the first issue is
+              released, it will be featured here.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-24">
@@ -99,9 +128,11 @@ export function FeaturedArticlesSection({
                     Journal
                   </h3>
 
-                  <span className="text-xs text-muted-foreground flex items-center gap-1.5">
-                    DOI: <DoiLink doi={currentIssue.doi} />
-                  </span>
+                  {issue.doi && (
+                    <span className="text-xs text-muted-foreground flex items-center gap-1.5">
+                      DOI: <DoiLink doi={issue.doi} />
+                    </span>
+                  )}
                 </div>
               </Link>
             ))}
