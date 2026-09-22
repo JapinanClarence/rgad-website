@@ -1,6 +1,6 @@
 # RGAD Website
 
-A TypeScript and React monorepo for the Gender Research and Development (GAD) platform. It contains a public journal website and an authenticated admin dashboard, sharing common code through npm workspaces.
+A TypeScript and Next.js monorepo for the Gender Research and Development (GAD) platform. It contains a public journal website and an authenticated admin dashboard, sharing common code through npm workspaces.
 
 ## Overview
 
