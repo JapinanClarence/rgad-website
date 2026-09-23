@@ -28,6 +28,7 @@ import usep_logo from "@/assets/images/Logo_USeP.png";
 import asci_logo from "@/assets/images/ASCI Logo 1.png";
 import pej_logo from "@/assets/images/Philippine E-Journals.png";
 import open_access_logo from "@gad/assets/images/Open Access Logo.png";
+import dnsc_logo from "@/assets/images/Logo_DNSC.png";
 
 export const images = {
   bauyot,
@@ -54,6 +55,7 @@ export const images = {
   ched_logo,
   ddosc_logo,
   dorsu_logo,
+  dnsc_logo,
   dssc_logo,
   spamast_logo,
   usep_logo,

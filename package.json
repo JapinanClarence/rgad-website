@@ -15,6 +15,7 @@
     "dev:admin": "turbo run dev --filter=admin"
   },
   "devDependencies": {
+    "supabase": "^2.117.0",
     "turbo": "^2.0.0"
   }
 }

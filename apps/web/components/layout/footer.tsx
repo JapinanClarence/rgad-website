@@ -71,6 +71,16 @@ export function Footer() {
                   alt="DDOSC Logo"
                 />
               </a>
+                <a
+                href="#"
+                className="w-12 h-12 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
+              >
+                <Image
+                  className="h-full w-full object-contain"
+                  src={images.dnsc_logo}
+                  alt="DNSC Logo"
+                />
+              </a>
               <a
                 href="#"
                 className="w-12 h-12 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
