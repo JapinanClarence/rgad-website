@@ -296,7 +296,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                   <div className="flex flex-col items-center text-center px-2">
                     <Copy className="h-4 w-4 text-muted-foreground mb-2" />
                     <span className="font-display font-semibold text-lg text-foreground">
-                      0
+                      {metrics?.citationCount ?? 0}
                     </span>
                     <span className="mt-0.5 text-[11px] text-muted-foreground">
                       Citations

@@ -191,6 +191,8 @@ export interface Database {
           article_id: string;
           total_views: number;
           total_downloads: number;
+          citation_count: number;
+          citation_synced_at: string | null;
           updated_at: string;
         };
         Insert: Partial<
