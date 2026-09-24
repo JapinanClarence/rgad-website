@@ -36,7 +36,7 @@ const journalFacts = [
   { label: "Peer Review", value: "Double-blind" },
   { label: "Language", value: "English" },
   { label: "ISSN (Print)", value: "3082-5431" },
-  { label: "ISSN (Online)", value: "Pending" },
+  { label: "ISSN (Online)", value: "3155-7201" },
   { label: "Article Processing Charges", value: "None" },
   { label: "Submission Fee", value: "None" },
   { label: "Copyright", value: "Retained by the authors" },
@@ -119,6 +119,7 @@ export default function JournalPage() {
             <div className="flex flex-wrap gap-2 mt-6">
               {[
                 "ISSN (Print) 3082-5431",
+                "ISSN (Online) 3155-7201",
                 "Open Access",
                 "Double-Blind Peer Review",
                 "Published Biannually",
