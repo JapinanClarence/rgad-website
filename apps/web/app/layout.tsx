@@ -5,6 +5,7 @@ import { Footer } from '@/components/layout/footer'
 import { ProgressProvider } from '@gad/context/progress-context'
 import { SlimBar } from '@gad/components/ui/slim-bar'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   title: {
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Footer />
         </ProgressProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
