@@ -8,17 +8,17 @@ import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: {
-    default: 'GAD Research Center | Gender and Development',
-    template: '%s | GAD Research Center',
+    default: 'RGAN XI | GAD Advocates Network',
+    template: '%s | RGAN XI',
   },
   description:
-    'The Gender and Development Research Center advances knowledge and practice in gender equity through rigorous research, advocacy, and community engagement.',
+    'The Region XI Gender and Development Advocates Network (RGAN XI Inc.) is a non-stock, non-profit, non-sectarian, and apolitical organization dedicated to advancing gender equality, diversity, equity, and social inclusion through research, education, policy engagement, and community partnerships.',
   keywords: ['gender and development', 'GAD', 'gender equity', 'research', 'Philippines', 'women empowerment'],
   openGraph: {
     type: 'website',
     locale: 'en_PH',
-    url: 'https://gadresearch.org',
-    siteName: 'GAD Research Center',
+    url: 'https://rganxi.org',
+    siteName: 'RGAN XI',
   },
 }
 
